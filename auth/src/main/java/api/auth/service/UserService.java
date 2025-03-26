@@ -20,7 +20,7 @@ public class UserService {
             return processGithubUser(attributes, accessToken);
         }
 
-        throw  new UnsupportedOperationException("Provider not supported "+ provider);
+        throw new UnsupportedOperationException("Provider not supported "+ provider);
     }
 
     private User processGithubUser(Map<String, Object> attributes, String accessToken){

@@ -5,7 +5,6 @@ import lombok.Data;
 @Data
 public class Preferences {
 
-    private String languages;
     private Theme theme = Theme.SYSTEM;
     private Language language = Language.ENGLISH;
 

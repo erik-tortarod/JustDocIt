@@ -32,18 +32,4 @@ public class AuthController {
         return "dashboard";
     }
 
-    @GetMapping("/api/user")
-    public Map<String, Object> getUser(@AuthenticationPrincipal OAuth2User principal){
-        String githubId = principal.getAttribute("id").toString();
-        User user = userRepository.findByGithubId(githubId);
-
-        Map<String, Object> userDetails = new HashMap<>();
-        userDetails.put("id",user.getId());
-        userDetails.put("username",user.getUsername());
-        userDetails.put("email",user.getEmail());
-        userDetails.put("avatarUrl",user.getAvatarUrl());
-        userDetails.put("preferences",user.getPreferences());
-
-        return  userDetails;
-    }
 }

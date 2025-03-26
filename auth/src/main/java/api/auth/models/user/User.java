@@ -17,7 +17,6 @@ public class User {
     private String email;
     private String avatarUrl;
     private String accessToken;
-    private String refreshToken;
     private Date createdAt;
     private Date lastLoginAt;
     private Preferences preferences;

@@ -5,7 +5,7 @@ import { ELanguage, ETheme } from "../types/enums";
 class UserModel implements IUser {
 	jwtToken: string;
 	username: string;
-	email: string;
+	email: string | null;
 	avatarUrl: string;
 	createdAt: string;
 	preferences: {
@@ -16,7 +16,7 @@ class UserModel implements IUser {
 	constructor(data: {
 		jwtToken: string;
 		username: string;
-		email: string;
+		email: string | null;
 		avatarUrl: string;
 		createdAt: string;
 		preferences: {
@@ -33,6 +33,24 @@ class UserModel implements IUser {
 			language: (data.preferences.language as ELanguage) || ELanguage.ENGLISH,
 			theme: (data.preferences.theme as ETheme) || ETheme.SYSTEM,
 		};
+	}
+
+	static fromData(data: IUser | any): IUser {
+		if (!data) {
+			throw new Error("Cannot create user model from null or undefined data");
+		}
+
+		return new UserModel({
+			jwtToken: data.jwtToken || "",
+			username: data.username || "",
+			email: data.email || null,
+			avatarUrl: data.avatarUrl || "",
+			createdAt: data.createdAt || new Date().toISOString(),
+			preferences: {
+				language: data.preferences.language || ELanguage.ENGLISH,
+				theme: data.preferences.theme || ETheme.SYSTEM,
+			},
+		});
 	}
 }
 

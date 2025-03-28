@@ -50,7 +50,7 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         );
 
         //Redirect the user
-        getRedirectStrategy().sendRedirect(request,response,"/dashboard");
+        getRedirectStrategy().sendRedirect(request,response,"http://localhost:5173/dashboard");
 
     }
 

@@ -15,9 +15,6 @@ CODE STRUCTURE:
       │   ├── api.ts               # API client configuration
       │   └── constants.ts         # Global constants
       │
-      ├── context/                 # React contexts
-      │   └── AuthContext.tsx      # Authentication context
-      │
       ├── features/                # Features organized by domain
       │   ├── auth/                # Authentication
       │   │   ├── components/      # Specific authentication components
@@ -53,6 +50,10 @@ CODE STRUCTURE:
       │   ├── api.service.ts       # Service for API calls
       │   ├── auth.service.ts      # Authentication service
       │   └── github.service.ts    # Service for interacting with GitHub
+      │
+      ├── types/                   # TypeScript interfaces and enums
+      │   ├── interfaces.ts        # Common interfaces
+      │   └── enums.ts             # Common enums
       │
       ├── utils/                   # Utilities and helpers
       │   ├── formatting.ts        # Formatting functions

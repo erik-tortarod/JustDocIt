@@ -1,7 +1,9 @@
 function Auth() {
-  return (
-    <div>Auth</div>
-  )
+	return (
+		<div>
+			<button>Login</button>
+		</div>
+	);
 }
 
-export default Auth
+export default Auth;

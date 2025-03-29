@@ -1,0 +1,22 @@
+version: "3.8"
+
+services:
+   frontend:
+      build:
+         context: ../frontend
+         dockerfile: Dockerfile
+      container_name: frontend
+      ports:
+         - 5173:5173
+      volumes:
+         - ../frontend:/app
+         - /app/node_modules
+      environment:
+         - VITE_API_URL=http://localhost:8080
+      networks:
+         - app_network
+
+networks:
+   app_network:
+      external: true
+      name: app_network

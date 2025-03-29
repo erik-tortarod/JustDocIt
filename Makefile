@@ -31,6 +31,17 @@ run-all:
 stop-all:
 	$(DOCKER_COMPOSE) -f $(DC_FULL) down
 
+# Reconstruir y reiniciar completamente todos los servicios
+rebuild-all:
+	@echo "Deteniendo y eliminando todos los contenedores existentes..."
+	$(DOCKER_COMPOSE) -f $(DC_FULL) down -v --remove-orphans
+	@echo "Limpiando imágenes no utilizadas..."
+	$(DOCKER) system prune -f
+	@echo "Reconstruyendo todos los servicios..."
+	$(DOCKER_COMPOSE) -f $(DC_FULL) build --no-cache
+	@echo "Iniciando servicios con configuración limpia..."
+	$(DOCKER_COMPOSE) -f $(DC_FULL) up -d
+
 # Ver logs de un servicio específico
 logs-mongodb:
 	$(DOCKER_COMPOSE) -f $(DC_FULL) logs -f mongodb
@@ -75,6 +86,7 @@ help:
 	@echo "  make init        - Crea la estructura de directorios inicial"
 	@echo "  make run-all     - Inicia todos los servicios"
 	@echo "  make stop-all    - Detiene todos los servicios"
+	@echo "  make rebuild-all - Detiene, elimina, reconstruye e inicia todos los servicios"
 	@echo "  make logs        - Muestra los logs de todos los servicios"
 	@echo "  make logs-XXX    - Muestra los logs del servicio XXX"
 	@echo "                     (mongodb, mongo-express, api, auth, frontend)"

@@ -5,6 +5,7 @@ services:
    mongodb:
       image: mongo
       container_name: mongodb
+      hostname: mongo
       ports:
          - 27018:27017
       volumes:
@@ -13,7 +14,9 @@ services:
          - MONGO_INITDB_ROOT_USERNAME=rootuser
          - MONGO_INITDB_ROOT_PASSWORD=rootpass
       networks:
-         - app_network
+         app_network:
+            aliases:
+               - mongo
 
    mongo-express:
       image: mongo-express
@@ -24,7 +27,7 @@ services:
       environment:
          - ME_CONFIG_MONGODB_ADMINUSERNAME=rootuser
          - ME_CONFIG_MONGODB_ADMINPASSWORD=rootpass
-         - ME_CONFIG_MONGODB_SERVER=mongodb
+         - ME_CONFIG_MONGODB_SERVER=mongo
          - ME_CONFIG_BASICAUTH_USERNAME=admin
          - ME_CONFIG_BASICAUTH_PASSWORD=pass
       depends_on:
@@ -67,6 +70,8 @@ services:
          - SPRING_DATA_MONGODB_PASSWORD=rootpass
          - SPRING_DATA_MONGODB_DATABASE=authdb
          - SPRING_DATA_MONGODB_AUTHENTICATION_DATABASE=admin
+         - IS_DOCKER=true
+         - SPRING_APPLICATION_JSON={"app":{"frontend":{"url":"http://localhost:5173"}}}
       networks:
          - app_network
       depends_on:

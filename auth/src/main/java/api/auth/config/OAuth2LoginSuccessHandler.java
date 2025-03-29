@@ -16,9 +16,12 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 @Component
 public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
+
+    private static final Logger LOGGER = Logger.getLogger(OAuth2LoginSuccessHandler.class.getName());
 
     @Autowired
     private UserService userService;
@@ -39,11 +42,20 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         OAuth2AuthenticationToken oauthToken = (OAuth2AuthenticationToken) authentication;
         OAuth2User oAuth2User = oauthToken.getPrincipal();
 
+        // Log user attributes for debugging
+        LOGGER.info("OAuth2 User Attributes: " + oAuth2User.getAttributes());
+
         // Get GitHub Access Token
         OAuth2AuthorizedClient client = clientService.loadAuthorizedClient(
                 oauthToken.getAuthorizedClientRegistrationId(),
                 oauthToken.getName()
         );
+
+        if (client == null || client.getAccessToken() == null) {
+            LOGGER.severe("Failed to retrieve access token from GitHub.");
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failed to retrieve access token.");
+            return;
+        }
 
         String accessToken = client.getAccessToken().getTokenValue();
 
@@ -55,12 +67,12 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         );
 
         // Redirect to the frontend with user ID and access token as parameters
-        getRedirectStrategy().sendRedirect(
-                request,
-                response,
-                String.format("http://localhost:5173/dashboard?userId=%s&accessToken=%s",
-                        user.getId(),
-                        encryptionService.encrypt(accessToken))
-        );
+        String redirectUrl = String.format("http://localhost:5173/dashboard?userId=%s&accessToken=%s",
+                user.getId(),
+                encryptionService.encrypt(accessToken));
+
+        LOGGER.info("Redirecting to: " + redirectUrl);
+
+        getRedirectStrategy().sendRedirect(request, response, redirectUrl);
     }
 }

@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 
 @Configuration
 @EnableMethodSecurity
@@ -19,16 +20,21 @@ public class SecurityConfig {
     private OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
 
     @Bean
+    public JwtFilter jwtFilter() {
+        return new JwtFilter();
+    }
+
+    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable())
+                .csrf(csrf -> csrf.disable()) // Disable CSRF for simplicity
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/error", "/css/**", "/js/**", "/api/**", "/auth/token", "/token/**").permitAll()
                         .anyRequest().authenticated()
                 )
-                .addFilterBefore(new JwtFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class)
                 .oauth2Login(oauth2 -> oauth2
-                        .successHandler(oAuth2LoginSuccessHandler)
+                        .successHandler(oAuth2LoginSuccessHandler) // Ensure this is injected
                         .authorizationEndpoint(authorization ->
                                 authorization.baseUri("/api/oauth2/authorization"))
                 );

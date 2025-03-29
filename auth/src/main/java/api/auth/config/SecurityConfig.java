@@ -35,6 +35,7 @@ public class SecurityConfig {
                 .addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class)
                 .oauth2Login(oauth2 -> oauth2
                         .successHandler(oAuth2LoginSuccessHandler) // Ensure this is injected
+
                         .authorizationEndpoint(authorization ->
                                 authorization.baseUri("/api/oauth2/authorization"))
                 );

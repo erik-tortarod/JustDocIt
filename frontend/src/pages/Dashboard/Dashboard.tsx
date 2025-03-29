@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 //SERVICES
 import ApiService from "../../services/ApiService";
 import AuthService from "../../services/AuthService";
+import StorageService from "../../services/StorageService";
 
 function Dashboard() {
 	const [loading, setLoading] = useState<boolean>(true);
@@ -13,6 +14,12 @@ function Dashboard() {
 	useEffect(() => {
 		const initializeDashboard = async () => {
 			try {
+				if(!StorageService.getToken() && !window.location.search){
+					setError("You have not logged in yet");
+					setLoading(false);
+					return;
+				}
+
 				const authResult = await AuthService.processUrlParams();
 
 				if (!authResult.sucess) {

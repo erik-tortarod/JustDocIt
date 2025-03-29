@@ -14,7 +14,7 @@ function Dashboard() {
 	useEffect(() => {
 		const initializeDashboard = async () => {
 			try {
-				if(!StorageService.getToken() && !window.location.search){
+				if (!StorageService.getToken() && !window.location.search) {
 					setError("You have not logged in yet");
 					setLoading(false);
 					return;

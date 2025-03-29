@@ -21,6 +21,9 @@ public class AuthController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private JwtUtil jwtUtil;
+
     @GetMapping("/")
     public String home(){
         return "index";
@@ -37,7 +40,7 @@ public class AuthController {
 
     @PostMapping("/auth/token")
     public String generateToken(@RequestParam String id, @RequestParam String accessToken){
-        return JwtUtil.generateToken(id, accessToken);
+        return jwtUtil.generateToken(id, accessToken);
     }
 
 }

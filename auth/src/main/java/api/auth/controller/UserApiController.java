@@ -23,6 +23,9 @@ public class UserApiController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private JwtUtil jwtUtil;
+
     @GetMapping("/user")
     public ResponseEntity<?> getUserFromToken(@RequestHeader("Authorization") String authHeader) {
         try {
@@ -35,7 +38,7 @@ public class UserApiController {
 
             String token = authHeader.substring(7);
 
-            Map<String, Object> claims = JwtUtil.validateToken(token);
+            Map<String, Object> claims = JwtUtil.validateToken(token, jwtUtil.getSecretKey1());
 
             String userId = (String) claims.get("id");
 
@@ -56,6 +59,7 @@ public class UserApiController {
             userDetails.put("preferences", user.getPreferences());
             userDetails.put("lastLoginAt", user.getLastLoginAt());
             userDetails.put("createdAt", user.getCreatedAt());
+
 
             return ResponseEntity.ok().header("Cache-Control", "max-age=60").body(userDetails);
         } catch (Exception e) {

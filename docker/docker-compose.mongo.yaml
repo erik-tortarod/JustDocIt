@@ -1,3 +1,5 @@
+version: "3.8"
+
 services:
    mongodb:
       image: mongo
@@ -9,6 +11,9 @@ services:
       environment:
          - MONGO_INITDB_ROOT_USERNAME=rootuser
          - MONGO_INITDB_ROOT_PASSWORD=rootpass
+      networks:
+         - app_network
+
    mongo-express:
       image: mongo-express
       container_name: mongo-express
@@ -21,9 +26,14 @@ services:
          - ME_CONFIG_MONGODB_SERVER=mongodb
          - ME_CONFIG_BASICAUTH_USERNAME=admin
          - ME_CONFIG_BASICAUTH_PASSWORD=pass
+      depends_on:
+         - mongodb
+      networks:
+         - app_network
+
 volumes:
    data: {}
 
 networks:
-   default:
-      name: mongodb_network
+   app_network:
+      name: app_network

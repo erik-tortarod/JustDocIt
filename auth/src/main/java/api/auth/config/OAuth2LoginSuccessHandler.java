@@ -1,5 +1,7 @@
 package api.auth.config;
 
+import api.auth.models.user.User;
+import api.auth.service.EncryptionService;
 import api.auth.service.UserService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,6 +26,9 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
     @Autowired
     private OAuth2AuthorizedClientService clientService;
 
+    @Autowired
+    private EncryptionService encryptionService;
+
     @Override
     public void onAuthenticationSuccess(
             HttpServletRequest request,
@@ -34,7 +39,7 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         OAuth2AuthenticationToken oauthToken = (OAuth2AuthenticationToken) authentication;
         OAuth2User oAuth2User = oauthToken.getPrincipal();
 
-        //Get GitHub Access Token
+        // Get GitHub Access Token
         OAuth2AuthorizedClient client = clientService.loadAuthorizedClient(
                 oauthToken.getAuthorizedClientRegistrationId(),
                 oauthToken.getName()
@@ -42,16 +47,20 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 
         String accessToken = client.getAccessToken().getTokenValue();
 
-        //Save user in mongodb
-        userService.processOAuthUser(
+        // Save user in MongoDB and get the saved user
+        User user = userService.processOAuthUser(
                 oauthToken.getAuthorizedClientRegistrationId(),
                 oAuth2User.getAttributes(),
                 accessToken
         );
 
-        //Redirect the user
-        getRedirectStrategy().sendRedirect(request,response,"http://localhost:5173/dashboard");
-
+        // Redirect to the frontend with user ID and access token as parameters
+        getRedirectStrategy().sendRedirect(
+                request,
+                response,
+                String.format("http://localhost:5173/dashboard?userId=%s&accessToken=%s",
+                        user.getId(),
+                        encryptionService.encrypt(accessToken))
+        );
     }
-
 }

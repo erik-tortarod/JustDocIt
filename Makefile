@@ -15,6 +15,13 @@ API_DIR = ./api
 AUTH_DIR = ./auth
 FRONTEND_DIR = ./frontend
 
+# Docker Hub settings
+DOCKER_HUB_USERNAME = yourusername
+API_IMAGE_NAME = docker-api
+AUTH_IMAGE_NAME = docker-auth
+FRONTEND_IMAGE_NAME = docker-frontend
+VERSION = latest
+
 # Crear estructura de directorios
 init:
 	@mkdir -p $(DOCKER_DIR)
@@ -78,6 +85,26 @@ shell-auth:
 shell-frontend:
 	$(DOCKER) exec -it frontend bash || $(DOCKER) exec -it frontend sh
 
+# Comandos eliminados - Solo se mantienen update-dockerhub y push-all-images
+
+# Push all images to Docker Hub
+push-all-images:
+	@echo "Iniciando sesión en Docker Hub..."
+	$(DOCKER) login
+	@echo "Construyendo imágenes..."
+	$(DOCKER) build -t $(DOCKER_HUB_USERNAME)/$(API_IMAGE_NAME):$(VERSION) $(API_DIR)
+	$(DOCKER) build -t $(DOCKER_HUB_USERNAME)/$(AUTH_IMAGE_NAME):$(VERSION) $(AUTH_DIR)
+	$(DOCKER) build -t $(DOCKER_HUB_USERNAME)/$(FRONTEND_IMAGE_NAME):$(VERSION) $(FRONTEND_DIR)
+	@echo "Subiendo imágenes a Docker Hub..."
+	$(DOCKER) push $(DOCKER_HUB_USERNAME)/$(API_IMAGE_NAME):$(VERSION)
+	$(DOCKER) push $(DOCKER_HUB_USERNAME)/$(AUTH_IMAGE_NAME):$(VERSION)
+	$(DOCKER) push $(DOCKER_HUB_USERNAME)/$(FRONTEND_IMAGE_NAME):$(VERSION)
+	@echo "Todas las imágenes han sido subidas a Docker Hub exitosamente"
+
+# Build and push all images (alias)
+update-dockerhub: push-all-images
+	@echo "Docker Hub images updated successfully"
+
 # Ayuda
 help:
 	@echo "Makefile simplificado para el proyecto"
@@ -92,6 +119,11 @@ help:
 	@echo "                     (mongodb, mongo-express, api, auth, frontend)"
 	@echo "  make shell-XXX   - Abre una terminal en el contenedor XXX"
 	@echo "                     (mongodb, mongo-express, api, auth, frontend)"
+	@echo ""
+	  @echo "Docker Hub commands:"
+	@echo "  make push-all-images   - Construir y subir todas las imágenes a Docker Hub"
+	@echo "  make update-dockerhub  - Alias para push-all-images"
+	@echo ""
 	@echo "  make help        - Muestra esta ayuda"
 	@echo ""
 	@echo "Puertos utilizados:"

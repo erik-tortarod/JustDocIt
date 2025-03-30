@@ -2,27 +2,27 @@ import { API_ROUTES } from "../config/api-routes";
 import StorageService from "./StorageService";
 
 class RepositoryService {
+	static async getUserRepositories(): Promise<any> {
+		const token = StorageService.getToken();
 
-   static async getUserRepositories(): Promise<any> {
-      const token = StorageService.getToken();
+		if (!token) {
+			throw new Error(`No authentication token`);
+		}
 
-      if (!token) {
-         throw new Error(`No authentication token`);
-      }
+		const response = await fetch(API_ROUTES.DOCS.REPOSITORIES, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
 
-      const response = await fetch(API_ROUTES.DOCS.REPOSITORIES, {
-         headers: {
-            Authorization: `Bearer ${token}`
-         }
-      });
+		if (!response.ok) {
+			throw new Error(
+				`Error fetching the user repositories ${response.status}`,
+			);
+		}
 
-      if (!response.ok) {
-         throw new Error(`Error fetching the user repositories ${response.status}`);
-      }
-
-      return await response.json();
-   }
-
+		return await response.json();
+	}
 }
 
 export default RepositoryService;

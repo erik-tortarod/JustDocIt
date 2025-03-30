@@ -8,6 +8,6 @@ export const API_ROUTES = Object.freeze({
 		TOKEN: `${API_BASE_URL}/auth/token`,
 	},
 	DOCS: {
-		REPOSITORIES: `${DOCS_BASE_URL}/api/github-repositories`
-	}
+		REPOSITORIES: `${DOCS_BASE_URL}/api/github-repositories`,
+	},
 });

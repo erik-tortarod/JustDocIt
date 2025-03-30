@@ -90,7 +90,7 @@ public class RepositoriesController {
 
             // Call GitHub API to fetch repositories
             RestTemplate restTemplate = new RestTemplate();
-            String url = "https://api.github.com/user/repos";
+            String url = "https://api.github.com/user/repos?type=owner";
             var headers = new org.springframework.http.HttpHeaders();
             headers.set("Authorization", "Bearer " + decryptedAccessToken);
             var entity = new org.springframework.http.HttpEntity<>(headers);

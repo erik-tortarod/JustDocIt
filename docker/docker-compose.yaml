@@ -42,7 +42,7 @@ services:
          dockerfile: Dockerfile
       container_name: api
       ports:
-         - 8082:8080
+         - 8082:8082
       environment:
          - SPRING_DATA_MONGODB_HOST=mongodb
          - SPRING_DATA_MONGODB_PORT=27017

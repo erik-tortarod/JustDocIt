@@ -16,7 +16,7 @@ AUTH_DIR = ./auth
 FRONTEND_DIR = ./frontend
 
 # Docker Hub settings
-DOCKER_HUB_USERNAME = yourusername
+DOCKER_HUB_USERNAME = eriktortarod
 API_IMAGE_NAME = docker-api
 AUTH_IMAGE_NAME = docker-auth
 FRONTEND_IMAGE_NAME = docker-frontend

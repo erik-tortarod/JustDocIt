@@ -18,29 +18,29 @@ import java.util.Map;
 @RestController
 public class AuthController {
 
-    @Autowired
-    private UserRepository userRepository;
+	@Autowired
+	private UserRepository userRepository;
 
-    @Autowired
-    private JwtUtil jwtUtil;
+	@Autowired
+	private JwtUtil jwtUtil;
 
-    @GetMapping("/")
-    public String home(){
-        return "index";
-    }
+	@GetMapping("/")
+	public String home() {
+		return "index";
+	}
 
-    @GetMapping("/dashboard")
-    public String dashboard(Model model, @AuthenticationPrincipal OAuth2User principal){
-        String githubId = principal.getAttribute("id").toString();
-        User user = userRepository.findByGithubId(githubId);
-        model.addAttribute("user",user);
+	@GetMapping("/dashboard")
+	public String dashboard(Model model, @AuthenticationPrincipal OAuth2User principal) {
+		String githubId = principal.getAttribute("id").toString();
+		User user = userRepository.findByGithubId(githubId);
+		model.addAttribute("user", user);
 
-        return "dashboard";
-    }
+		return "dashboard";
+	}
 
-    @PostMapping("/auth/token")
-    public String generateToken(@RequestParam String id, @RequestParam String accessToken){
-        return jwtUtil.generateToken(id, accessToken);
-    }
+	@PostMapping("/auth/token")
+	public String generateToken(@RequestParam String id, @RequestParam String accessToken) {
+		return jwtUtil.generateToken(id, accessToken);
+	}
 
 }

@@ -13,47 +13,43 @@ import java.util.Map;
 @Component
 public class JwtUtil {
 
-    private final SecretKey secretKey1;
-    private final SecretKey secretKey2;
+	private final SecretKey secretKey1;
 
-    public JwtUtil(
-        @Value("${jwt.secret.key1}") String key1,
-        @Value("${jwt.secret.key2}") String key2
-    ) {
-        if (key1.length() < 32 || key2.length() < 32) {
-            throw new IllegalArgumentException("JWT secret keys must be at least 32 characters long.");
-        }
-        this.secretKey1 = Keys.hmacShaKeyFor(key1.getBytes());
-        this.secretKey2 = Keys.hmacShaKeyFor(key2.getBytes());
-    }
+	private final SecretKey secretKey2;
 
-    public String generateToken(String id, String accessToken) {
-        final int expirationTime = 1000 * 60 * 60; // 1 hour
+	public JwtUtil(@Value("${jwt.secret.key1}") String key1, @Value("${jwt.secret.key2}") String key2) {
+		if (key1.length() < 32 || key2.length() < 32) {
+			throw new IllegalArgumentException("JWT secret keys must be at least 32 characters long.");
+		}
+		this.secretKey1 = Keys.hmacShaKeyFor(key1.getBytes());
+		this.secretKey2 = Keys.hmacShaKeyFor(key2.getBytes());
+	}
 
-        return Jwts.builder()
-                .setClaims(Map.of(
-                        "id", id,
-                        "accessToken", accessToken
-                ))
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + expirationTime))
-                .signWith(secretKey1, SignatureAlgorithm.HS256)
-                .compact();
-    }
+	public String generateToken(String id, String accessToken) {
+		final int expirationTime = 1000 * 60 * 60; // 1 hour
 
-    public static Map<String, Object> validateToken(String token, SecretKey secretKey) {
-        return Jwts.parserBuilder()
-                .setSigningKey(secretKey) // Use the provided key for validation
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
-    }
+		return Jwts.builder()
+			.setClaims(Map.of("id", id, "accessToken", accessToken))
+			.setIssuedAt(new Date())
+			.setExpiration(new Date(System.currentTimeMillis() + expirationTime))
+			.signWith(secretKey1, SignatureAlgorithm.HS256)
+			.compact();
+	}
 
-    public SecretKey getSecretKey1() {
-        return secretKey1;
-    }
+	public static Map<String, Object> validateToken(String token, SecretKey secretKey) {
+		return Jwts.parserBuilder()
+			.setSigningKey(secretKey) // Use the provided key for validation
+			.build()
+			.parseClaimsJws(token)
+			.getBody();
+	}
 
-    public SecretKey getSecretKey2() {
-        return secretKey2;
-    }
+	public SecretKey getSecretKey1() {
+		return secretKey1;
+	}
+
+	public SecretKey getSecretKey2() {
+		return secretKey2;
+	}
+
 }

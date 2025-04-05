@@ -11,35 +11,38 @@ import java.util.Map;
 @RequestMapping("/token")
 public class TokenInfoController {
 
-    @Autowired
-    private JwtUtil jwtUtil;
+	@Autowired
+	private JwtUtil jwtUtil;
 
-    @GetMapping("/info")
-    public ResponseEntity<?> getTokenInfo(@RequestParam String token) {
-        try {
-            Map<String, Object> claims = JwtUtil.validateToken(token, jwtUtil.getSecretKey1());
+	@GetMapping("/info")
+	public ResponseEntity<?> getTokenInfo(@RequestParam String token) {
+		try {
+			Map<String, Object> claims = JwtUtil.validateToken(token, jwtUtil.getSecretKey1());
 
-            String id = (String) claims.get("id");
-            String accessToken = (String) claims.get("accessToken");
+			String id = (String) claims.get("id");
+			String accessToken = (String) claims.get("accessToken");
 
-            return ResponseEntity.ok().body("ID: " + id + ", Access Token: " + accessToken);
+			return ResponseEntity.ok().body("ID: " + id + ", Access Token: " + accessToken);
 
-        } catch (Exception e) {
-            return ResponseEntity.status(401).body("Invalid or expired token");
-        }
-    }
+		}
+		catch (Exception e) {
+			return ResponseEntity.status(401).body("Invalid or expired token");
+		}
+	}
 
-    @PostMapping("/validate")
-    public ResponseEntity<?> validateToken(@RequestHeader("Authorization") String token) {
-        if (token.startsWith("Bearer ")) {
-            token = token.substring(7);
-        }
+	@PostMapping("/validate")
+	public ResponseEntity<?> validateToken(@RequestHeader("Authorization") String token) {
+		if (token.startsWith("Bearer ")) {
+			token = token.substring(7);
+		}
 
-        try {
-            JwtUtil.validateToken(token, jwtUtil.getSecretKey1());
-            return ResponseEntity.ok().body("Token is valid");
-        } catch (Exception e) {
-            return ResponseEntity.status(401).body("Invalid or expired token");
-        }
-    }
+		try {
+			JwtUtil.validateToken(token, jwtUtil.getSecretKey1());
+			return ResponseEntity.ok().body("Token is valid");
+		}
+		catch (Exception e) {
+			return ResponseEntity.status(401).body("Invalid or expired token");
+		}
+	}
+
 }

@@ -44,6 +44,9 @@ rebuild-all:
 	$(DOCKER_COMPOSE) -f $(DC_FULL) down -v --remove-orphans
 	@echo "Limpiando imágenes no utilizadas..."
 	$(DOCKER) system prune -f
+	@echo "Formateando código en las carpetas auth y api..."
+	@cd $(AUTH_DIR) && mvn spring-javaformat:apply
+	@cd $(API_DIR) && mvn spring-javaformat:apply
 	@echo "Reconstruyendo todos los servicios..."
 	$(DOCKER_COMPOSE) -f $(DC_FULL) build --no-cache
 	@echo "Iniciando servicios con configuración limpia..."

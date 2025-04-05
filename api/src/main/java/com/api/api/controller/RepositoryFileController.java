@@ -46,7 +46,7 @@ public class RepositoryFileController {
 			return ResponseEntity.ok(Map.of("message", "Repository scanned successfully", "filesFound", files.size()));
 		}
 		catch (Exception e) {
-			return ResponseEntity.badRequest().body("Error: " + e.getMessage());
+			return ResponseEntity.badRequest().body("An error occurred while processing your request.");
 		}
 	}
 

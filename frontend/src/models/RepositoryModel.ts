@@ -1,5 +1,9 @@
 import { IRepository } from "../types/interfaces";
 
+/**
+ * Modelo que representa un repositorio de GitHub.
+ * Implementa la interfaz IRepository.
+ */
 class RepositoryModel implements IRepository {
 	id: number;
 	name: string;
@@ -30,6 +34,12 @@ class RepositoryModel implements IRepository {
 		this.visibility = data.visibility;
 	}
 
+	/**
+	 * Crea una instancia de RepositoryModel a partir de datos crudos.
+	 * 
+	 * @param data - Datos del repositorio desde la API
+	 * @returns Una nueva instancia de RepositoryModel
+	 */
 	static fromData(data: IRepository | any): IRepository {
 		return new RepositoryModel({
 			id: data.id,

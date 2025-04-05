@@ -3,6 +3,10 @@ const STORAGE_KEYS = {
 	USER_PREFERENCES: "userPreferences",
 };
 
+/**
+ * Servicio para gestionar el almacenamiento local del navegador.
+ * Proporciona métodos para guardar, recuperar y eliminar datos persistentes.
+ */
 class StorageService {
 	//JWT Token
 	static getToken = (): string | null => {

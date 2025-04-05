@@ -5,15 +5,20 @@ import lombok.Data;
 @Data
 public class Preferences {
 
-    private Theme theme = Theme.SYSTEM;
-    private Language language = Language.ENGLISH;
+	private Theme theme = Theme.SYSTEM;
+
+	private Language language = Language.ENGLISH;
 
 }
 
-enum Language{
-    ENGLISH, SPANISH
+enum Language {
+
+	ENGLISH, SPANISH
+
 }
 
-enum Theme{
-    LIGHT,DARK,SYSTEM
+enum Theme {
+
+	LIGHT, DARK, SYSTEM
+
 }

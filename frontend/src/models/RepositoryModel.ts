@@ -36,7 +36,7 @@ class RepositoryModel implements IRepository {
 
 	/**
 	 * Crea una instancia de RepositoryModel a partir de datos crudos.
-	 * 
+	 *
 	 * @param data - Datos del repositorio desde la API
 	 * @returns Una nueva instancia de RepositoryModel
 	 */

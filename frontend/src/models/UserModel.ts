@@ -42,7 +42,7 @@ class UserModel implements IUser {
 	/**
 	 * Crea una instancia de UserModel a partir de datos crudos.
 	 * Proporciona valores predeterminados para campos faltantes.
-	 * 
+	 *
 	 * @param data - Datos del usuario desde la API
 	 * @returns Una nueva instancia de UserModel
 	 * @throws Error si los datos son nulos o indefinidos

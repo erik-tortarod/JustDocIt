@@ -9,10 +9,9 @@ import StorageService from "./StorageService";
  * Proporciona métodos para gestionar autenticación y obtención de datos.
  */
 class ApiService {
-
 	/**
 	 * Obtiene un token JWT desde el servidor utilizando las credenciales del usuario.
-	 * 
+	 *
 	 * @param userId - ID único del usuario en GitHub
 	 * @param accessToken - Token de acceso proporcionado por GitHub OAuth
 	 * @returns Una promesa que resuelve al token JWT generado por el servidor
@@ -43,7 +42,7 @@ class ApiService {
 	/**
 	 * Obtiene los datos del usuario autenticado desde el servidor.
 	 * Requiere que el token JWT esté almacenado.
-	 * 
+	 *
 	 * @returns Una promesa que resuelve a los datos del usuario
 	 * @throws Error si no hay token o si la solicitud falla
 	 */

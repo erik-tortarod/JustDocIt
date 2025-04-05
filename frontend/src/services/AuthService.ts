@@ -7,12 +7,11 @@ import StorageService from "./StorageService";
  * Maneja el flujo de autenticación de OAuth, almacenamiento de tokens y cierre de sesión.
  */
 class AuthService {
-
 	/**
 	 * Procesa los parámetros de URL tras la redirección desde GitHub OAuth.
 	 * Si encuentra parámetros válidos, obtiene un token JWT y lo almacena.
 	 * Si no hay parámetros, verifica si existe un token almacenado previamente.
-	 * 
+	 *
 	 * @returns Objeto que indica si el proceso fue exitoso y un mensaje de error opcional
 	 */
 	static async processUrlParams(): Promise<{
@@ -58,7 +57,7 @@ class AuthService {
 
 	/**
 	 * Verifica si el usuario está autenticado.
-	 * 
+	 *
 	 * @returns true si existe un token JWT almacenado, false en caso contrario
 	 */
 	static isAuthenticated(): boolean {

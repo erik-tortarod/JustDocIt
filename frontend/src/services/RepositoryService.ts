@@ -6,11 +6,10 @@ import StorageService from "./StorageService";
  * Proporciona métodos para obtener y manipular información de repositorios.
  */
 class RepositoryService {
-
 	/**
 	 * Obtiene la lista de repositorios del usuario autenticado.
 	 * Requiere que el token JWT esté almacenado.
-	 * 
+	 *
 	 * @returns Una promesa que resuelve a la lista de repositorios del usuario
 	 * @throws Error si no hay token o si la solicitud falla
 	 */

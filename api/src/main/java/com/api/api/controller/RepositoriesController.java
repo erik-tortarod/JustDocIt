@@ -16,6 +16,7 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.crypto.SecretKey;
 import java.util.Map;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -170,5 +171,28 @@ public class RepositoriesController {
 		}
 	}
 
+	@GetMapping("/user-repositories")
+	public ResponseEntity<?> getUserRepositories(@RequestHeader("Authorization") String authHeader) {
+		if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+			return ResponseEntity.badRequest().body("Invalid Authorization header format. Expected 'Bearer <token>'");
+		}
+
+		String token = authHeader.substring(7); // Remove "Bearer " prefix
+		SecretKey secretKey = jwtUtil.getSecretKey1(); // Use the first secret key for
+														// validation
+
+		try {
+			// Validate token
+			Map<String, Object> claims = JwtUtil.validateToken(token, secretKey);
+
+			// Fetch repositories from the database
+			List<Repository> repositories = repositoryService.getAllRepositories();
+
+			return ResponseEntity.ok(repositories);
+		}
+		catch (Exception e) {
+			return ResponseEntity.status(401).body("Invalid or expired token");
+		}
+	}
 
 }

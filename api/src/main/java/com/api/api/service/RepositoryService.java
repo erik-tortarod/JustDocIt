@@ -5,6 +5,8 @@ import com.api.api.repository.RepositoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class RepositoryService {
 
@@ -17,6 +19,10 @@ public class RepositoryService {
 
 	public Repository findByGithubId(String githubId) {
 		return repositoryRepository.findByGithubId(githubId);
+	}
+
+	public List<Repository> getAllRepositories() {
+		return repositoryRepository.findAll();
 	}
 
 }

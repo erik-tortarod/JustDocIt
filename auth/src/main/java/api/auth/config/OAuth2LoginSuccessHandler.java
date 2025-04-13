@@ -14,6 +14,7 @@ import org.springframework.security.oauth2.client.authentication.OAuth2Authentic
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.io.IOException;
 import java.util.logging.Logger;
@@ -31,6 +32,9 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 
 	@Autowired
 	private EncryptionService encryptionService;
+
+	@Value("${frontend.url}")
+	private String frontendUrl;
 
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -59,7 +63,7 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 				oAuth2User.getAttributes(), accessToken);
 
 		// Redirect to the frontend with user ID and access token as parameters
-		String redirectUrl = String.format("http://localhost:5173/dashboard?userId=%s&accessToken=%s", user.getId(),
+		String redirectUrl = String.format("%s/dashboard?userId=%s&accessToken=%s", frontendUrl, user.getId(),
 				encryptionService.encrypt(accessToken));
 
 		LOGGER.info("Redirecting to: " + redirectUrl);

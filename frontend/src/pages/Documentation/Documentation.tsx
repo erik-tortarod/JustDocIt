@@ -4,26 +4,24 @@ import DocumentationService from "../../services/DocumentationService";
 import { ICodeDocumentation } from "../../types/interfaces";
 
 function Documentation() {
-   const { id } = useParams();
+	const { id } = useParams();
 
-   const [codeDocumenation, setCodeDocumentation] = useState<
-      ICodeDocumentation[]
-   >([]);
+	const [codeDocumenation, setCodeDocumentation] = useState<
+		ICodeDocumentation[]
+	>([]);
 
-   useEffect(() => {
-      const getDocumentation = async () => {
-         const documentation = await DocumentationService.getRepository(id!);
-         setCodeDocumentation(documentation);
-      };
+	useEffect(() => {
+		const getDocumentation = async () => {
+			const documentation = await DocumentationService.getRepository(id!);
+			setCodeDocumentation(documentation);
+		};
 
-      getDocumentation();
-   }, []);
+		getDocumentation();
+	}, []);
 
-   return (
-      <pre className="w-screen">
-         {JSON.stringify(codeDocumenation, null, 2)}
-      </pre>
-   );
+	return (
+		<pre className="w-screen">{JSON.stringify(codeDocumenation, null, 2)}</pre>
+	);
 }
 
 export default Documentation;

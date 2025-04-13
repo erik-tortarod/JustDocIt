@@ -20,6 +20,8 @@ class RepositoryService {
 			throw new Error(`No authentication token`);
 		}
 
+		console.log("Sending token:", token); // Debug log
+
 		const response = await fetch(API_ROUTES.DOCS.REPOSITORIES, {
 			headers: {
 				Authorization: `Bearer ${token}`,
@@ -30,6 +32,56 @@ class RepositoryService {
 			throw new Error(
 				`Error fetching the user repositories ${response.status}`,
 			);
+		}
+
+		return await response.json();
+	}
+
+	static async addRepository(githubRepoId: number): Promise<any> {
+		const token = StorageService.getToken();
+
+		if (!token) {
+			throw new Error(`No authentication token`);
+		}
+
+		const response = await fetch(API_ROUTES.DOCS.ADD_REPOSITORY, {
+			method: "POST",
+			headers: {
+				Authorization: `Bearer ${token}`,
+				"Content-Type": "application/x-www-form-urlencoded",
+			},
+			body: new URLSearchParams({
+				githubRepoId: String(githubRepoId),
+			}),
+		});
+
+		if (!response.ok) {
+			throw new Error(`
+				Error adding the repositorie to the dashboard ${response.status}	
+			`);
+		}
+
+		return await response.json();
+	}
+
+	static async getAddedRepositories(): Promise<any> {
+		const token = StorageService.getToken();
+
+		if (!token) {
+			throw new Error(`No authentication token`);
+		}
+
+		const response = await fetch(API_ROUTES.DOCS.LIST_REPOSITORIES, {
+			method: "GET",
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
+
+		if (!response.ok) {
+			throw new Error(`
+				Error listing the user added repositories	
+			`);
 		}
 
 		return await response.json();

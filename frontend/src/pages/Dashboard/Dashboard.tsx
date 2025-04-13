@@ -7,11 +7,19 @@ import AuthService from "../../services/AuthService";
 import StorageService from "../../services/StorageService";
 import RepositoryService from "../../services/RepositoryService";
 
+//COMPONENTS
+import RepositorieList from "./RepositorieList";
+
+//INTERFACES
+import { IRepository } from "../../types/interfaces";
+import AddedRepositories from "./AddedRepositories";
+
 function Dashboard() {
 	const [loading, setLoading] = useState<boolean>(true);
 	const [error, setError] = useState<string | undefined>(undefined);
 	const [userData, setUserData] = useState<any>(null);
-	const [userRepositories, setUserRepositores] = useState<any>();
+	const [userRepositories, setUserRepositores] = useState<IRepository[]>([]);
+	const [addedRepositories, setAddedRepositories] = useState<IRepository[]>([]);
 
 	useEffect(() => {
 		const initializeDashboard = async () => {
@@ -45,7 +53,14 @@ function Dashboard() {
 			setUserRepositores(repositories);
 		};
 
-		initializeDashboard().then(() => getUserRepositories());
+		const getAddedRepositories = async () => {
+			const repositories = await RepositoryService.getAddedRepositories();
+			setAddedRepositories(repositories);
+		};
+
+		initializeDashboard()
+			.then(() => getUserRepositories())
+			.then(() => getAddedRepositories());
 	}, []);
 
 	if (loading) {
@@ -68,7 +83,7 @@ function Dashboard() {
 				<h2>Datos del Usuario</h2>
 				<ul>
 					<li>
-						<img src={userData.avatarUrl} alt="" />
+						<img src={userData.avatarUrl} alt="" className="w-10" />
 					</li>
 					<li>
 						<strong>Email:</strong> {userData?.email}
@@ -80,17 +95,11 @@ function Dashboard() {
 			</section>
 			<section>
 				<h2>Repositorios</h2>
-				<ul>
-					{userRepositories?.map((repo: any) => (
-						<li key={repo.id}>
-							<p>
-								<strong>{repo.name}</strong> -{" "}
-								{repo.description || "Sin descripción"}
-								{repo.private && "🔒"}
-							</p>
-						</li>
-					))}
-				</ul>
+				<RepositorieList userRepositories={userRepositories} />
+			</section>
+			<section>
+				<h2>Lista de Proyectos</h2>
+				<AddedRepositories addedRepositories={addedRepositories} />
 			</section>
 		</div>
 	);

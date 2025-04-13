@@ -11,5 +11,6 @@ export const API_ROUTES = Object.freeze({
 		REPOSITORIES: `${DOCS_BASE_URL}/api/github-repositories`,
 		ADD_REPOSITORY: `${DOCS_BASE_URL}/api/add-repository`,
 		LIST_REPOSITORIES: `${DOCS_BASE_URL}/api/user-repositories`,
+		SCAN_REPOSITORIE_BY_LANGUAGE: `${DOCS_BASE_URL}/api/documentation/scan`,
 	},
 });

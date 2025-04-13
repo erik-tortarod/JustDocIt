@@ -41,7 +41,7 @@ class RepositoryService {
 				StorageService.getUserId()!,
 				StorageService.getAccessToken()!,
 			);
-			this.getAddedRepositories();
+			return this.getAddedRepositories();
 		}
 	}
 

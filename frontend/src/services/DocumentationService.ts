@@ -70,7 +70,7 @@ class DocumentationService {
 				StorageService.getUserId()!,
 				StorageService.getAccessToken()!,
 			);
-			this.getRepository(id);
+			return this.getRepository(id);
 		}
 	}
 }

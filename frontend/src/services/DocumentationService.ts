@@ -3,38 +3,43 @@ import ApiService from "./ApiService";
 import StorageService from "./StorageService";
 
 class DocumentationService {
+	static async scanRepositoryByLanguage(
+		language: string,
+		repositoryId: string,
+	): Promise<any> {
+		try {
+			const token = StorageService.getToken();
 
-   static async scanRepositoryByLanguage(language: string, repositoryId: string): Promise<any> {
+			if (!token) {
+				throw new Error(`No authentication token`);
+			}
 
-      try {
-         const token = StorageService.getToken();
+			const url =
+				API_ROUTES.DOCS.SCAN_REPOSITORIE_BY_LANGUAGE +
+				`?repositoryId=${repositoryId}&language=${language}`;
 
-         if (!token) {
-            throw new Error(`No authentication token`);
-         }
+			const response = await fetch(url, {
+				method: "POST",
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			});
 
-         const url = API_ROUTES.DOCS.SCAN_REPOSITORIE_BY_LANGUAGE + `?repositoryId=${repositoryId}&language=${language}`;
-
-         const response = await fetch(url, {
-            method: "POST",
-            headers: {
-               Authorization: `Bearer ${token}`,
-            },
-         });
-
-         if (!response.ok) {
-            throw new Error(`
+			if (!response.ok) {
+				throw new Error(`
                Error scanning the repositorie by language ${response.status}	
             `);
-         }
+			}
 
-         return await response.json();
-      } catch (error) {
-         await ApiService.getTokenFromCredentials(StorageService.getUserId()!, StorageService.getAccessToken()!);
-         this.scanRepositoryByLanguage(language, repositoryId);
-      }
-
-   }
+			return await response.json();
+		} catch (error) {
+			await ApiService.getTokenFromCredentials(
+				StorageService.getUserId()!,
+				StorageService.getAccessToken()!,
+			);
+			this.scanRepositoryByLanguage(language, repositoryId);
+		}
+	}
 }
 
 export default DocumentationService;

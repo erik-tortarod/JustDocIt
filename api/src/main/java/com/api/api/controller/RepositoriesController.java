@@ -17,10 +17,16 @@ import org.springframework.web.client.RestTemplate;
 import javax.crypto.SecretKey;
 import java.util.Map;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory; // Add this import
 
 @RestController
 @RequestMapping("/api")
 public class RepositoriesController {
+
+	private static final Logger logger = LoggerFactory.getLogger(RepositoriesController.class); // Add
+																								// this
+																								// line
 
 	@Autowired
 	private JwtUtil jwtUtil;
@@ -184,6 +190,7 @@ public class RepositoriesController {
 		try {
 			// Validate token
 			Map<String, Object> claims = JwtUtil.validateToken(token, secretKey);
+			logger.info("Token validated successfully. Claims: {}", claims); // Debug log
 
 			// Fetch repositories from the database
 			List<Repository> repositories = repositoryService.getAllRepositories();
@@ -191,6 +198,7 @@ public class RepositoriesController {
 			return ResponseEntity.ok(repositories);
 		}
 		catch (Exception e) {
+			logger.error("Token validation failed: {}", e.getMessage()); // Debug log
 			return ResponseEntity.status(401).body("Invalid or expired token");
 		}
 	}

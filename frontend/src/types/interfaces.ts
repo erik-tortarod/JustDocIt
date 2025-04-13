@@ -16,6 +16,7 @@ interface IPreferences {
 
 export interface IRepository {
 	id: number;
+	githubId: string;
 	name: string;
 	private: boolean;
 	htmlUrl: string;

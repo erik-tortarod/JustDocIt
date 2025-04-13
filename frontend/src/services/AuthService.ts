@@ -31,6 +31,8 @@ class AuthService {
 				);
 
 				StorageService.setToken(jwtToken);
+				StorageService.setUserId(userId);
+				StorageService.setAccessToken(accessToken);
 
 				window.history.replaceState({}, document.title, "/dashboard");
 

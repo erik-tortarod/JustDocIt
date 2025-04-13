@@ -1,6 +1,8 @@
 const STORAGE_KEYS = {
 	JWT_TOKEN: "jwtToken",
 	USER_PREFERENCES: "userPreferences",
+	USER_ID: "userId",
+	ACCESS_TOKEN: "accessToken",
 };
 
 /**
@@ -8,7 +10,6 @@ const STORAGE_KEYS = {
  * Proporciona métodos para guardar, recuperar y eliminar datos persistentes.
  */
 class StorageService {
-	//JWT Token
 	static getToken = (): string | null => {
 		return localStorage.getItem(STORAGE_KEYS.JWT_TOKEN);
 	};
@@ -17,6 +18,28 @@ class StorageService {
 	};
 	static removeToken = (): void => {
 		localStorage.removeItem(STORAGE_KEYS.JWT_TOKEN);
+	};
+
+	//User ID
+	static getUserId = (): string | null => {
+		return localStorage.getItem(STORAGE_KEYS.USER_ID);
+	};
+	static setUserId = (id: string): void => {
+		localStorage.setItem(STORAGE_KEYS.USER_ID, id);
+	};
+	static removeUserId = (): void => {
+		localStorage.removeItem(STORAGE_KEYS.USER_ID);
+	};
+
+	//Access Token
+	static getAccessToken = (): string | null => {
+		return localStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN);
+	};
+	static setAccessToken = (token: string): void => {
+		localStorage.setItem(STORAGE_KEYS.ACCESS_TOKEN, token);
+	};
+	static removeAccessToken = (): void => {
+		localStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN);
 	};
 
 	//User Preferences

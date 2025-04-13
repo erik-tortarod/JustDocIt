@@ -1,5 +1,8 @@
 import { IRepository } from "../../types/interfaces";
 
+//COMPONENTS
+import AddedRepositorie from "./AddedRepositorie";
+
 function AddedRepositories({
 	addedRepositories,
 }: {
@@ -8,11 +11,7 @@ function AddedRepositories({
 	return (
 		<section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
 			{addedRepositories.map((repo) => (
-				<div key={repo.id}>
-					<h2>{repo.name}</h2>
-					<p>{repo.description || "No description provided"}</p>
-					<p>Url: {repo.htmlUrl}</p>
-				</div>
+				<AddedRepositorie key={repo.id} repo={repo} />
 			))}
 		</section>
 	);

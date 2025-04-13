@@ -1,0 +1,52 @@
+# MongoDB Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+   name: mongodb
+   namespace: my-app
+spec:
+   selector:
+      matchLabels:
+         app: mongodb
+   template:
+      metadata:
+         labels:
+            app: mongodb
+      spec:
+         containers:
+            - name: mongodb
+              image: mongo
+              ports:
+                 - containerPort: 27017
+              env:
+                 - name: MONGO_INITDB_ROOT_USERNAME
+                   valueFrom:
+                      secretKeyRef:
+                         name: mongodb-secret
+                         key: MONGO_INITDB_ROOT_USERNAME
+                 - name: MONGO_INITDB_ROOT_PASSWORD
+                   valueFrom:
+                      secretKeyRef:
+                         name: mongodb-secret
+                         key: MONGO_INITDB_ROOT_PASSWORD
+              volumeMounts:
+                 - name: mongodb-data
+                   mountPath: /data/db
+         volumes:
+            - name: mongodb-data
+              persistentVolumeClaim:
+                 claimName: mongodb-pvc
+---
+# MongoDB Service
+apiVersion: v1
+kind: Service
+metadata:
+   name: mongodb
+   namespace: my-app
+spec:
+   selector:
+      app: mongodb
+   ports:
+      - port: 27017
+        targetPort: 27017
+   type: ClusterIP

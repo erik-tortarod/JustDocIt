@@ -1,0 +1,42 @@
+# Frontend Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+   name: frontend
+   namespace: my-app
+spec:
+   selector:
+      matchLabels:
+         app: frontend
+   template:
+      metadata:
+         labels:
+            app: frontend
+      spec:
+         containers:
+            - name: frontend
+              image: eriktortarod/docker-frontend:latest
+              ports:
+                 - containerPort: 5173
+              env:
+                 # URL para auth (puerto 8080)
+                 - name: VITE_API_URL
+                   value: "http://MINIKUBE_IP:30080"
+                 # URL para api (puerto 8082)
+                 - name: VITE_DOCS_URL
+                   value: "http://MINIKUBE_IP:30082"
+---
+# Frontend Service
+apiVersion: v1
+kind: Service
+metadata:
+   name: frontend
+   namespace: my-app
+spec:
+   selector:
+      app: frontend
+   ports:
+      - port: 5173
+        targetPort: 5173
+        nodePort: 30173
+   type: NodePort

@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.Arrays;
 
@@ -14,11 +15,14 @@ import java.util.Arrays;
 @EnableWebSecurity
 public class SecurityConfig {
 
+	@Value("${frontend.url}")
+	private String frontendUrl;
+
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http.csrf(csrf -> csrf.disable()).cors(cors -> cors.configurationSource(request -> {
 			CorsConfiguration configuration = new CorsConfiguration();
-			configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173"));
+			configuration.setAllowedOrigins(Arrays.asList(frontendUrl));
 			configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
 			configuration.setAllowedHeaders(Arrays.asList("*"));
 			configuration.setAllowCredentials(true);

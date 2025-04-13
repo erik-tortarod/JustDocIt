@@ -18,9 +18,9 @@ export interface IRepository {
 	id: number;
 	name: string;
 	private: boolean;
-	html_url: string;
+	htmlUrl: string;
 	description: string | null;
 	size: number;
-	default_branch: string;
+	defaultBranch: string;
 	visibility: string;
 }

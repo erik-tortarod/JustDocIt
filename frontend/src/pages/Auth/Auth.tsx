@@ -1,15 +1,12 @@
-import { API_ROUTES } from "../../config/api-routes";
+//COMPONENTS
+import HeaderHero from "../../components/layout/HeaderHero/HeaderHero";
+import Hero from "./Hero";
 
 function Auth() {
-	const userLogin = () => {
-		window.location.href = `${API_ROUTES.AUTH.LOGIN}`;
-	};
-
 	return (
 		<div>
-			<button onClick={userLogin} className="btn btn-primary">
-				Login
-			</button>
+			<HeaderHero />
+			<Hero />
 		</div>
 	);
 }

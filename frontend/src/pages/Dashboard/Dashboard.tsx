@@ -9,10 +9,11 @@ import RepositoryService from "../../services/RepositoryService";
 
 //COMPONENTS
 import RepositorieList from "./RepositorieList";
+import AddedRepositories from "./AddedRepositories";
+import ModalBtn from "../../components/common/ModalBtn";
 
 //INTERFACES
 import { IRepository } from "../../types/interfaces";
-import AddedRepositories from "./AddedRepositories";
 
 function Dashboard() {
 	const [loading, setLoading] = useState<boolean>(true);
@@ -95,7 +96,12 @@ function Dashboard() {
 			</section>
 			<section>
 				<h2>Repositorios</h2>
-				<RepositorieList userRepositories={userRepositories} />
+				<ModalBtn
+					btnText="Agregar proyecto nuevo"
+					content={<RepositorieList userRepositories={userRepositories} />}
+					id="modal"
+					title="Selecciona un repositorio"
+				/>
 			</section>
 			<section>
 				<h2>Lista de Proyectos</h2>

@@ -3,9 +3,9 @@ function SelectBtn({
 	children,
 	setState,
 }: {
-	title: string;
+	title: React.ReactNode;
 	children: any[];
-	setState: Function;
+	setState?: Function;
 }) {
 	return (
 		<details className="dropdown">
@@ -15,7 +15,7 @@ function SelectBtn({
 					<li
 						key={index}
 						className="hover:bg-info"
-						onClick={() => setState(child)}
+						onClick={() => setState?.(child)}
 					>
 						{child}
 					</li>

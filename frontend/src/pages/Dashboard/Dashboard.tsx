@@ -12,6 +12,7 @@ import RepositorieList from "./RepositorieList";
 import AddedRepositories from "./AddedRepositories";
 import ModalBtn from "../../components/common/ModalBtn";
 import Sidebar from "../../components/layout/Sidebar/Sidebar";
+import DashboardStats from "./DashboardStats";
 
 //INTERFACES
 import { IRepository } from "../../types/interfaces";
@@ -88,7 +89,7 @@ function Dashboard() {
 	return (
 		<div className="grid grid-cols-5 w-screen">
 			<Sidebar />
-			<div className="col-start-2 col-span-4 ps-16">
+			<div className="col-start-2 col-span-4 ps-16 pt-8 pe-8">
 				<section className="flex justify-between items-center">
 					<h1>Dashboard</h1>
 					<ModalBtn
@@ -98,6 +99,23 @@ function Dashboard() {
 						title="Selecciona un repositorio"
 					/>
 				</section>
+				<div className="grid grid-cols-3 gap-6 pe-8 py-8">
+					<DashboardStats
+						amount={7}
+						stat="2 en el último mes"
+						title="Proyectos Activos"
+					/>
+					<DashboardStats
+						amount={7}
+						stat="2 en el último mes"
+						title="Proyectos Activos"
+					/>
+					<DashboardStats
+						amount={7}
+						stat="2 en el último mes"
+						title="Proyectos Activos"
+					/>
+				</div>
 				<section>
 					<h2>Lista de Proyectos</h2>
 					<AddedRepositories addedRepositories={addedRepositories} />

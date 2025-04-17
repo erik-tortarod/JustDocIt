@@ -11,6 +11,7 @@ import RepositoryService from "../../services/RepositoryService";
 import RepositorieList from "./RepositorieList";
 import AddedRepositories from "./AddedRepositories";
 import ModalBtn from "../../components/common/ModalBtn";
+import Sidebar from "../../components/layout/Sidebar/Sidebar";
 
 //INTERFACES
 import { IRepository } from "../../types/interfaces";
@@ -62,6 +63,13 @@ function Dashboard() {
 		initializeDashboard()
 			.then(() => getUserRepositories())
 			.then(() => getAddedRepositories());
+
+		// Configurar actualización automática de addedRepositories
+		const intervalId = setInterval(() => {
+			getAddedRepositories();
+		}, 10000); // Actualizar cada 10 segundos
+
+		return () => clearInterval(intervalId); // Limpiar el intervalo al desmontar
 	}, []);
 
 	if (loading) {
@@ -78,35 +86,23 @@ function Dashboard() {
 	}
 
 	return (
-		<div>
-			<h1>Dashboard</h1>
-			<section>
-				<h2>Datos del Usuario</h2>
-				<ul>
-					<li>
-						<img src={userData.avatarUrl} alt="" className="w-10" />
-					</li>
-					<li>
-						<strong>Email:</strong> {userData?.email}
-					</li>
-					<li>
-						<strong>Username:</strong> {userData?.username}
-					</li>
-				</ul>
-			</section>
-			<section>
-				<h2>Repositorios</h2>
-				<ModalBtn
-					btnText="Agregar proyecto nuevo"
-					content={<RepositorieList userRepositories={userRepositories} />}
-					id="modal"
-					title="Selecciona un repositorio"
-				/>
-			</section>
-			<section>
-				<h2>Lista de Proyectos</h2>
-				<AddedRepositories addedRepositories={addedRepositories} />
-			</section>
+		<div className="grid grid-cols-5 w-screen">
+         <Sidebar />
+			<div className="col-start-2 col-span-4">
+            <section className="flex justify-between items-center">
+            <h1>Dashboard</h1>
+               <ModalBtn
+                  btnText="Agregar proyecto nuevo"
+                  content={<RepositorieList userRepositories={userRepositories} />}
+                  id="modal"
+                  title="Selecciona un repositorio"
+               />
+            </section>
+            <section>
+               <h2>Lista de Proyectos</h2>
+               <AddedRepositories addedRepositories={addedRepositories} />
+            </section>
+         </div>
 		</div>
 	);
 }

@@ -103,7 +103,6 @@ function Dashboard() {
 					<AddedRepositories addedRepositories={addedRepositories} />
 				</section>
 			</div>
-
 		</div>
 	);
 }

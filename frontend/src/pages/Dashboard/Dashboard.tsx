@@ -87,22 +87,23 @@ function Dashboard() {
 
 	return (
 		<div className="grid grid-cols-5 w-screen">
-         <Sidebar />
-			<div className="col-start-2 col-span-4">
-            <section className="flex justify-between items-center">
-            <h1>Dashboard</h1>
-               <ModalBtn
-                  btnText="Agregar proyecto nuevo"
-                  content={<RepositorieList userRepositories={userRepositories} />}
-                  id="modal"
-                  title="Selecciona un repositorio"
-               />
-            </section>
-            <section>
-               <h2>Lista de Proyectos</h2>
-               <AddedRepositories addedRepositories={addedRepositories} />
-            </section>
-         </div>
+			<Sidebar />
+			<div className="col-start-2 col-span-4 ps-16">
+				<section className="flex justify-between items-center">
+					<h1>Dashboard</h1>
+					<ModalBtn
+						btnText="Agregar proyecto nuevo"
+						content={<RepositorieList userRepositories={userRepositories} />}
+						id="modal"
+						title="Selecciona un repositorio"
+					/>
+				</section>
+				<section>
+					<h2>Lista de Proyectos</h2>
+					<AddedRepositories addedRepositories={addedRepositories} />
+				</section>
+			</div>
+
 		</div>
 	);
 }

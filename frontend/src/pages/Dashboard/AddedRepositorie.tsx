@@ -1,8 +1,17 @@
+//DEPENDENCIES
 import { useEffect, useState } from "react";
-import SelectBtn from "../../components/common/SelectBtn";
-import { IRepository } from "../../types/interfaces";
-import DocumentationService from "../../services/DocumentationService";
 import { Link } from "react-router-dom";
+
+//COMPONENTS
+import SelectBtn from "../../components/common/SelectBtn";
+
+//INTERFACES
+import { IRepository } from "../../types/interfaces";
+
+//SERVICES
+import DocumentationService from "../../services/DocumentationService";
+
+//ICONS
 
 function AddedRepositorie({ repo }: { repo: IRepository }) {
 	const availableLanguages = ["TYPESCRIPT"];

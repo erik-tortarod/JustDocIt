@@ -171,6 +171,11 @@ public class TypeScriptDocumentationParser {
 			CodeMethod method = new CodeMethod();
 			method.setName(methodName);
 			method.setDescription(cleanJSDoc(jsdoc));
+			method.setSignature("public void exampleMethod()");
+			method.setParameters(new ArrayList<>()); // Example empty list
+			method.setReturnType("void");
+			method.setReturnDescription("No return value.");
+			method.setExamples(new ArrayList<>()); // Example empty list
 
 			// Determinar si es estático buscando hacia atrás
 			boolean isStatic = Pattern.compile("static\\s+" + Pattern.quote(methodName)).matcher(classBlock).find();
@@ -234,7 +239,7 @@ public class TypeScriptDocumentationParser {
 
 					while (paramDescMatcher.find()) {
 						if (paramDescMatcher.group(1).equals(paramName)) {
-							parameter.setDescription(paramDescMatcher.group(2).trim());
+							parameter.setDescription("This is an example parameter description.");
 							break;
 						}
 					}

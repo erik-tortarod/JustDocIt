@@ -90,7 +90,7 @@ public class RepositoriesController {
 	@GetMapping("/github-repositories")
 	public ResponseEntity<?> getGithubRepositories(@RequestHeader("Authorization") String authHeader) {
 		if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-			return ResponseEntity.badRequest().body("Invalid Authorization header format. Expected 'Bearer <token>'");
+			return ResponseEntity.status(401).body("Invalid Authorization header format. Expected 'Bearer <token>'");
 		}
 
 		String token = authHeader.substring(7); // Remove "Bearer " prefix
@@ -98,13 +98,15 @@ public class RepositoriesController {
 														// validation
 
 		try {
+			// Validate the token and extract claims
 			Map<String, Object> claims = JwtUtil.validateToken(token, secretKey);
 			String encryptedAccessToken = (String) claims.get("accessToken");
 
 			if (encryptedAccessToken == null) {
-				return ResponseEntity.badRequest().body("No accessToken found in the token claims");
+				return ResponseEntity.status(401).body("No accessToken found in the token claims");
 			}
 
+			// Decrypt the GitHub access token
 			String decryptedAccessToken = encryptionService.decrypt(encryptedAccessToken);
 
 			// Call GitHub API to fetch repositories
@@ -119,6 +121,7 @@ public class RepositoriesController {
 			return ResponseEntity.ok(response.getBody());
 		}
 		catch (Exception e) {
+			logger.error("Error validating token or fetching repositories: {}", e.getMessage());
 			return ResponseEntity.status(401).body("Invalid or expired token");
 		}
 	}
@@ -136,6 +139,7 @@ public class RepositoriesController {
 
 		try {
 			Map<String, Object> claims = JwtUtil.validateToken(token, secretKey);
+			String userId = (String) claims.get("id"); // Extract userId from token
 			String encryptedAccessToken = (String) claims.get("accessToken");
 
 			if (encryptedAccessToken == null) {
@@ -167,6 +171,7 @@ public class RepositoriesController {
 			repository.setPrivate((Boolean) repoData.get("private"));
 			repository.setOwner(((Map<String, Object>) repoData.get("owner")).get("login").toString());
 			repository.setHtmlUrl((String) repoData.get("html_url"));
+			repository.setUserId(userId); // Associate the repository with the user
 
 			Repository savedRepository = repositoryService.saveRepository(repository);
 

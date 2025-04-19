@@ -32,18 +32,32 @@ public class JwtUtil {
 
 	public static Map<String, Object> validateToken(String token, SecretKey secretKey) {
 		try {
+			return Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody();
+		}
+		catch (Exception e) {
+			logger.error("Error validating token: {}", e.getMessage());
+			throw new RuntimeException("Invalid or expired token");
+		}
+	}
+
+	/**
+	 * Extracts the userId from the JWT token.
+	 * @param token the JWT token
+	 * @return the userId if present, null otherwise
+	 */
+	public String extractUserId(String token) {
+		try {
 			Map<String, Object> claims = Jwts.parserBuilder()
-				.setSigningKey(secretKey)
+				.setSigningKey(secretKey1) // Use secretKey1 for validation
 				.build()
 				.parseClaimsJws(token)
 				.getBody();
 
-			logger.info("Token successfully validated. Claims: {}", claims);
-			return claims;
+			return (String) claims.get("id"); // Extract the "id" claim
 		}
 		catch (Exception e) {
-			logger.error("Error validating token: {}", e.getMessage());
-			throw e;
+			logger.error("Error extracting userId from token: {}", e.getMessage());
+			return null;
 		}
 	}
 

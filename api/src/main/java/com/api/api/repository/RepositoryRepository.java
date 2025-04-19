@@ -1,11 +1,13 @@
 package com.api.api.repository;
 
-import com.api.api.model.Repository;
+import com.api.api.model.Repository; // Import the model class explicitly
 import org.springframework.data.mongodb.repository.MongoRepository;
+import java.util.List;
 
-@org.springframework.stereotype.Repository
 public interface RepositoryRepository extends MongoRepository<Repository, String> {
 
 	Repository findByGithubId(String githubId);
+
+	List<Repository> findByUserId(String userId); // Fetch repositories by userId
 
 }

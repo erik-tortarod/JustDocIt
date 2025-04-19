@@ -14,4 +14,9 @@ public interface CodeDocumentationRepository extends MongoRepository<CodeDocumen
 
 	CodeDocumentation findByRepositoryIdAndFilePath(String repositoryId, String filePath);
 
+	List<CodeDocumentation> findByRepositoryIdAndUserIdAndLanguage(String repositoryId, String userId,
+			Language language);
+
+	List<CodeDocumentation> findByRepositoryIdAndUserId(String repositoryId, String userId);
+
 }

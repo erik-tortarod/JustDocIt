@@ -112,7 +112,6 @@ function Dashboard() {
 							/>
 						}
 						id="modal"
-						overflow={true}
 					/>
 				</section>
 				<div className="grid grid-cols-3 gap-6 pe-8 py-8">

@@ -16,6 +16,10 @@ import DashboardStats from "./DashboardStats";
 
 //INTERFACES
 import { IRepository } from "../../types/interfaces";
+import { EEnvironment } from "../../types/enums";
+
+//MOCK
+import { mockRepositories } from "../../fixtures/mockData";
 
 function Dashboard() {
 	const [loading, setLoading] = useState<boolean>(true);
@@ -23,6 +27,8 @@ function Dashboard() {
 	const [userData, setUserData] = useState<any>(null);
 	const [userRepositories, setUserRepositores] = useState<IRepository[]>([]);
 	const [addedRepositories, setAddedRepositories] = useState<IRepository[]>([]);
+
+	const environment:EEnvironment= import.meta.env.VITE_ENVIROMENT;
 
 	useEffect(() => {
 		const initializeDashboard = async () => {
@@ -59,6 +65,9 @@ function Dashboard() {
 		const getAddedRepositories = async () => {
 			const repositories = await RepositoryService.getAddedRepositories();
 			setAddedRepositories(repositories);
+			if (environment === EEnvironment.DEV) {
+				setAddedRepositories((prev) => [...prev, ...mockRepositories]);
+			}
 		};
 
 		initializeDashboard()

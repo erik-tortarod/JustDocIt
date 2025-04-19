@@ -101,19 +101,14 @@ function Dashboard() {
 				</section>
 				<div className="grid grid-cols-3 gap-6 pe-8 py-8">
 					<DashboardStats
-						amount={7}
-						stat="2 en el último mes"
+						amount={addedRepositories.length}
+						stat={`↑ ${addedRepositories.length} repositorios desde el último mes`}
 						title="Proyectos Activos"
 					/>
 					<DashboardStats
-						amount={7}
-						stat="2 en el último mes"
-						title="Proyectos Activos"
-					/>
-					<DashboardStats
-						amount={7}
-						stat="2 en el último mes"
-						title="Proyectos Activos"
+						amount={0}
+						stat="Pendiente de implementación"
+						title="Visitas totales"
 					/>
 				</div>
 				<section>

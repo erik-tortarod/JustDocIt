@@ -13,7 +13,7 @@ function Sidebar() {
 					<img src={logo} alt="Logo" className="w-8 h-8 object-contain" />
 				</div>
 				<div className="flex items-center">
-					CodeDocs
+					JustDocIt
 					<span className="inline-flex items-center bg-gradient-to-r from-secondary to-primary text-white px-2 py-0.5 rounded-full text-[10px] font-semibold ml-2 uppercase tracking-wider">
 						<span className="w-1.5 h-1.5 bg-success rounded-full mr-1 animate-pulse"></span>
 						Online

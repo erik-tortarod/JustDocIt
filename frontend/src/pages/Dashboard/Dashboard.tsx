@@ -13,6 +13,7 @@ import AddedRepositories from "./AddedRepositories";
 import ModalBtn from "../../components/common/ModalBtn";
 import Sidebar from "../../components/layout/Sidebar/Sidebar";
 import DashboardStats from "./DashboardStats";
+import RepoModal from "./RepoModal";
 
 //INTERFACES
 import { IRepository } from "../../types/interfaces";
@@ -103,9 +104,9 @@ function Dashboard() {
 					<h1>Dashboard</h1>
 					<ModalBtn
 						btnText="Agregar proyecto nuevo"
-						content={<RepositorieList userRepositories={userRepositories} />}
+						content={<RepoModal content={<RepositorieList userRepositories={userRepositories} />}/>}
 						id="modal"
-						title="Selecciona un repositorio"
+						overflow={true}
 					/>
 				</section>
 				<div className="grid grid-cols-3 gap-6 pe-8 py-8">

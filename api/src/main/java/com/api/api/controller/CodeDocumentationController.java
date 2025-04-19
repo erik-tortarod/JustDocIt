@@ -52,6 +52,7 @@ public class CodeDocumentationController {
 		try {
 			// Validar token y extraer claims
 			Map<String, Object> claims = JwtUtil.validateToken(token, secretKey);
+			String userId = (String) claims.get("id"); // Extract userId from token
 			String encryptedAccessToken = (String) claims.get("accessToken");
 
 			if (encryptedAccessToken == null) {
@@ -64,6 +65,9 @@ public class CodeDocumentationController {
 			// Escanear repositorio
 			List<CodeDocumentation> docs = documentationService.scanRepositoryForDocumentation(repositoryId, language,
 					accessToken);
+
+			// Associate userId with each documentation entry
+			docs.forEach(doc -> doc.setUserId(userId));
 
 			return ResponseEntity.ok(Map.of("mensaje", "Escaneo de documentación completado exitosamente",
 					"documentosEncontrados", docs.size()));
@@ -89,15 +93,19 @@ public class CodeDocumentationController {
 		try {
 			// Solo validar token
 			String token = authHeader.substring(7);
-			JwtUtil.validateToken(token, jwtUtil.getSecretKey1());
+			Map<String, Object> claims = JwtUtil.validateToken(token, jwtUtil.getSecretKey1());
+			String userId = (String) claims.get("id"); // Extract userId from token
 
-			// Obtener documentación
+			// Filter documentation by userId
 			List<CodeDocumentation> docs;
 			if (language != null) {
-				docs = documentationService.getRepositoryDocumentation(repositoryId, language);
+				docs = documentationService.getRepositoryDocumentationByUser(repositoryId, userId, language);
 			}
 			else {
-				docs = documentationService.getRepositoryDocumentation(repositoryId);
+				docs = documentationService.getRepositoryDocumentationByUser(repositoryId, userId, null); // Pass
+																											// null
+																											// for
+																											// language
 			}
 
 			return ResponseEntity.ok(docs);

@@ -17,4 +17,16 @@ public class RepositoryFile {
 
 	private String content;
 
+	public void setRepositoryId(String repositoryId) {
+		this.repositoryId = repositoryId;
+	}
+
+	public void setLanguage(Language language) {
+		this.language = language;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
 }

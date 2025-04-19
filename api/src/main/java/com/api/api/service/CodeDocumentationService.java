@@ -223,4 +223,14 @@ public class CodeDocumentationService {
 		return documentationRepository.findByRepositoryIdAndFilePath(repositoryId, filePath);
 	}
 
+	public List<CodeDocumentation> getRepositoryDocumentationByUser(String repositoryId, String userId,
+			Language language) {
+		if (language != null) {
+			return documentationRepository.findByRepositoryIdAndUserIdAndLanguage(repositoryId, userId, language);
+		}
+		else {
+			return documentationRepository.findByRepositoryIdAndUserId(repositoryId, userId);
+		}
+	}
+
 }

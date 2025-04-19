@@ -22,6 +22,29 @@ public class CodeDocumentation {
 
 	private DocumentationContent content;
 
+	private String userId; // Add this field to associate documentation with a user
+
+	// Add missing setter methods
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public void setRepositoryId(String repositoryId) {
+		this.repositoryId = repositoryId;
+	}
+
+	public void setFilePath(String filePath) {
+		this.filePath = filePath;
+	}
+
+	public void setLanguage(Language language) {
+		this.language = language;
+	}
+
+	public void setContent(DocumentationContent content) {
+		this.content = content;
+	}
+
 	@Data
 	public static class DocumentationContent {
 
@@ -33,9 +56,22 @@ public class CodeDocumentation {
 
 		private List<CodeVariable> variables;
 
-		// Campos específicos para otros lenguajes se pueden añadir según sea necesario
-		// private List<...> modules; // Para lenguajes con módulos específicos
-		// private List<...> annotations; // Para lenguajes con anotaciones
+		// Add missing setter methods for nested classes
+		public void setClasses(List<CodeClass> classes) {
+			this.classes = classes;
+		}
+
+		public void setFunctions(List<CodeFunction> functions) {
+			this.functions = functions;
+		}
+
+		public void setInterfaces(List<CodeInterface> interfaces) {
+			this.interfaces = interfaces;
+		}
+
+		public void setVariables(List<CodeVariable> variables) {
+			this.variables = variables;
+		}
 
 	}
 
@@ -49,6 +85,23 @@ public class CodeDocumentation {
 		private List<CodeProperty> properties;
 
 		private List<CodeMethod> methods;
+
+		// Add missing setter methods
+		public void setName(String name) {
+			this.name = name;
+		}
+
+		public void setDescription(String description) {
+			this.description = description;
+		}
+
+		public void setProperties(List<CodeProperty> properties) {
+			this.properties = properties;
+		}
+
+		public void setMethods(List<CodeMethod> methods) {
+			this.methods = methods;
+		}
 
 	}
 
@@ -80,6 +133,35 @@ public class CodeDocumentation {
 
 		private List<String> examples;
 
+		// Add missing setter methods
+		public void setName(String name) {
+			this.name = name;
+		}
+
+		public void setSignature(String signature) {
+			this.signature = signature;
+		}
+
+		public void setDescription(String description) {
+			this.description = description;
+		}
+
+		public void setParameters(List<CodeParameter> parameters) {
+			this.parameters = parameters;
+		}
+
+		public void setReturnType(String returnType) {
+			this.returnType = returnType;
+		}
+
+		public void setReturnDescription(String returnDescription) {
+			this.returnDescription = returnDescription;
+		}
+
+		public void setExamples(List<String> examples) {
+			this.examples = examples;
+		}
+
 	}
 
 	@Data
@@ -90,6 +172,24 @@ public class CodeDocumentation {
 		private String type;
 
 		private String description;
+
+		// Add missing setter methods
+		public void setName(String name) {
+			this.name = name;
+		}
+
+		public void setType(String type) {
+			this.type = type;
+		}
+
+		public void setDescription(String description) {
+			this.description = description;
+		}
+
+		// Add missing getter methods
+		public String getDescription() {
+			return description;
+		}
 
 	}
 
@@ -110,6 +210,35 @@ public class CodeDocumentation {
 
 		private List<String> examples;
 
+		// Add missing setter methods
+		public void setName(String name) {
+			this.name = name;
+		}
+
+		public void setSignature(String signature) {
+			this.signature = signature;
+		}
+
+		public void setDescription(String description) {
+			this.description = description;
+		}
+
+		public void setParameters(List<CodeParameter> parameters) {
+			this.parameters = parameters;
+		}
+
+		public void setReturnType(String returnType) {
+			this.returnType = returnType;
+		}
+
+		public void setReturnDescription(String returnDescription) {
+			this.returnDescription = returnDescription;
+		}
+
+		public void setExamples(List<String> examples) {
+			this.examples = examples;
+		}
+
 	}
 
 	@Data
@@ -123,6 +252,23 @@ public class CodeDocumentation {
 
 		private List<CodeMethod> methods;
 
+		// Add missing setter methods
+		public void setName(String name) {
+			this.name = name;
+		}
+
+		public void setDescription(String description) {
+			this.description = description;
+		}
+
+		public void setProperties(List<CodeProperty> properties) {
+			this.properties = properties;
+		}
+
+		public void setMethods(List<CodeMethod> methods) {
+			this.methods = methods;
+		}
+
 	}
 
 	@Data
@@ -133,6 +279,19 @@ public class CodeDocumentation {
 		private String type;
 
 		private String description;
+
+		// Add missing setter methods
+		public void setName(String name) {
+			this.name = name;
+		}
+
+		public void setType(String type) {
+			this.type = type;
+		}
+
+		public void setDescription(String description) {
+			this.description = description;
+		}
 
 	}
 

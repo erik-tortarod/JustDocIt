@@ -23,6 +23,8 @@ public class Repository {
 
 	private String htmlUrl;
 
+	private String userId; // Add this field to associate the repository with a user
+
 	// Add missing setter methods
 	public void setGithubId(String githubId) {
 		this.githubId = githubId;
@@ -46,6 +48,14 @@ public class Repository {
 
 	public void setHtmlUrl(String htmlUrl) {
 		this.htmlUrl = htmlUrl;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public String getId() {
+		return id;
 	}
 
 }

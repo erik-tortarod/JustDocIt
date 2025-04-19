@@ -8,3 +8,8 @@ export enum ELanguage {
 	SPANISH = "spanish",
 	ENGLISH = "english",
 }
+
+export enum EEnvironment {
+	DEV = "DEV",
+	PROD = "PROD",
+}

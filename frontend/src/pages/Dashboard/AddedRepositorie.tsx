@@ -1,4 +1,3 @@
-//DEPENDENCIES
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -11,7 +10,8 @@ import { IRepository } from "../../types/interfaces";
 //SERVICES
 import DocumentationService from "../../services/DocumentationService";
 
-//ICONS
+//UTILS
+import { replaceLanguageByIcon } from "../../utils/replaceLanguageByIcon";
 
 function AddedRepositorie({ repo }: { repo: IRepository }) {
 	const availableLanguages = ["TYPESCRIPT"];
@@ -47,7 +47,7 @@ function AddedRepositorie({ repo }: { repo: IRepository }) {
 			{repo.documentedLanguages &&
 				repo.documentedLanguages.map((language) => (
 					<Link key={language} to={`/documentation/${repo.id}/${language}`}>
-						{language}
+						{renderLanguageIcon(language)}
 					</Link>
 				))}
 			{loading && (
@@ -58,6 +58,11 @@ function AddedRepositorie({ repo }: { repo: IRepository }) {
 			)}
 		</div>
 	);
+}
+
+function renderLanguageIcon(language: string) {
+	const IconComponent = replaceLanguageByIcon(language);
+	return IconComponent ? <IconComponent /> : <span>{language}</span>;
 }
 
 export default AddedRepositorie;

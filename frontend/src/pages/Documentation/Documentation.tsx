@@ -4,7 +4,7 @@ import DocumentationService from "../../services/DocumentationService";
 import { ICodeDocumentation } from "../../types/interfaces";
 
 function Documentation() {
-	const { id } = useParams();
+	const { id, language } = useParams();
 
 	const [codeDocumenation, setCodeDocumentation] = useState<
 		ICodeDocumentation[]
@@ -12,8 +12,10 @@ function Documentation() {
 
 	useEffect(() => {
 		const getDocumentation = async () => {
-			const documentation = await DocumentationService.getRepository(id!);
-			console.log(documentation);
+			const documentation = await DocumentationService.getRepository(
+				id!,
+				language!,
+			);
 			setCodeDocumentation(documentation);
 		};
 

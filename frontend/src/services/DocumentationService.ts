@@ -41,24 +41,15 @@ class DocumentationService {
 		}
 	}
 
-	static async getRepository(id: string): Promise<any> {
+	static async getRepository(id: string, language: string): Promise<any> {
 		try {
-			const token = StorageService.getToken();
-
-			if (!token) {
-				throw new Error(`No authentication token`);
-			}
-
-			const url = API_ROUTES.DOCS.GET_DOCUMENTATION + `?repositoryId=${id}`;
-			console.log(url);
+			const url =
+				API_ROUTES.DOCS.GET_DOCUMENTATION +
+				`?repositoryId=${id}&language=${language.toUpperCase()}`;
 
 			const response = await fetch(url, {
 				method: "GET",
-				headers: {
-					Authorization: `Bearer ${token}`,
-				},
 			});
-			console.log(response);
 
 			if (!response.ok) {
 				throw new Error(`
@@ -72,7 +63,7 @@ class DocumentationService {
 				StorageService.getUserId()!,
 				StorageService.getAccessToken()!,
 			);
-			return this.getRepository(id);
+			return this.getRepository(id, language);
 		}
 	}
 }

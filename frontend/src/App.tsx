@@ -12,7 +12,7 @@ function App() {
 		<Routes>
 			<Route path="/" element={<Auth />} />
 			<Route path="/dashboard" element={<Dashboard />} />
-			<Route path="/documentation/:id" element={<Documentation />} />
+			<Route path="/documentation/:id/:language" element={<Documentation />} />
 			<Route path="/notfound/:id" element={<NotFound />} />
 		</Routes>
 	);

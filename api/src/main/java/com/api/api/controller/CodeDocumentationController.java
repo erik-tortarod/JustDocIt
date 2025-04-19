@@ -83,22 +83,17 @@ public class CodeDocumentationController {
 	 */
 	@GetMapping("/repository")
 	public ResponseEntity<?> getRepositoryDocumentation(@RequestParam String repositoryId,
-			@RequestParam(required = false) Language language) {
+			@RequestParam Language language) { // Make language required
 
 		try {
-			logger.info("Obteniendo documentación para repositoryId: {}", repositoryId);
+			logger.info("Obteniendo documentación para repositoryId: {} y lenguaje: {}", repositoryId, language);
 
-			// Obtener la documentación asociada al repositoryId
-			List<CodeDocumentation> docs;
-			if (language != null) {
-				docs = documentationService.getRepositoryDocumentation(repositoryId, language);
-			}
-			else {
-				docs = documentationService.getRepositoryDocumentation(repositoryId);
-			}
+			// Obtener la documentación asociada al repositoryId y lenguaje
+			List<CodeDocumentation> docs = documentationService.getRepositoryDocumentation(repositoryId, language);
 
 			if (docs.isEmpty()) {
-				logger.warn("No se encontró documentación para repositoryId: {}", repositoryId);
+				logger.warn("No se encontró documentación para repositoryId: {} y lenguaje: {}", repositoryId,
+						language);
 				return ResponseEntity.status(404).body("No se encontró documentación para el repositorio solicitado.");
 			}
 

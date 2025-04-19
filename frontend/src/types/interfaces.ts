@@ -24,6 +24,7 @@ export interface IRepository {
 	size: number;
 	defaultBranch: string;
 	visibility: string;
+	documentedLanguages: string[];
 }
 
 export interface ICodeDocumentation {

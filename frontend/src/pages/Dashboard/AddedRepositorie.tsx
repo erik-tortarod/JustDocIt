@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import SelectBtn from "../../components/common/SelectBtn";
 import { IRepository } from "../../types/interfaces";
 import DocumentationService from "../../services/DocumentationService";
+import { Link } from "react-router-dom";
 
 function AddedRepositorie({ repo }: { repo: IRepository }) {
 	const availableLanguages = ["TYPESCRIPT"];
@@ -34,6 +35,12 @@ function AddedRepositorie({ repo }: { repo: IRepository }) {
 				title="Select a Language"
 				setState={setSelectedLanguage}
 			/>
+			{repo.documentedLanguages &&
+				repo.documentedLanguages.map((language) => (
+					<Link key={language} to={`/documentation/${repo.id}/${language}`}>
+						{language}
+					</Link>
+				))}
 			{loading && (
 				<div className="flex justify-center items-center">
 					<div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-gray-900"></div>

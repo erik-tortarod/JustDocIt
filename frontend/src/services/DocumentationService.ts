@@ -50,6 +50,7 @@ class DocumentationService {
 			}
 
 			const url = API_ROUTES.DOCS.GET_DOCUMENTATION + `?repositoryId=${id}`;
+			console.log(url);
 
 			const response = await fetch(url, {
 				method: "GET",
@@ -57,6 +58,7 @@ class DocumentationService {
 					Authorization: `Bearer ${token}`,
 				},
 			});
+			console.log(response);
 
 			if (!response.ok) {
 				throw new Error(`

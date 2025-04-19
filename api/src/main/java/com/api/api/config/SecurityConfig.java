@@ -28,8 +28,10 @@ public class SecurityConfig {
 			configuration.setAllowCredentials(true);
 			return configuration;
 		}))
-			.authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.OPTIONS, "/**")
-				.permitAll() // Explicitly allow OPTIONS
+			.authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.GET, "/api/documentation/repository")
+				.permitAll() // Permitir acceso público
+				.requestMatchers(HttpMethod.OPTIONS, "/**")
+				.permitAll() // Explicitamente permitir OPTIONS
 				.requestMatchers("/", "/error", "/css/**", "/js/**", "/api/**", "/auth/token", "/token/**")
 				.permitAll()
 				.anyRequest()

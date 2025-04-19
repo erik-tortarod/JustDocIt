@@ -13,6 +13,7 @@ function Documentation() {
 	useEffect(() => {
 		const getDocumentation = async () => {
 			const documentation = await DocumentationService.getRepository(id!);
+			console.log(documentation);
 			setCodeDocumentation(documentation);
 		};
 

@@ -82,37 +82,32 @@ public class CodeDocumentationController {
 	 * Obtiene la documentación extraída de un repositorio
 	 */
 	@GetMapping("/repository")
-	public ResponseEntity<?> getRepositoryDocumentation(@RequestHeader("Authorization") String authHeader,
-			@RequestParam String repositoryId, @RequestParam(required = false) Language language) {
-
-		if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-			return ResponseEntity.badRequest()
-				.body("Formato de encabezado de Autorización inválido. Se esperaba 'Bearer <token>'");
-		}
+	public ResponseEntity<?> getRepositoryDocumentation(@RequestParam String repositoryId,
+			@RequestParam(required = false) Language language) {
 
 		try {
-			// Solo validar token
-			String token = authHeader.substring(7);
-			Map<String, Object> claims = JwtUtil.validateToken(token, jwtUtil.getSecretKey1());
-			String userId = (String) claims.get("id"); // Extract userId from token
+			logger.info("Obteniendo documentación para repositoryId: {}", repositoryId);
 
-			// Filter documentation by userId
+			// Obtener la documentación asociada al repositoryId
 			List<CodeDocumentation> docs;
 			if (language != null) {
-				docs = documentationService.getRepositoryDocumentationByUser(repositoryId, userId, language);
+				docs = documentationService.getRepositoryDocumentation(repositoryId, language);
 			}
 			else {
-				docs = documentationService.getRepositoryDocumentationByUser(repositoryId, userId, null); // Pass
-																											// null
-																											// for
-																											// language
+				docs = documentationService.getRepositoryDocumentation(repositoryId);
 			}
 
+			if (docs.isEmpty()) {
+				logger.warn("No se encontró documentación para repositoryId: {}", repositoryId);
+				return ResponseEntity.status(404).body("No se encontró documentación para el repositorio solicitado.");
+			}
+
+			logger.info("Documentación encontrada: {} documentos", docs.size());
 			return ResponseEntity.ok(docs);
 		}
 		catch (Exception e) {
-			logger.error("Error al obtener documentación: {}", e.getMessage());
-			return ResponseEntity.status(401).body("Token inválido o expirado");
+			logger.error("Error al obtener documentación: {}", e.getMessage(), e);
+			return ResponseEntity.status(500).body("Error interno del servidor: " + e.getMessage());
 		}
 	}
 

@@ -206,7 +206,10 @@ public class CodeDocumentationService {
 	 * Obtiene la documentación de un repositorio
 	 */
 	public List<CodeDocumentation> getRepositoryDocumentation(String repositoryId) {
-		return documentationRepository.findByRepositoryId(repositoryId);
+		logger.info("Buscando documentación para repositoryId: {}", repositoryId);
+		List<CodeDocumentation> docs = documentationRepository.findByRepositoryId(repositoryId);
+		logger.info("Documentos encontrados: {}", docs.size());
+		return docs;
 	}
 
 	/**
@@ -226,10 +229,18 @@ public class CodeDocumentationService {
 	public List<CodeDocumentation> getRepositoryDocumentationByUser(String repositoryId, String userId,
 			Language language) {
 		if (language != null) {
-			return documentationRepository.findByRepositoryIdAndUserIdAndLanguage(repositoryId, userId, language);
+			logger.info("Buscando documentación para repositoryId: {}, userId: {}, language: {}", repositoryId, userId,
+					language);
+			List<CodeDocumentation> docs = documentationRepository.findByRepositoryIdAndUserIdAndLanguage(repositoryId,
+					userId, language);
+			logger.info("Documentos encontrados: {}", docs.size());
+			return docs;
 		}
 		else {
-			return documentationRepository.findByRepositoryIdAndUserId(repositoryId, userId);
+			logger.info("Buscando documentación para repositoryId: {}, userId: {}", repositoryId, userId);
+			List<CodeDocumentation> docs = documentationRepository.findByRepositoryIdAndUserId(repositoryId, userId);
+			logger.info("Documentos encontrados: {}", docs.size());
+			return docs;
 		}
 	}
 

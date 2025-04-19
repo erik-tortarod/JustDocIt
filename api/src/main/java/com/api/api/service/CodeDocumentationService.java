@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
+import java.util.HashSet;
 
 /**
  * Servicio para gestionar la documentación de código extraída de repositorios. Coordina
@@ -61,6 +62,15 @@ public class CodeDocumentationService {
 		// Verificar soporte para el lenguaje
 		if (language != Language.TYPESCRIPT) {
 			throw new RuntimeException("Actualmente solo se soporta análisis de documentación para TypeScript");
+		}
+
+		// Add the language to the documentedLanguages list if not already present
+		if (repository.getDocumentedLanguages() == null) {
+			repository.setDocumentedLanguages(new ArrayList<>());
+		}
+		if (!repository.getDocumentedLanguages().contains(language.name())) {
+			repository.getDocumentedLanguages().add(language.name());
+			repositoryRepository.save(repository); // Save the updated repository
 		}
 
 		// Escanear contenido del repositorio

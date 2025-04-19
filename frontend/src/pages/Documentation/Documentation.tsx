@@ -8,36 +8,34 @@ import { mockCodeDocumentation } from "../../fixtures/mockData";
 import { EEnvironment } from "../../types/enums";
 
 function Documentation() {
-   const { id, language } = useParams();
+	const { id, language } = useParams();
 
-   const [codeDocumenation, setCodeDocumentation] = useState<
-      ICodeDocumentation[]
-   >([]);
+	const [codeDocumenation, setCodeDocumentation] = useState<
+		ICodeDocumentation[]
+	>([]);
 
-   const environment:EEnvironment = import.meta.env.VITE_ENVIROMENT;
+	const environment: EEnvironment = import.meta.env.VITE_ENVIROMENT;
 
-   useEffect(() => {
-      const getDocumentation = async () => {
-         if (environment === EEnvironment.DEV && Number(id) === 1) {
+	useEffect(() => {
+		const getDocumentation = async () => {
+			if (environment === EEnvironment.DEV && Number(id) === 1) {
 				setCodeDocumentation(mockCodeDocumentation);
 				return;
 			}
 
-         const documentation = await DocumentationService.getRepository(
-            id!,
-            language!
-         );
-         setCodeDocumentation(documentation);
-      };
+			const documentation = await DocumentationService.getRepository(
+				id!,
+				language!,
+			);
+			setCodeDocumentation(documentation);
+		};
 
-      getDocumentation();
-   }, []);
+		getDocumentation();
+	}, []);
 
-   return (
-      <pre className="w-screen">
-         {JSON.stringify(codeDocumenation, null, 2)}
-      </pre>
-   );
+	return (
+		<pre className="w-screen">{JSON.stringify(codeDocumenation, null, 2)}</pre>
+	);
 }
 
 export default Documentation;

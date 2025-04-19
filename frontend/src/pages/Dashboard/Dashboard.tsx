@@ -28,7 +28,7 @@ function Dashboard() {
 	const [userRepositories, setUserRepositores] = useState<IRepository[]>([]);
 	const [addedRepositories, setAddedRepositories] = useState<IRepository[]>([]);
 
-	const environment:EEnvironment= import.meta.env.VITE_ENVIROMENT;
+	const environment: EEnvironment = import.meta.env.VITE_ENVIROMENT;
 
 	useEffect(() => {
 		const initializeDashboard = async () => {

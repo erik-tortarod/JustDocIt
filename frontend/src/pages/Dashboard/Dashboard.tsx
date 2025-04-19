@@ -104,7 +104,13 @@ function Dashboard() {
 					<h1>Dashboard</h1>
 					<ModalBtn
 						btnText="Agregar proyecto nuevo"
-						content={<RepoModal content={<RepositorieList userRepositories={userRepositories} />}/>}
+						content={
+							<RepoModal
+								content={
+									<RepositorieList userRepositories={userRepositories} />
+								}
+							/>
+						}
 						id="modal"
 						overflow={true}
 					/>

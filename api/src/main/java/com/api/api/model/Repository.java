@@ -3,6 +3,7 @@ package com.api.api.model;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import java.util.List;
 
 @Data
 @Document(collection = "repositories")
@@ -24,6 +25,8 @@ public class Repository {
 	private String htmlUrl;
 
 	private String userId; // Add this field to associate the repository with a user
+
+	private List<String> documentedLanguages; // New attribute
 
 	// Add missing setter methods
 	public void setGithubId(String githubId) {
@@ -52,6 +55,14 @@ public class Repository {
 
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+
+	public List<String> getDocumentedLanguages() {
+		return documentedLanguages;
+	}
+
+	public void setDocumentedLanguages(List<String> documentedLanguages) {
+		this.documentedLanguages = documentedLanguages;
 	}
 
 	public String getId() {

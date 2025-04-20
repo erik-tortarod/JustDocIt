@@ -65,7 +65,7 @@ class RepositoryService {
 
 		if (!response.ok) {
 			throw new Error(`
-				Error adding the repositorie to the dashboard ${response.status}	
+				Error adding the repository to the dashboard ${response.status}	
 			`);
 		}
 

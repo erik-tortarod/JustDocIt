@@ -15,34 +15,25 @@ class RepositoryService {
 	 * @throws Error si no hay token o si la solicitud falla
 	 */
 	static async getUserRepositories(): Promise<any> {
-		try {
-			const token = StorageService.getToken();
+		const token = StorageService.getToken();
 
-			if (!token) {
-				throw new Error(`No authentication token`);
-			}
-
-			console.log("Sending token:", token); // Debug log
-
-			const response = await fetch(API_ROUTES.DOCS.REPOSITORIES, {
-				headers: {
-					Authorization: `Bearer ${token}`,
-				},
-			});
-
-			if (!response.ok) {
-				throw new Error(
-					`Error fetching the user repositories ${response.status}`,
-				);
-			}
-			return await response.json();
-		} catch (e) {
-			await ApiService.getTokenFromCredentials(
-				StorageService.getUserId()!,
-				StorageService.getAccessToken()!,
-			);
-			return this.getAddedRepositories();
+		if (!token) {
+			throw new Error(`No authentication token`);
 		}
+
+		const response = await fetch(API_ROUTES.DOCS.REPOSITORIES, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
+
+		if (!response.ok) {
+			throw new Error(
+				`Error fetching the user repositories ${response.status}`,
+			);
+		}
+
+		return await response.json();
 	}
 
 	static async addRepository(githubRepoId: number): Promise<any> {

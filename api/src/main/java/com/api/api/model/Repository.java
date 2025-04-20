@@ -28,6 +28,8 @@ public class Repository {
 
 	private List<String> documentedLanguages; // New attribute
 
+	private int size; // New property to store repository size
+
 	// Add missing setter methods
 	public void setGithubId(String githubId) {
 		this.githubId = githubId;
@@ -63,6 +65,14 @@ public class Repository {
 
 	public void setDocumentedLanguages(List<String> documentedLanguages) {
 		this.documentedLanguages = documentedLanguages;
+	}
+
+	public int getSize() {
+		return size;
+	}
+
+	public void setSize(int size) {
+		this.size = size;
 	}
 
 	public String getId() {

@@ -19,27 +19,20 @@ class AuthService {
 		error?: string;
 	}> {
 		try {
-			//get url params
+			// Get URL params
 			const params = new URLSearchParams(window.location.search);
-			const userId = params.get("userId");
-			const accessToken = params.get("accessToken");
+			const jwtToken = params.get("jwtToken");
 
-			if (userId && accessToken) {
-				const jwtToken = await ApiService.getTokenFromCredentials(
-					userId,
-					accessToken,
-				);
-
+			if (jwtToken) {
 				StorageService.setToken(jwtToken);
-				StorageService.setUserId(userId);
-				StorageService.setAccessToken(accessToken);
 
+				// Remove query params from the URL
 				window.history.replaceState({}, document.title, "/dashboard");
 
 				return { sucess: true };
 			}
 
-			//no url params
+			// No URL params
 			const savedToken = StorageService.getToken();
 			if (savedToken) {
 				return { sucess: true };

@@ -8,7 +8,7 @@
  * @returns File name
  */
 export const getFileName = (filePath: string): string => {
-   return filePath.split("/").pop() || filePath;
+	return filePath.split("/").pop() || filePath;
 };
 
 /**
@@ -17,8 +17,8 @@ export const getFileName = (filePath: string): string => {
  * @returns File extension in lower case
  */
 export const getFileExtension = (filePath: string): string => {
-   const fileName = getFileName(filePath);
-   return fileName.split(".").pop()?.toLowerCase() || "";
+	const fileName = getFileName(filePath);
+	return fileName.split(".").pop()?.toLowerCase() || "";
 };
 
 /**
@@ -27,25 +27,25 @@ export const getFileExtension = (filePath: string): string => {
  * @returns Emoji that represents the file type
  */
 export const getFileIcon = (filePath: string): string => {
-   const ext = getFileExtension(filePath);
-   switch (ext) {
-      case "ts":
-      case "tsx":
-         return "📘"; // TypeScript
-      case "js":
-      case "jsx":
-         return "📙"; // JavaScript
-      case "json":
-         return "📒"; // JSON
-      case "md":
-         return "📝"; // Markdown
-      case "html":
-         return "📰"; // HTML
-      case "css":
-         return "🎨"; // CSS
-      default:
-         return "📄"; // Generic
-   }
+	const ext = getFileExtension(filePath);
+	switch (ext) {
+		case "ts":
+		case "tsx":
+			return "📘"; // TypeScript
+		case "js":
+		case "jsx":
+			return "📙"; // JavaScript
+		case "json":
+			return "📒"; // JSON
+		case "md":
+			return "📝"; // Markdown
+		case "html":
+			return "📰"; // HTML
+		case "css":
+			return "🎨"; // CSS
+		default:
+			return "📄"; // Generic
+	}
 };
 
 /**
@@ -54,9 +54,9 @@ export const getFileIcon = (filePath: string): string => {
  * @returns Directory path
  */
 export const getDirectory = (filePath: string): string => {
-   const parts = filePath.split("/");
-   parts.pop(); // Remove the last element (file name)
-   return parts.join("/");
+	const parts = filePath.split("/");
+	parts.pop(); // Remove the last element (file name)
+	return parts.join("/");
 };
 
 /**
@@ -65,10 +65,10 @@ export const getDirectory = (filePath: string): string => {
  * @returns true if the file has documentation
  */
 export const fileHasDocumentation = (file: any): boolean => {
-   return (
-      (file.content?.classes && file.content.classes.length > 0) ||
-      (file.content?.functions && file.content.functions.length > 0) ||
-      (file.content?.interfaces && file.content.interfaces.length > 0) ||
-      (file.content?.variables && file.content.variables.length > 0)
-   );
+	return (
+		(file.content?.classes && file.content.classes.length > 0) ||
+		(file.content?.functions && file.content.functions.length > 0) ||
+		(file.content?.interfaces && file.content.interfaces.length > 0) ||
+		(file.content?.variables && file.content.variables.length > 0)
+	);
 };

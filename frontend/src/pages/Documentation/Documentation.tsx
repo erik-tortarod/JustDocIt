@@ -10,7 +10,11 @@ import { mockCodeDocumentation } from "../../fixtures/mockData";
 import { EEnvironment } from "../../types/enums";
 
 //UTILS
-import {fileHasDocumentation,getFileIcon,getFileName} from "../../utils/fileUtils"
+import {
+	fileHasDocumentation,
+	getFileIcon,
+	getFileName,
+} from "../../utils/fileUtils";
 
 // Componentes
 const NavBadge = ({ type }: { type: string }) => {

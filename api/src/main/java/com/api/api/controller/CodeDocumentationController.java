@@ -2,7 +2,6 @@ package com.api.api.controller;
 
 import com.api.api.model.CodeDocumentation;
 import com.api.api.service.CodeDocumentationService;
-import com.api.api.service.EncryptionService;
 import com.api.api.util.JwtUtil;
 
 import org.slf4j.Logger;
@@ -19,123 +18,115 @@ import java.util.Map;
 @RequestMapping("/api/documentation")
 public class CodeDocumentationController {
 
-	private static final Logger logger = LoggerFactory.getLogger(CodeDocumentationController.class);
+    private static final Logger logger = LoggerFactory.getLogger(CodeDocumentationController.class);
 
-	@Autowired
-	private JwtUtil jwtUtil;
+    @Autowired
+    private JwtUtil jwtUtil;
 
-	@Autowired
-	private EncryptionService encryptionService;
+    @Autowired
+    private CodeDocumentationService documentationService;
 
-	@Autowired
-	private CodeDocumentationService documentationService;
+    /**
+     * Escanea un repositorio en busca de archivos del lenguaje especificado y
+     * extrae su documentación
+     */
+    @PostMapping("/scan")
+    public ResponseEntity<?> scanRepositoryForDocumentation(@RequestHeader("Authorization") String authHeader,
+            @RequestParam String repositoryId, @RequestParam Language language) {
 
-	/**
-	 * Escanea un repositorio en busca de archivos del lenguaje especificado y extrae su
-	 * documentación
-	 */
-	@PostMapping("/scan")
-	public ResponseEntity<?> scanRepositoryForDocumentation(@RequestHeader("Authorization") String authHeader,
-			@RequestParam String repositoryId, @RequestParam Language language) {
+        logger.info("Solicitud recibida para escanear repositorio {} buscando documentación de {}", repositoryId,
+                language);
 
-		logger.info("Solicitud recibida para escanear repositorio {} buscando documentación de {}", repositoryId,
-				language);
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return ResponseEntity.badRequest()
+                    .body("Formato de encabezado de Autorización inválido. Se esperaba 'Bearer <token>'");
+        }
 
-		if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-			return ResponseEntity.badRequest()
-				.body("Formato de encabezado de Autorización inválido. Se esperaba 'Bearer <token>'");
-		}
+        String token = authHeader.substring(7);
+        SecretKey secretKey = jwtUtil.getSecretKey1();
 
-		String token = authHeader.substring(7);
-		SecretKey secretKey = jwtUtil.getSecretKey1();
+        try {
+            // Validar token y extraer claims
+            Map<String, Object> claims = JwtUtil.validateToken(token, secretKey);
+            String userId = (String) claims.get("id"); // Extract userId from token
+            String accessToken = (String) claims.get("accessToken"); // Use accessToken
+            // directly
 
-		try {
-			// Validar token y extraer claims
-			Map<String, Object> claims = JwtUtil.validateToken(token, secretKey);
-			String userId = (String) claims.get("id"); // Extract userId from token
-			String encryptedAccessToken = (String) claims.get("accessToken");
+            if (accessToken == null) {
+                return ResponseEntity.badRequest().body("No se encontró accessToken en el token");
+            }
 
-			if (encryptedAccessToken == null) {
-				return ResponseEntity.badRequest().body("No se encontró accessToken en el token");
-			}
+            // Escanear repositorio
+            List<CodeDocumentation> docs = documentationService.scanRepositoryForDocumentation(repositoryId, language,
+                    accessToken);
 
-			// Descifrar el token de acceso de GitHub
-			String accessToken = encryptionService.decrypt(encryptedAccessToken);
+            // Associate userId with each documentation entry
+            docs.forEach(doc -> doc.setUserId(userId));
 
-			// Escanear repositorio
-			List<CodeDocumentation> docs = documentationService.scanRepositoryForDocumentation(repositoryId, language,
-					accessToken);
+            return ResponseEntity.ok(Map.of("mensaje", "Escaneo de documentación completado exitosamente",
+                    "documentosEncontrados", docs.size()));
+        } catch (Exception e) {
+            logger.error("Error al escanear documentación del repositorio: {}", e.getMessage());
+            return ResponseEntity.status(500).body("Error: " + e.getMessage());
+        }
+    }
 
-			// Associate userId with each documentation entry
-			docs.forEach(doc -> doc.setUserId(userId));
+    /**
+     * Obtiene la documentación extraída de un repositorio
+     */
+    @GetMapping("/repository")
+    public ResponseEntity<?> getRepositoryDocumentation(@RequestParam String repositoryId,
+            @RequestParam Language language) { // Make language required
 
-			return ResponseEntity.ok(Map.of("mensaje", "Escaneo de documentación completado exitosamente",
-					"documentosEncontrados", docs.size()));
-		}
-		catch (Exception e) {
-			logger.error("Error al escanear documentación del repositorio: {}", e.getMessage());
-			return ResponseEntity.status(500).body("Error: " + e.getMessage());
-		}
-	}
+        try {
+            logger.info("Obteniendo documentación para repositoryId: {} y lenguaje: {}", repositoryId, language);
 
-	/**
-	 * Obtiene la documentación extraída de un repositorio
-	 */
-	@GetMapping("/repository")
-	public ResponseEntity<?> getRepositoryDocumentation(@RequestParam String repositoryId,
-			@RequestParam Language language) { // Make language required
+            // Obtener la documentación asociada al repositoryId y lenguaje
+            List<CodeDocumentation> docs = documentationService.getRepositoryDocumentation(repositoryId, language);
 
-		try {
-			logger.info("Obteniendo documentación para repositoryId: {} y lenguaje: {}", repositoryId, language);
+            if (docs.isEmpty()) {
+                logger.warn("No se encontró documentación para repositoryId: {} y lenguaje: {}", repositoryId,
+                        language);
+                return ResponseEntity.status(404).body("No se encontró documentación para el repositorio solicitado.");
+            }
 
-			// Obtener la documentación asociada al repositoryId y lenguaje
-			List<CodeDocumentation> docs = documentationService.getRepositoryDocumentation(repositoryId, language);
+            logger.info("Documentación encontrada: {} documentos", docs.size());
+            return ResponseEntity.ok(docs);
+        } catch (Exception e) {
+            logger.error("Error al obtener documentación: {}", e.getMessage(), e);
+            return ResponseEntity.status(500).body("Error interno del servidor: " + e.getMessage());
+        }
+    }
 
-			if (docs.isEmpty()) {
-				logger.warn("No se encontró documentación para repositoryId: {} y lenguaje: {}", repositoryId,
-						language);
-				return ResponseEntity.status(404).body("No se encontró documentación para el repositorio solicitado.");
-			}
+    /**
+     * Obtiene la documentación de un archivo específico
+     */
+    @GetMapping("/file")
+    public ResponseEntity<?> getFileDocumentation(@RequestHeader("Authorization") String authHeader,
+            @RequestParam String repositoryId, @RequestParam String filePath) {
 
-			logger.info("Documentación encontrada: {} documentos", docs.size());
-			return ResponseEntity.ok(docs);
-		}
-		catch (Exception e) {
-			logger.error("Error al obtener documentación: {}", e.getMessage(), e);
-			return ResponseEntity.status(500).body("Error interno del servidor: " + e.getMessage());
-		}
-	}
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return ResponseEntity.badRequest()
+                    .body("Formato de encabezado de Autorización inválido. Se esperaba 'Bearer <token>'");
+        }
 
-	/**
-	 * Obtiene la documentación de un archivo específico
-	 */
-	@GetMapping("/file")
-	public ResponseEntity<?> getFileDocumentation(@RequestHeader("Authorization") String authHeader,
-			@RequestParam String repositoryId, @RequestParam String filePath) {
+        try {
+            // Solo validar token
+            String token = authHeader.substring(7);
+            JwtUtil.validateToken(token, jwtUtil.getSecretKey1());
 
-		if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-			return ResponseEntity.badRequest()
-				.body("Formato de encabezado de Autorización inválido. Se esperaba 'Bearer <token>'");
-		}
+            // Obtener documentación del archivo
+            CodeDocumentation doc = documentationService.getFileDocumentation(repositoryId, filePath);
 
-		try {
-			// Solo validar token
-			String token = authHeader.substring(7);
-			JwtUtil.validateToken(token, jwtUtil.getSecretKey1());
+            if (doc == null) {
+                return ResponseEntity.notFound().build();
+            }
 
-			// Obtener documentación del archivo
-			CodeDocumentation doc = documentationService.getFileDocumentation(repositoryId, filePath);
-
-			if (doc == null) {
-				return ResponseEntity.notFound().build();
-			}
-
-			return ResponseEntity.ok(doc);
-		}
-		catch (Exception e) {
-			logger.error("Error al obtener documentación del archivo: {}", e.getMessage());
-			return ResponseEntity.status(401).body("Token inválido o expirado");
-		}
-	}
+            return ResponseEntity.ok(doc);
+        } catch (Exception e) {
+            logger.error("Error al obtener documentación del archivo: {}", e.getMessage());
+            return ResponseEntity.status(401).body("Token inválido o expirado");
+        }
+    }
 
 }

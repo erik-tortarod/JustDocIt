@@ -1,6 +1,9 @@
 import { IRepository, ICodeDocumentation } from "../types/interfaces";
 import { ELanguage } from "../types/enums";
 
+/**
+ * Mock data for repositories.
+ */
 export const mockRepositories: IRepository[] = [
 	{
 		id: 1,
@@ -28,6 +31,9 @@ export const mockRepositories: IRepository[] = [
 	},
 ];
 
+/**
+ * Mock data for code documentation.
+ */
 export const mockCodeDocumentation: ICodeDocumentation[] = [
 	{
 		id: "doc1",

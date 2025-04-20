@@ -3,18 +3,18 @@
  */
 
 /**
- * Extracts the file name from a complete path
- * @param filePath Complete path of the file
- * @returns File name
+ * Extracts the file name from a complete path.
+ * @param filePath - The complete path of the file.
+ * @returns The file name extracted from the path.
  */
 export const getFileName = (filePath: string): string => {
 	return filePath.split("/").pop() || filePath;
 };
 
 /**
- * Extracts the file extension from a path
- * @param filePath Path of the file
- * @returns File extension in lower case
+ * Extracts the file extension from a path.
+ * @param filePath - The path of the file.
+ * @returns The file extension in lowercase.
  */
 export const getFileExtension = (filePath: string): string => {
 	const fileName = getFileName(filePath);
@@ -22,9 +22,9 @@ export const getFileExtension = (filePath: string): string => {
 };
 
 /**
- * Gets an appropriate icon based on the file extension
- * @param filePath Path of the file
- * @returns Emoji that represents the file type
+ * Gets an appropriate icon based on the file extension.
+ * @param filePath - The path of the file.
+ * @returns An emoji representing the file type.
  */
 export const getFileIcon = (filePath: string): string => {
 	const ext = getFileExtension(filePath);
@@ -49,9 +49,9 @@ export const getFileIcon = (filePath: string): string => {
 };
 
 /**
- * Gets the directory path of a file
- * @param filePath Complete path of the file
- * @returns Directory path
+ * Gets the directory path of a file.
+ * @param filePath - The complete path of the file.
+ * @returns The directory path of the file.
  */
 export const getDirectory = (filePath: string): string => {
 	const parts = filePath.split("/");
@@ -60,9 +60,9 @@ export const getDirectory = (filePath: string): string => {
 };
 
 /**
- * Checks if a file has generated documentation
- * @param file Documentation object of the file
- * @returns true if the file has documentation
+ * Checks if a file has generated documentation.
+ * @param file - The documentation object of the file.
+ * @returns `true` if the file has documentation, otherwise `false`.
  */
 export const fileHasDocumentation = (file: any): boolean => {
 	return (

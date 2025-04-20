@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import ModalBtn from "../../components/common/ModalBtn";
 
+/**
+ * Modal component for selecting a source to create a new project.
+ * @param content - The content to display in the modal.
+ */
 function RepoModal({ content }: { content: string | React.ReactElement }) {
 	const [selectedSource, setSelectedSource] = useState<string | null>(null);
 

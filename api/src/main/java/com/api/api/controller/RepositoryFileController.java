@@ -13,60 +13,62 @@ import java.util.Map;
 @RequestMapping("/api")
 public class RepositoryFileController {
 
-    @Autowired
-    private JwtUtil jwtUtil;
+	@Autowired
+	private JwtUtil jwtUtil;
 
-    @Autowired
-    private RepositoryFileService repositoryFileService;
+	@Autowired
+	private RepositoryFileService repositoryFileService;
 
-    @PostMapping("/scan-repo")
-    public ResponseEntity<?> scanRepository(@RequestHeader("Authorization") String authHeader,
-            @RequestParam String repositoryId, @RequestParam Language language) {
+	@PostMapping("/scan-repo")
+	public ResponseEntity<?> scanRepository(@RequestHeader("Authorization") String authHeader,
+			@RequestParam String repositoryId, @RequestParam Language language) {
 
-        if (!authHeader.startsWith("Bearer ")) {
-            return ResponseEntity.badRequest().body("Invalid Authorization header");
-        }
+		if (!authHeader.startsWith("Bearer ")) {
+			return ResponseEntity.badRequest().body("Invalid Authorization header");
+		}
 
-        try {
-            // Extract and validate token
-            String token = authHeader.substring(7);
-            Map<String, Object> claims = JwtUtil.validateToken(token, jwtUtil.getSecretKey1());
+		try {
+			// Extract and validate token
+			String token = authHeader.substring(7);
+			Map<String, Object> claims = JwtUtil.validateToken(token, jwtUtil.getSecretKey1());
 
-            // Get GitHub access token directly from claims
-            String accessToken = (String) claims.get("accessToken");
+			// Get GitHub access token directly from claims
+			String accessToken = (String) claims.get("accessToken");
 
-            if (accessToken == null) {
-                return ResponseEntity.badRequest().body("No accessToken found in the token claims");
-            }
+			if (accessToken == null) {
+				return ResponseEntity.badRequest().body("No accessToken found in the token claims");
+			}
 
-            // Scan repository
-            List<RepositoryFile> files = repositoryFileService.scanRepository(repositoryId, language, accessToken);
+			// Scan repository
+			List<RepositoryFile> files = repositoryFileService.scanRepository(repositoryId, language, accessToken);
 
-            return ResponseEntity.ok(Map.of("message", "Repository scanned successfully", "filesFound", files.size()));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("An error occurred while processing your request.");
-        }
-    }
+			return ResponseEntity.ok(Map.of("message", "Repository scanned successfully", "filesFound", files.size()));
+		}
+		catch (Exception e) {
+			return ResponseEntity.badRequest().body("An error occurred while processing your request.");
+		}
+	}
 
-    @GetMapping("/repo-files")
-    public ResponseEntity<?> getRepositoryFiles(@RequestHeader("Authorization") String authHeader,
-            @RequestParam String repositoryId, @RequestParam(required = false) Language language) {
+	@GetMapping("/repo-files")
+	public ResponseEntity<?> getRepositoryFiles(@RequestHeader("Authorization") String authHeader,
+			@RequestParam String repositoryId, @RequestParam(required = false) Language language) {
 
-        if (!authHeader.startsWith("Bearer ")) {
-            return ResponseEntity.badRequest().body("Invalid Authorization header");
-        }
+		if (!authHeader.startsWith("Bearer ")) {
+			return ResponseEntity.badRequest().body("Invalid Authorization header");
+		}
 
-        try {
-            // Just validate token, we don't need GitHub access for this
-            String token = authHeader.substring(7);
-            JwtUtil.validateToken(token, jwtUtil.getSecretKey1());
+		try {
+			// Just validate token, we don't need GitHub access for this
+			String token = authHeader.substring(7);
+			JwtUtil.validateToken(token, jwtUtil.getSecretKey1());
 
-            // Get files
-            List<RepositoryFile> files = repositoryFileService.getFiles(repositoryId, language);
-            return ResponseEntity.ok(files);
-        } catch (Exception e) {
-            return ResponseEntity.status(401).body("Invalid token");
-        }
-    }
+			// Get files
+			List<RepositoryFile> files = repositoryFileService.getFiles(repositoryId, language);
+			return ResponseEntity.ok(files);
+		}
+		catch (Exception e) {
+			return ResponseEntity.status(401).body("Invalid token");
+		}
+	}
 
 }

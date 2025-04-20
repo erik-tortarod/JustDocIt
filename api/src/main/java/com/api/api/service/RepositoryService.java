@@ -16,6 +16,7 @@ public class RepositoryService {
 	public Repository saveRepository(Repository repository) {
 		Repository existingRepository = repositoryRepository.findByGithubId(repository.getGithubId());
 		if (existingRepository != null) {
+			existingRepository.setSize(repository.getSize()); // Ensure size is updated
 			return existingRepository; // Return the existing repository if already added
 		}
 		return repositoryRepository.save(repository);

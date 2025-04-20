@@ -163,6 +163,8 @@ public class RepositoriesController {
 			repository.setPrivate((Boolean) repoData.get("private"));
 			repository.setOwner(((Map<String, Object>) repoData.get("owner")).get("login").toString());
 			repository.setHtmlUrl((String) repoData.get("html_url"));
+			repository.setSize((Integer) repoData.get("size")); // Extract and set the
+																// size property
 			repository.setUserId(userId); // Associate the repository with the user
 
 			Repository savedRepository = repositoryService.saveRepository(repository);

@@ -16,38 +16,30 @@ class DocumentationService {
 		language: string,
 		repositoryId: string,
 	): Promise<any> {
-		try {
-			const token = StorageService.getToken();
+		const token = StorageService.getToken();
 
-			if (!token) {
-				throw new Error(`No authentication token`);
-			}
-
-			const url =
-				API_ROUTES.DOCS.SCAN_REPOSITORIE_BY_LANGUAGE +
-				`?repositoryId=${repositoryId}&language=${language}`;
-
-			const response = await fetch(url, {
-				method: "POST",
-				headers: {
-					Authorization: `Bearer ${token}`,
-				},
-			});
-
-			if (!response.ok) {
-				throw new Error(`
-               Error scanning the repositorie by language ${response.status}	
-            `);
-			}
-
-			return await response.json();
-		} catch (error) {
-			await ApiService.getTokenFromCredentials(
-				StorageService.getUserId()!,
-				StorageService.getAccessToken()!,
-			);
-			this.scanRepositoryByLanguage(language, repositoryId);
+		if (!token) {
+			throw new Error(`No authentication token`);
 		}
+
+		const url =
+			API_ROUTES.DOCS.SCAN_REPOSITORIE_BY_LANGUAGE +
+			`?repositoryId=${repositoryId}&language=${language}`;
+
+		const response = await fetch(url, {
+			method: "POST",
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
+
+		if (!response.ok) {
+			throw new Error(`
+               Error scanning the repository by language ${response.status}	
+            `);
+		}
+
+		return await response.json();
 	}
 
 	/**
@@ -57,29 +49,30 @@ class DocumentationService {
 	 * @returns A promise resolving to the documentation data.
 	 */
 	static async getRepository(id: string, language: string): Promise<any> {
-		try {
-			const url =
-				API_ROUTES.DOCS.GET_DOCUMENTATION +
-				`?repositoryId=${id}&language=${language.toUpperCase()}`;
+		const token = StorageService.getToken();
 
-			const response = await fetch(url, {
-				method: "GET",
-			});
-
-			if (!response.ok) {
-				throw new Error(`
-               Error getting the repositorie ${response.status}	
-            `);
-			}
-
-			return await response.json();
-		} catch (error) {
-			await ApiService.getTokenFromCredentials(
-				StorageService.getUserId()!,
-				StorageService.getAccessToken()!,
-			);
-			return this.getRepository(id, language);
+		if (!token) {
+			throw new Error(`No authentication token`);
 		}
+
+		const url =
+			API_ROUTES.DOCS.GET_DOCUMENTATION +
+			`?repositoryId=${id}&language=${language.toUpperCase()}`;
+
+		const response = await fetch(url, {
+			method: "GET",
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
+
+		if (!response.ok) {
+			throw new Error(`
+               Error getting the repository ${response.status}	
+            `);
+		}
+
+		return await response.json();
 	}
 }
 

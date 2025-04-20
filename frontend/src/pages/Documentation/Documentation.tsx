@@ -9,6 +9,9 @@ import logo from "../../../public/logo.png";
 import { mockCodeDocumentation } from "../../fixtures/mockData";
 import { EEnvironment } from "../../types/enums";
 
+//UTILS
+import {fileHasDocumentation,getFileIcon,getFileName} from "../../utils/fileUtils"
+
 // Componentes
 const NavBadge = ({ type }: { type: string }) => {
 	const getTypeClass = () => {
@@ -226,49 +229,6 @@ function Documentation() {
 			</div>
 		);
 	}
-
-	const fileHasDocumentation = (file: ICodeDocumentation) => {
-		return (
-			(file.content?.classes && file.content.classes.length > 0) ||
-			(file.content?.functions && file.content.functions.length > 0) ||
-			(file.content?.interfaces && file.content.interfaces.length > 0) ||
-			(file.content?.variables && file.content.variables.length > 0)
-		);
-	};
-
-	// Función para extraer el nombre del archivo de la ruta
-	const getFileName = (filePath: string) => {
-		return filePath.split("/").pop() || filePath;
-	};
-
-	// Función para extraer la extensión del archivo
-	const getFileExtension = (filePath: string) => {
-		const fileName = getFileName(filePath);
-		return fileName.split(".").pop()?.toLowerCase() || "";
-	};
-
-	// Obtener un ícono basado en la extensión del archivo
-	const getFileIcon = (filePath: string) => {
-		const ext = getFileExtension(filePath);
-		switch (ext) {
-			case "ts":
-			case "tsx":
-				return "📘"; // TypeScript
-			case "js":
-			case "jsx":
-				return "📙"; // JavaScript
-			case "json":
-				return "📒"; // JSON
-			case "md":
-				return "📝"; // Markdown
-			case "html":
-				return "📰"; // HTML
-			case "css":
-				return "🎨"; // CSS
-			default:
-				return "📄"; // Genérico
-		}
-	};
 
 	return (
 		<div className="flex min-h-screen bg-base-100 text-base-content w-screen">

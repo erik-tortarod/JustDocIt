@@ -14,6 +14,10 @@ public class RepositoryService {
 	private RepositoryRepository repositoryRepository;
 
 	public Repository saveRepository(Repository repository) {
+		Repository existingRepository = repositoryRepository.findByGithubId(repository.getGithubId());
+		if (existingRepository != null) {
+			return existingRepository; // Return the existing repository if already added
+		}
 		return repositoryRepository.save(repository);
 	}
 

@@ -13,6 +13,10 @@ import DocumentationService from "../../services/DocumentationService";
 // UTILS
 import { replaceLanguageByIcon } from "../../utils/replaceLanguageByIcon";
 
+/**
+ * Component for displaying an added repository.
+ * @param repo - The repository to display.
+ */
 function AddedRepositorie({ repo }: { repo: IRepository }) {
 	const availableLanguages = ["TYPESCRIPT"];
 
@@ -133,6 +137,11 @@ function AddedRepositorie({ repo }: { repo: IRepository }) {
 	);
 }
 
+/**
+ * Renders an icon for a given programming language.
+ * @param language - The programming language.
+ * @returns A JSX element representing the language icon.
+ */
 function renderLanguageIcon(language: string) {
 	const IconComponent = replaceLanguageByIcon(language);
 	return IconComponent ? <IconComponent /> : <span>{language}</span>;

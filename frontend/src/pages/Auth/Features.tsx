@@ -1,5 +1,8 @@
 import { features, steps } from "../../data/featuresData";
 
+/**
+ * Component for displaying application features and how it works.
+ */
 function Features() {
 	return (
 		<section className="mx-auto py-20 px-4 w-screen ">

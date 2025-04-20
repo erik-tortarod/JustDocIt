@@ -1,3 +1,6 @@
+/**
+ * List of application features.
+ */
 export const features = [
 	{
 		icon: "🔗",
@@ -37,6 +40,9 @@ export const features = [
 	},
 ];
 
+/**
+ * Steps for using the application.
+ */
 export const steps = [
 	{
 		number: 1,

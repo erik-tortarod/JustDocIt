@@ -1,5 +1,8 @@
 import { ELanguage, ETheme } from "./enums";
 
+/**
+ * Represents a user in the system.
+ */
 export interface IUser {
 	jwtToken: string;
 	username: string;
@@ -9,11 +12,17 @@ export interface IUser {
 	preferences: IPreferences;
 }
 
+/**
+ * Represents user preferences.
+ */
 interface IPreferences {
 	language: ELanguage;
 	theme: ETheme;
 }
 
+/**
+ * Represents a repository.
+ */
 export interface IRepository {
 	id: number;
 	githubId: string;
@@ -27,6 +36,9 @@ export interface IRepository {
 	documentedLanguages: string[];
 }
 
+/**
+ * Represents code documentation for a repository.
+ */
 export interface ICodeDocumentation {
 	id: string;
 	repositoryId: string;
@@ -35,6 +47,9 @@ export interface ICodeDocumentation {
 	content: ICodeDocumentationContent;
 }
 
+/**
+ * Represents the content of code documentation.
+ */
 export interface ICodeDocumentationContent {
 	classes: ICodeClass[];
 	functions: ICodeFunction[];
@@ -42,6 +57,9 @@ export interface ICodeDocumentationContent {
 	variables: ICodeVariable[];
 }
 
+/**
+ * Represents a class in the code documentation.
+ */
 export interface ICodeClass {
 	name: string;
 	description: string | null;
@@ -49,12 +67,18 @@ export interface ICodeClass {
 	methods: ICodeMethod[];
 }
 
+/**
+ * Represents a property of a class or interface.
+ */
 export interface ICodeProperty {
 	name: string;
 	type: string;
 	description: string | null;
 }
 
+/**
+ * Represents a method of a class or interface.
+ */
 export interface ICodeMethod {
 	name: string;
 	signature: string;
@@ -65,12 +89,18 @@ export interface ICodeMethod {
 	examples: string[];
 }
 
+/**
+ * Represents a parameter of a method or function.
+ */
 export interface ICodeParameter {
 	name: string;
 	type: string;
 	description: string | null;
 }
 
+/**
+ * Represents a function in the code documentation.
+ */
 export interface ICodeFunction {
 	name: string;
 	signature: string;
@@ -81,6 +111,9 @@ export interface ICodeFunction {
 	examples: string[];
 }
 
+/**
+ * Represents an interface in the code documentation.
+ */
 export interface ICodeInterface {
 	name: string;
 	description: string | null;
@@ -88,6 +121,9 @@ export interface ICodeInterface {
 	methods: ICodeMethod[];
 }
 
+/**
+ * Represents a variable in the code documentation.
+ */
 export interface ICodeVariable {
 	name: string;
 	type: string;

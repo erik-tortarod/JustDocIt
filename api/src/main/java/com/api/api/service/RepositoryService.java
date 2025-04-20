@@ -10,24 +10,24 @@ import java.util.List;
 @Service
 public class RepositoryService {
 
-	@Autowired
-	private RepositoryRepository repositoryRepository;
+    @Autowired
+    private RepositoryRepository repositoryRepository;
 
-	public Repository saveRepository(Repository repository) {
-		Repository existingRepository = repositoryRepository.findByGithubId(repository.getGithubId());
-		if (existingRepository != null) {
-			existingRepository.setSize(repository.getSize()); // Ensure size is updated
-			return existingRepository; // Return the existing repository if already added
-		}
-		return repositoryRepository.save(repository);
-	}
+    public Repository saveRepository(Repository repository) {
+        Repository existingRepository = repositoryRepository.findByGithubId(repository.getGithubId());
+        if (existingRepository != null) {
+            existingRepository.setSize(repository.getSize()); // Ensure size is updated
+            return existingRepository; // Return the existing repository if already added
+        }
+        return repositoryRepository.save(repository);
+    }
 
-	public Repository findByGithubId(String githubId) {
-		return repositoryRepository.findByGithubId(githubId);
-	}
+    public Repository findByGithubId(String githubId) {
+        return repositoryRepository.findByGithubId(githubId);
+    }
 
-	public List<Repository> getAllRepositories() {
-		return repositoryRepository.findAll();
-	}
+    public List<Repository> getAllRepositories() {
+        return repositoryRepository.findAll();
+    }
 
 }

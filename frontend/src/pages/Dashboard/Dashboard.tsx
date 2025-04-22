@@ -25,7 +25,7 @@ import { mockRepositories } from "../../fixtures/mockData";
 function Dashboard() {
 	const [loading, setLoading] = useState<boolean>(true);
 	const [error, setError] = useState<string | undefined>(undefined);
-	const [ setUserData] = useState<any>(null);
+	const [setUserData] = useState<any>(null);
 	const [userRepositories, setUserRepositores] = useState<IRepository[]>([]);
 	const [addedRepositories, setAddedRepositories] = useState<IRepository[]>([]);
 

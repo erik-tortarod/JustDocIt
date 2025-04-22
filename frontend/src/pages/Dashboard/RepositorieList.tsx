@@ -55,7 +55,7 @@ function RepositorieList({
 	// Filtrar repositorios por término de búsqueda
 	const filteredRepositories = userRepositories.filter(
 		(repo) =>
-			repo.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+			(repo.name ?? "").toLowerCase().includes(searchTerm.toLowerCase()) ||
 			(repo.description &&
 				repo.description.toLowerCase().includes(searchTerm.toLowerCase())),
 	);

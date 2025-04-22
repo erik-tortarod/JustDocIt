@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import DocumentationService from "../../services/DocumentationService";
 import { ICodeDocumentation } from "../../types/interfaces";
 
@@ -47,7 +47,7 @@ const NavBadge = ({ type }: { type: string }) => {
 // Componente principal
 function Documentation() {
 	const { id, language } = useParams();
-	const navigate = useNavigate();
+	/* const navigate = useNavigate(); */
 	const [loading, setLoading] = useState(true);
 	const [codeDocumentation, setCodeDocumentation] = useState<
 		ICodeDocumentation[]
@@ -432,7 +432,7 @@ function Documentation() {
 
 							{filteredFiles.length > 0 ? (
 								<ul className="space-y-1 mt-2">
-									{filteredFiles.map((file, index) => {
+									{filteredFiles.map((file) => {
 										const hasDoc = fileHasDocumentation(file);
 										const fileIndex = codeDocumentation.findIndex(
 											(doc) => doc.id === file.id,

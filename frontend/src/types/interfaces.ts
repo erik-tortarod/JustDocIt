@@ -25,15 +25,20 @@ interface IPreferences {
  */
 export interface IRepository {
 	id: number;
-	githubId: string;
-	name: string;
-	private: boolean;
-	htmlUrl: string;
-	description: string | null;
-	size: number;
-	defaultBranch: string;
-	visibility: string;
-	documentedLanguages: string[];
+	githubId?: string;
+	name?: string;
+	private?: boolean;
+	htmlUrl?: string;
+	description?: string | null;
+	size?: number;
+	defaultBranch?: string;
+	visibility?: string;
+	documentedLanguages?: string[];
+	stars?: string;
+	updatedAt?: string;
+	forks?: string;
+	forksCount?: number;
+	stargazersCount?: string;
 }
 
 /**

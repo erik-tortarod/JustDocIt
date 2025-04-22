@@ -40,7 +40,7 @@ function AddedRepositorie({ repo }: { repo: IRepository }) {
 					// Realizar la petición para documentar el repositorio
 					await DocumentationService.scanRepositoryByLanguage(
 						selectedLanguage,
-						repo.githubId,
+						repo.githubId ?? "",
 					);
 
 					// La petición se completó, actualizamos el estado
@@ -89,7 +89,7 @@ function AddedRepositorie({ repo }: { repo: IRepository }) {
 						<div className="project-repo text-content-400 text-sm flex items-center gap-2">
 							<span>📦</span>
 							<a href={repo.htmlUrl} className="hover:text-accent-400">
-								{repo.htmlUrl.replace("https://", "")}
+								{repo.htmlUrl?.replace("https://", "") ?? "URL not available"}
 							</a>
 						</div>
 					</div>

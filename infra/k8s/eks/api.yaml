@@ -1,0 +1,94 @@
+# API Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+   name: api
+   namespace: my-app
+spec:
+   selector:
+      matchLabels:
+         app: api
+   template:
+      metadata:
+         labels:
+            app: api
+      spec:
+         containers:
+            - name: api
+              image: eriktortarod/docker-api:latest
+              ports:
+                 - containerPort: 8082
+              env:
+                 - name: SPRING_APPLICATION_NAME
+                   value: api
+                 - name: SERVER_PORT
+                   value: "8082"
+                 # Logs
+                 - name: LOGGING_LEVEL_COM_API_API_SERVICE_CODEDOCUMENTATIONSERVICE
+                   value: "DEBUG"
+                 - name: LOGGING_LEVEL_COM_API_API_SERVICE_TYPESCRIPTDOCUMENTATIONPARSER
+                   value: "DEBUG"
+                 # Configuración de seguridad básica
+                 - name: SPRING_SECURITY_USER_NAME
+                   value: user
+                 - name: SPRING_SECURITY_USER_PASSWORD
+                   valueFrom:
+                      secretKeyRef:
+                         name: app-secrets
+                         key: SPRING_SECURITY_USER_PASSWORD
+                 # Configuración MongoDB
+                 - name: SPRING_DATA_MONGODB_HOST
+                   value: mongodb
+                 - name: SPRING_DATA_MONGODB_PORT
+                   value: "27017"
+                 - name: SPRING_DATA_MONGODB_USERNAME
+                   valueFrom:
+                      secretKeyRef:
+                         name: mongodb-secret
+                         key: MONGO_INITDB_ROOT_USERNAME
+                 - name: SPRING_DATA_MONGODB_PASSWORD
+                   valueFrom:
+                      secretKeyRef:
+                         name: mongodb-secret
+                         key: MONGO_INITDB_ROOT_PASSWORD
+                 - name: SPRING_DATA_MONGODB_DATABASE
+                   value: justdocit
+                 - name: SPRING_DATA_MONGODB_AUTHENTICATION_DATABASE
+                   value: admin
+                 - name: SPRING_DATA_MONGODB_AUTO_INDEX_CREATION
+                   value: "true"
+                 # Claves de encriptación y JWT
+                 - name: ENCRYPTION_SECRET
+                   valueFrom:
+                      secretKeyRef:
+                         name: app-secrets
+                         key: ENCRYPTION_SECRET
+                 - name: JWT_SECRET_KEY1
+                   valueFrom:
+                      secretKeyRef:
+                         name: app-secrets
+                         key: JWT_SECRET_KEY1
+                 - name: JWT_SECRET_KEY2
+                   valueFrom:
+                      secretKeyRef:
+                         name: app-secrets
+                         key: JWT_SECRET_KEY2
+                 # URL del frontend - será actualizada después del deploy
+                 - name: FRONTEND_URL
+                   value: "FRONTEND_LOADBALANCER_URL"
+---
+# API Service - LoadBalancer para EKS
+apiVersion: v1
+kind: Service
+metadata:
+   name: api
+   namespace: my-app
+   annotations:
+      service.beta.kubernetes.io/aws-load-balancer-type: nlb
+spec:
+   selector:
+      app: api
+   ports:
+      - port: 8082
+        targetPort: 8082
+   type: LoadBalancer

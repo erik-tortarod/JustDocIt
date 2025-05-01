@@ -32,14 +32,26 @@ function Dashboard() {
 
 	const environment: EEnvironment = import.meta.env.VITE_ENVIROMENT;
 
-	useEffect(() => {
-		const initializeDashboard = async () => {
-			try {
-				if (!StorageService.getToken() && !window.location.search) {
-					setError("You have not logged in yet");
-					setLoading(false);
-					return;
-				}
+   const refreshAddedRepositories = async () => {
+      try {
+         const repositories = await RepositoryService.getAddedRepositories();
+         setAddedRepositories(repositories);
+         if (environment === EEnvironment.DEV) {
+            setAddedRepositories((prev) => [...prev, ...mockRepositories]);
+         }
+      } catch (error) {
+         console.error("Error refreshing added repositories:", error);
+      }
+   };
+
+   useEffect(() => {
+      const initializeDashboard = async () => {
+         try {
+            if (!StorageService.getToken() && !window.location.search) {
+               setError("You have not logged in yet");
+               setLoading(false);
+               return;
+            }
 
 				const authResult = await AuthService.processUrlParams();
 
@@ -64,25 +76,10 @@ function Dashboard() {
 			setUserRepositores(repositories);
 		};
 
-		const getAddedRepositories = async () => {
-			const repositories = await RepositoryService.getAddedRepositories();
-			setAddedRepositories(repositories);
-			if (environment === EEnvironment.DEV) {
-				setAddedRepositories((prev) => [...prev, ...mockRepositories]);
-			}
-		};
-
-		initializeDashboard()
-			.then(() => getUserRepositories())
-			.then(() => getAddedRepositories());
-
-		// Configurar actualización automática de addedRepositories
-		const intervalId = setInterval(() => {
-			getAddedRepositories();
-		}, 10000); // Actualizar cada 10 segundos
-
-		return () => clearInterval(intervalId); // Limpiar el intervalo al desmontar
-	}, []);
+      initializeDashboard()
+         .then(() => getUserRepositories())
+         .then(() => refreshAddedRepositories());
+   }, []);
 
 	if (loading) {
 		return <div>Cargando ...</div>;
@@ -97,43 +94,48 @@ function Dashboard() {
 		);
 	}
 
-	return (
-		<div className="grid grid-cols-5 w-screen">
-			<Sidebar />
-			<div className="col-start-2 col-span-4 ps-16 pt-8 pe-8">
-				<section className="flex justify-between items-center">
-					<h1>Dashboard</h1>
-					<ModalBtn
-						btnText="Agregar proyecto nuevo"
-						content={
-							<RepoModal
-								content={
-									<RepositorieList userRepositories={userRepositories} />
-								}
-							/>
-						}
-						id="modal"
-					/>
-				</section>
-				<div className="grid grid-cols-3 gap-6 pe-8 py-8">
-					<DashboardStats
-						amount={addedRepositories.length}
-						stat={`↑ ${addedRepositories.length} repositorios desde el último mes`}
-						title="Proyectos Activos"
-					/>
-					<DashboardStats
-						amount={0}
-						stat="Pendiente de implementación"
-						title="Visitas totales"
-					/>
-				</div>
-				<section>
-					<h2>Lista de Proyectos</h2>
-					<AddedRepositories addedRepositories={addedRepositories} />
-				</section>
-			</div>
-		</div>
-	);
+   return (
+      <div className="grid grid-cols-5 w-screen">
+         <Sidebar />
+         <div className="col-start-2 col-span-4 ps-16 pt-8 pe-8">
+            <section className="flex justify-between items-center">
+               <h1>Dashboard</h1>
+               <ModalBtn
+                  btnText="Agregar proyecto nuevo"
+                  content={
+                     <RepoModal
+                        content={
+                           <RepositorieList
+                              userRepositories={userRepositories}
+                              refreshAddedRepositories={
+                                 refreshAddedRepositories
+                              }
+                           />
+                        }
+                     />
+                  }
+                  id="modal"
+               />
+            </section>
+            <div className="grid grid-cols-3 gap-6 pe-8 py-8">
+               <DashboardStats
+                  amount={addedRepositories.length}
+                  stat={`↑ ${addedRepositories.length} repositorios desde el último mes`}
+                  title="Proyectos Activos"
+               />
+               <DashboardStats
+                  amount={0}
+                  stat="Pendiente de implementación"
+                  title="Visitas totales"
+               />
+            </div>
+            <section>
+               <h2>Lista de Proyectos</h2>
+               <AddedRepositories addedRepositories={addedRepositories} />
+            </section>
+         </div>
+      </div>
+   );
 }
 
 export default Dashboard;

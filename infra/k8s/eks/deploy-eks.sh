@@ -79,7 +79,7 @@ get_lb_url() {
             return 0
         fi
         
-        echo "Intento $attempt de $max_attempts: Esperando IP externa para $service_name..."
+        echo "Intento $attempt de $max_attempts: Esperando IP externa para $service_name..." >&2
         sleep 10
         ((attempt++))
     done

@@ -82,11 +82,13 @@ services:
       build:
          context: ../frontend
          dockerfile: Dockerfile
+         args:
+            - VITE_API_URL=http://localhost:8080
+            - VITE_DOCS_URL=http://localhost:8082
+            - VITE_ENVIROMENT=PROD
       container_name: frontend
       ports:
-         - 5173:80 # Mapeamos al puerto 80 interno
-      environment:
-         - VITE_API_URL=http://localhost:8080
+         - 5173:80
       networks:
          - app_network
       depends_on:

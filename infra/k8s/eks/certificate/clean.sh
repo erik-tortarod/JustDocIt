@@ -15,7 +15,7 @@ kubectl delete service apache-service
 
 # Eliminar el deployment de Apache
 echo "🗑️ Eliminando el deployment de Apache..."
-kubectl delete deployment apache-test
+kubectl delete -f apache-deployment.yaml
 
 # Eliminar los secrets y configmaps
 echo "🗑️ Eliminando secrets y configmaps..."

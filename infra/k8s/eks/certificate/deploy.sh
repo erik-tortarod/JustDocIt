@@ -50,7 +50,7 @@ helm upgrade nginx-ingress ingress-nginx/ingress-nginx -n ingress-nginx --values
 
 # Crear deployment de Apache
 echo "🌐 Creando deployment de Apache..."
-kubectl create deployment apache-test --image=httpd:2.4
+kubectl apply -f apache-deployment.yaml
 
 # Exponer el deployment como un servicio
 echo "🔗 Exponiendo el deployment como un servicio..."

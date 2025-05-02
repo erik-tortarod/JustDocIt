@@ -1,41 +1,3 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-   name: apache-html
-data:
-   index.html: |
-      <!DOCTYPE html>
-      <html>
-      <head>
-        <title>Bienvenido</title>
-        <style>
-          body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f5f5f5;
-            margin: 0;
-          }
-          .message {
-            font-size: 3em;
-            color: #333;
-            text-align: center;
-            padding: 20px;
-            border-radius: 10px;
-            background-color: white;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-          }
-        </style>
-      </head>
-      <body>
-        <div class="message">
-          Hola buenos días
-        </div>
-      </body>
-      </html>
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -54,12 +16,14 @@ spec:
       spec:
          containers:
             - name: apache
-              image: httpd:2.4
+              image: eriktortarod/docker-frontend:latest
+              env:
+                 - name: VITE_API_URL
+                   value: "https://api.tortarod.shop"
+                 - name: VITE_DOCS_URL
+                   value: "https://docs.tortarod.shop"
               ports:
                  - containerPort: 80
-              volumeMounts:
-                 - name: html-content
-                   mountPath: /usr/local/apache2/htdocs
               resources:
                  limits:
                     cpu: "0.5"
@@ -67,7 +31,3 @@ spec:
                  requests:
                     cpu: "0.2"
                     memory: "256Mi"
-         volumes:
-            - name: html-content
-              configMap:
-                 name: apache-html

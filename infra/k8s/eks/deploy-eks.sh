@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Script para desplegar la aplicación en EKS
+# Script para desplegar la aplicación en EKS con MongoDB Atlas
 
 # Colores para la salida
 GREEN='\033[0;32m'
@@ -34,22 +34,6 @@ fi
 print_section "Creando namespace y secretos"
 kubectl apply -f secrets.yaml
 print_success "Namespace y secretos creados"
-
-# Desplegar MongoDB
-print_section "Desplegando MongoDB"
-kubectl apply -f mongodb.yaml
-print_success "MongoDB desplegado"
-
-# Esperar a que MongoDB esté listo (ajustado el tiempo para EKS)
-print_section "Esperando a que MongoDB esté listo"
-sleep 30  # Dar tiempo para que MongoDB inicie sin persistencia
-kubectl wait --for=condition=ready pod -l app=mongodb -n my-app --timeout=120s
-print_success "MongoDB está listo"
-
-# Desplegar Mongo Express
-print_section "Desplegando Mongo Express"
-kubectl apply -f mongo-express.yaml
-print_success "Mongo Express desplegado"
 
 # Desplegar Auth
 print_section "Desplegando Auth Service"
@@ -92,7 +76,6 @@ print_section "Obteniendo URLs de los LoadBalancers"
 
 AUTH_URL=$(get_lb_url "auth")
 API_URL=$(get_lb_url "api")
-MONGO_EXPRESS_URL=$(get_lb_url "mongo-express")
 
 if [ -z "$AUTH_URL" ] || [ -z "$API_URL" ]; then
     print_error "No se pudieron obtener todas las URLs necesarias"
@@ -164,7 +147,7 @@ print_section "URLs de acceso"
 echo -e "Frontend: \t${GREEN}http://$FRONTEND_URL${NC}"
 echo -e "Auth Service: \t${GREEN}http://$AUTH_URL:8080${NC}"
 echo -e "API Service: \t${GREEN}http://$API_URL:8082${NC}"
-echo -e "Mongo Express: \t${GREEN}http://$MONGO_EXPRESS_URL:8081${NC} (usuario: admin, contraseña: pass)"
+echo -e "MongoDB Atlas: \t${GREEN}mongodb+srv://eriktortarod:*******@justdocit.1k27pyp.mongodb.net/justdocit${NC} (Accesible vía MongoDB Compass)"
 
 # Fin del script
 print_section "Despliegue completado con éxito"

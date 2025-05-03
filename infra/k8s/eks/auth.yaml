@@ -42,27 +42,9 @@ spec:
                          key: GITHUB_CLIENT_SECRET
                  - name: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GITHUB_SCOPE
                    value: "read:user,user:email,repo"
-                 # Configuración MongoDB
-                 - name: SPRING_DATA_MONGODB_HOST
-                   value: mongodb
-                 - name: SPRING_DATA_MONGODB_PORT
-                   value: "27017"
-                 - name: SPRING_DATA_MONGODB_USERNAME
-                   valueFrom:
-                      secretKeyRef:
-                         name: mongodb-secret
-                         key: MONGO_INITDB_ROOT_USERNAME
-                 - name: SPRING_DATA_MONGODB_PASSWORD
-                   valueFrom:
-                      secretKeyRef:
-                         name: mongodb-secret
-                         key: MONGO_INITDB_ROOT_PASSWORD
-                 - name: SPRING_DATA_MONGODB_DATABASE
-                   value: justdocit
-                 - name: SPRING_DATA_MONGODB_AUTHENTICATION_DATABASE
-                   value: admin
-                 - name: SPRING_DATA_MONGODB_AUTO_INDEX_CREATION
-                   value: "true"
+                 # Configuración MongoDB Atlas
+                 - name: SPRING_DATA_MONGODB_URI
+                   value: mongodb+srv://eriktortarod:PHyExF6fO46fPp7H@justdocit.1k27pyp.mongodb.net/justdocit
                  # Claves de encriptación y JWT
                  - name: ENCRYPTION_SECRET
                    valueFrom:

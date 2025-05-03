@@ -40,6 +40,11 @@ print_section "IMPORTANTE"
 echo "Los LoadBalancers de AWS pueden tardar unos minutos en eliminarse completamente."
 echo "Verifica en la consola de AWS que todos los LoadBalancers se hayan eliminado para evitar cargos innecesarios."
 
+# Recordatorio sobre MongoDB Atlas
+print_section "RECORDATORIO: MongoDB Atlas"
+echo "Recuerda que tus datos siguen almacenados en MongoDB Atlas."
+echo "Si deseas eliminar la base de datos, deberás hacerlo manualmente desde MongoDB Atlas."
+
 # Fin del script
 print_section "Limpieza completada con éxito"
-echo "Todos los recursos han sido eliminados."
+echo "Todos los recursos Kubernetes han sido eliminados."

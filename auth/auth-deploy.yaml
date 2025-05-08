@@ -20,15 +20,30 @@ spec:
               ports:
                  - containerPort: 8080
 ---
-# Servicio LoadBalancer básico
+# Servicio LoadBalancer con SSL
 apiVersion: v1
 kind: Service
 metadata:
    name: auth-app-service
+   annotations:
+      # Protocolo backend
+      service.beta.kubernetes.io/aws-load-balancer-backend-protocol: "http"
+      # ARN correcto del certificado en ACM
+      service.beta.kubernetes.io/aws-load-balancer-ssl-cert: "arn:aws:acm:us-east-1:619710401650:certificate/3e5443cd-f450-4651-9b68-9baa361d763e"
+      # Puertos que usarán SSL
+      service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "443"
+      # Política de seguridad TLS
+      service.beta.kubernetes.io/aws-load-balancer-ssl-negotiation-policy: "ELBSecurityPolicy-TLS-1-2-2017-01"
+      # Balanceo de carga entre zonas
+      service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: "true"
 spec:
    selector:
       app: auth-app
    ports:
-      - port: 80
+      - name: http
+        port: 80
+        targetPort: 8080
+      - name: https
+        port: 443
         targetPort: 8080
    type: LoadBalancer

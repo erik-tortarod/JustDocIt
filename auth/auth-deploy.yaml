@@ -1,0 +1,34 @@
+---
+# Deployment básico
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+   name: auth-app
+spec:
+   replicas: 1
+   selector:
+      matchLabels:
+         app: auth-app
+   template:
+      metadata:
+         labels:
+            app: auth-app
+      spec:
+         containers:
+            - name: auth-app
+              image: eriktortarod/auth-app:latest
+              ports:
+                 - containerPort: 8080
+---
+# Servicio LoadBalancer básico
+apiVersion: v1
+kind: Service
+metadata:
+   name: auth-app-service
+spec:
+   selector:
+      app: auth-app
+   ports:
+      - port: 80
+        targetPort: 8080
+   type: LoadBalancer

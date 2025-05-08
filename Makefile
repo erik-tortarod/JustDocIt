@@ -130,7 +130,7 @@ help:
 	@echo "  make help        - Muestra esta ayuda"
 	@echo ""
 	@echo "Puertos utilizados:"
-	@echo "  Frontend:       http://localhost:5173"
+	@echo "  Frontend:       http://localhost:3001"
 	@echo "  API:            http://localhost:8082"
 	@echo "  Auth:           http://localhost:8080"
 	@echo "  MongoDB:        puerto 27018"

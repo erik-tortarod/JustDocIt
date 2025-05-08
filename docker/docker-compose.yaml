@@ -27,7 +27,7 @@ services:
          - SPRING_DATA_MONGODB_URI=mongodb+srv://eriktortarod:PHyExF6fO46fPp7H@justdocit.1k27pyp.mongodb.net/authdb
          - SPRING_DATA_MONGODB_DATABASE=authdb
          - IS_DOCKER=true
-         - SPRING_APPLICATION_JSON={"app":{"frontend":{"url":"http://localhost:5173"}}}
+         - SPRING_APPLICATION_JSON={"app":{"frontend":{"url":"http://localhost:3001"}}}
       networks:
          - app_network
 
@@ -42,7 +42,7 @@ services:
             - VITE_ENVIROMENT=PROD
       container_name: frontend
       ports:
-         - 5173:80
+         - 3001:80
       networks:
          - app_network
       depends_on:

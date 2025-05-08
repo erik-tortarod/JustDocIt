@@ -16,7 +16,7 @@ spec:
             - name: frontend
               image: eriktortarod/docker-frontend:latest
               ports:
-                 - containerPort: 80 # Cambiado de 5173 a 80
+                 - containerPort: 80 # Cambiado de 3001 a 80
               env:
                  # URL para auth (puerto 8080)
                  - name: VITE_API_URL
@@ -34,7 +34,7 @@ spec:
    selector:
       app: frontend
    ports:
-      - port: 80 # Cambiado de 5173 a 80
-        targetPort: 80 # Cambiado de 5173 a 80
+      - port: 80 # Cambiado de 3001 a 80
+        targetPort: 80 # Cambiado de 3001 a 80
         nodePort: 30173
    type: NodePort

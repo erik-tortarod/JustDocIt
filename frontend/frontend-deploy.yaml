@@ -1,0 +1,69 @@
+---
+# Deployment para la aplicación frontend
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+   name: frontend-app
+spec:
+   replicas: 2
+   selector:
+      matchLabels:
+         app: frontend-app
+   template:
+      metadata:
+         labels:
+            app: frontend-app
+      spec:
+         containers:
+            - name: frontend-app
+              image: eriktortarod/frontend-app:latest
+              imagePullPolicy: Always
+              ports:
+                 - containerPort: 80
+              resources:
+                 requests:
+                    cpu: "100m"
+                    memory: "128Mi"
+                 limits:
+                    cpu: "200m"
+                    memory: "256Mi"
+              livenessProbe:
+                 httpGet:
+                    path: /
+                    port: 80
+                 initialDelaySeconds: 30
+                 periodSeconds: 10
+              readinessProbe:
+                 httpGet:
+                    path: /
+                    port: 80
+                 initialDelaySeconds: 5
+                 periodSeconds: 5
+---
+# Servicio LoadBalancer con SSL
+apiVersion: v1
+kind: Service
+metadata:
+   name: frontend-app-service
+   annotations:
+      # Protocolo backend
+      service.beta.kubernetes.io/aws-load-balancer-backend-protocol: "http"
+      # ARN correcto del certificado en ACM
+      service.beta.kubernetes.io/aws-load-balancer-ssl-cert: "arn:aws:acm:us-east-1:619710401650:certificate/e6b96e28-9ff8-4018-9d5b-0cda5e954924"
+      # Puertos que usarán SSL
+      service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "443"
+      # Política de seguridad TLS
+      service.beta.kubernetes.io/aws-load-balancer-ssl-negotiation-policy: "ELBSecurityPolicy-TLS-1-2-2017-01"
+      # Balanceo de carga entre zonas
+      service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: "true"
+spec:
+   selector:
+      app: frontend-app
+   ports:
+      - name: http
+        port: 80
+        targetPort: 80
+      - name: https
+        port: 443
+        targetPort: 80
+   type: LoadBalancer

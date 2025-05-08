@@ -65,7 +65,7 @@ function Documentation() {
 
 	// Determinar el entorno
 	const environment: EEnvironment =
-		import.meta.env.VITE_ENVIRONMENT || EEnvironment.DEV;
+		import.meta.env.VITE_ENVIRONMENT || EEnvironment.DEV || "DEV";
 
 	useEffect(() => {
 		const getDocumentation = async () => {

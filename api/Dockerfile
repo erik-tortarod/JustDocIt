@@ -1,16 +1,17 @@
-FROM maven:3.9.6-eclipse-temurin-21-alpine AS build
+FROM eclipse-temurin:21-jdk
 
 WORKDIR /app
 
-COPY pom.xml .
-COPY src ./src
+# Copiar archivos del proyecto
+COPY . .
 
-RUN mvn clean package -DskipTests
+# Construir la aplicación con Java 21
+RUN chmod +x ./mvnw && ./mvnw clean package -DskipTests
 
-FROM eclipse-temurin:21-jre-alpine
-WORKDIR /app
-COPY --from=build /app/target/*.jar app.jar
+# Copiar el JAR a un nombre fijo
+RUN find target -name "*.jar" -not -name "*sources.jar" -not -name "*javadoc.jar" -exec cp {} app.jar \;
 
-EXPOSE 8080
+# Exponer el puerto 8082 en lugar de 8080
+EXPOSE 8082
 
 ENTRYPOINT ["java", "-jar", "app.jar"]

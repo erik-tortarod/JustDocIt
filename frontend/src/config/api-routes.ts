@@ -1,4 +1,4 @@
-import { EEnvironment } from "../types/enums"
+import { EEnvironment } from "../types/enums";
 
 const API_BASE_URL = "http://localhost:8080";
 const DOCS_BASE_URL = "http://localhost:8082";

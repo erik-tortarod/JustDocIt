@@ -8,7 +8,7 @@ import logo from "../../../public/logo.png";
 // Mockup de datos para desarrollo
 import { mockCodeDocumentation } from "../../fixtures/mockData";
 import { EEnvironment } from "../../types/enums";
-import { ENVIRONMENT} from "../../config/api-routes";
+import { ENVIRONMENT } from "../../config/api-routes";
 
 //UTILS
 import {

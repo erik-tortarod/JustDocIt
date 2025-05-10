@@ -10,6 +10,7 @@ export const API_ROUTES = Object.freeze({
 		LOGIN: `${API_BASE_URL}/api/oauth2/authorization/github`,
 		USER: `${API_BASE_URL}/api/user`,
 		TOKEN: `${API_BASE_URL}/auth/token`,
+		LDAP: `${API_BASE_URL}/api/auth/verify`,
 	},
 	DOCS: {
 		REPOSITORIES: `${DOCS_BASE_URL}/api/github-repositories`,

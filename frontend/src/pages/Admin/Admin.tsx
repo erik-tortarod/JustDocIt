@@ -1,27 +1,14 @@
-function Admin() {
-	const handlePostRequest = async () => {
-		try {
-			const response = await fetch("http://localhost:8080/api/auth/verify", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({
-					username: "slashguy",
-					password: "slashguyspassword",
-				}),
-			});
+import LdapLoginForm from "./LdapLoginForm";
+import AdminContent from "./AdminContent";
+import { useState } from "react";
 
-			const data = await response.json();
-			console.log(data);
-		} catch (error) {
-			console.error("Error:", error);
-		}
-	};
+function Admin() {
+	const [authenticated, setAuthenticated] = useState<boolean>(false);
 
 	return (
-		<div>
-			<button onClick={handlePostRequest}>Send Post Request</button>
+		<div className="w-screen p-4">
+			{!authenticated && <LdapLoginForm authentication={setAuthenticated} />}
+			{authenticated && <AdminContent />}
 		</div>
 	);
 }

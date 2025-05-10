@@ -1,12 +1,29 @@
 function Admin() {
-	return (
-		<div>
-			<h1>Admin</h1>
-			<p>Welcome to the admin page!</p>
-			<p>Here you can manage users, settings, and more.</p>
-			<p>Use the navigation menu to access different sections.</p>
-		</div>
-	);
+   const handlePostRequest = async () => {
+      try {
+         const response = await fetch("http://localhost:8080/api/auth/verify", {
+            method: "POST",
+            headers: {
+               "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+               username: "slashguy",
+               password: "slashguyspassword",
+            }),
+         });
+
+         const data = await response.json();
+         console.log(data);
+      } catch (error) {
+         console.error("Error:", error);
+      }
+   };
+
+   return (
+      <div>
+         <button onClick={handlePostRequest}>Send Post Request</button>
+      </div>
+   );
 }
 
 export default Admin;

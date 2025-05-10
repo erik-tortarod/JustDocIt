@@ -5,6 +5,9 @@ WORKDIR /app
 # Copiar archivos del proyecto
 COPY . .
 
+# Aplicar formato para evitar errores de validación
+RUN chmod +x ./mvnw && ./mvnw spring-javaformat:apply
+
 # Construir la aplicación con Java 21
 RUN chmod +x ./mvnw && ./mvnw clean package -DskipTests
 

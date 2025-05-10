@@ -1,5 +1,7 @@
-const API_BASE_URL = import.meta.env.VITE_API_URL;
-const DOCS_BASE_URL = import.meta.env.VITE_DOCS_URL;
+/* const API_BASE_URL = import.meta.env.VITE_API_URL;
+const DOCS_BASE_URL = import.meta.env.VITE_DOCS_URL; */
+const API_BASE_URL = 'https://tortarod.shop';
+const DOCS_BASE_URL = 'https://justdocitauth.site';
 
 export const API_ROUTES = Object.freeze({
 	AUTH: {

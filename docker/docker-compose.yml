@@ -1,0 +1,53 @@
+version: "3.8"
+
+services:
+   frontend:
+      build:
+         context: ../frontend
+         dockerfile: Dockerfile
+      image: ${DOCKER_USERNAME:-usuario}/mi-proyecto-frontend:latest
+      container_name: frontend
+      ports:
+         - "80:80"
+      depends_on:
+         - auth
+         - api
+      networks:
+         - app-network
+      restart: unless-stopped
+
+   auth:
+      build:
+         context: ../auth
+         dockerfile: Dockerfile
+      image: ${DOCKER_USERNAME:-usuario}/mi-proyecto-auth:latest
+      container_name: auth
+      ports:
+         - "8080:8080"
+      environment:
+         - SPRING_PROFILES_ACTIVE=docker
+         - SERVER_PORT=8080
+      networks:
+         - app-network
+      restart: unless-stopped
+
+   api:
+      build:
+         context: ../api
+         dockerfile: Dockerfile
+      image: ${DOCKER_USERNAME:-usuario}/mi-proyecto-api:latest
+      container_name: api
+      ports:
+         - "8082:8082"
+      environment:
+         - SPRING_PROFILES_ACTIVE=docker
+         - SERVER_PORT=8082
+      depends_on:
+         - auth
+      networks:
+         - app-network
+      restart: unless-stopped
+
+networks:
+   app-network:
+      driver: bridge

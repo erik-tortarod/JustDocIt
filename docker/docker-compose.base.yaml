@@ -1,8 +1,0 @@
-version: "3.8"
-
-networks:
-   app_network:
-      name: app_network
-
-volumes:
-   data: {}

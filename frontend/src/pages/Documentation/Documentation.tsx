@@ -8,6 +8,7 @@ import logo from "../../../public/logo.png";
 // Mockup de datos para desarrollo
 import { mockCodeDocumentation } from "../../fixtures/mockData";
 import { EEnvironment } from "../../types/enums";
+import { ENVIRONMENT} from "../../config/api-routes";
 
 //UTILS
 import {
@@ -64,8 +65,7 @@ function Documentation() {
 	const [activeSection, setActiveSection] = useState("classes"); // 'classes', 'files', 'interfaces', 'functions'
 
 	// Determinar el entorno
-	const environment: EEnvironment =
-		import.meta.env.VITE_ENVIRONMENT || EEnvironment.DEV || "DEV";
+	const environment = ENVIRONMENT;
 
 	useEffect(() => {
 		const getDocumentation = async () => {

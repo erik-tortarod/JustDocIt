@@ -1,7 +1,9 @@
-/* const API_BASE_URL = import.meta.env.VITE_API_URL;
-const DOCS_BASE_URL = import.meta.env.VITE_DOCS_URL; */
-const API_BASE_URL = "https://tortarod.shop";
-const DOCS_BASE_URL = "https://justdocitauth.site";
+import { EEnvironment } from "../types/enums"
+
+const API_BASE_URL = "http://localhost:8080";
+const DOCS_BASE_URL = "http://localhost:8082";
+
+export const ENVIRONMENT = EEnvironment.DEV;
 
 export const API_ROUTES = Object.freeze({
 	AUTH: {

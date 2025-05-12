@@ -10,15 +10,16 @@ import java.util.List;
 @Service
 public class ActivityService {
 
-    @Autowired
-    private ActivityRepository activityRepository;
+	@Autowired
+	private ActivityRepository activityRepository;
 
-    public Activity addActivity(String userId, String description, String category) {
-        Activity activity = new Activity(userId, description, category);
-        return activityRepository.save(activity);
-    }
+	public Activity addActivity(String userId, String description, String category) {
+		Activity activity = new Activity(userId, description, category);
+		return activityRepository.save(activity);
+	}
 
-    public List<Activity> getActivitiesByUserId(String userId) {
-        return activityRepository.findByUserId(userId);
-    }
+	public List<Activity> getActivitiesByUserId(String userId) {
+		return activityRepository.findByUserId(userId);
+	}
+
 }

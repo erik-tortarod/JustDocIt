@@ -17,37 +17,40 @@ import java.util.Map;
 @RequestMapping("/api/auth")
 public class LdapAuthController {
 
-    @Autowired
-    private LdapTemplate ldapTemplate;
+	@Autowired
+	private LdapTemplate ldapTemplate;
 
-    @PostMapping("/verify")
-    public ResponseEntity<?> verifyLdapCredentials(@RequestBody Map<String, String> credentials) {
-        String username = credentials.get("username");
-        String password = credentials.get("password");
+	@PostMapping("/verify")
+	public ResponseEntity<?> verifyLdapCredentials(@RequestBody Map<String, String> credentials) {
+		String username = credentials.get("username");
+		String password = credentials.get("password");
 
-        // Crear respuesta
-        Map<String, Object> response = new HashMap<>();
+		// Crear respuesta
+		Map<String, Object> response = new HashMap<>();
 
-        try {
-            // Usar LdapTemplate para verificar credenciales
-            Filter filter = new EqualsFilter("uid", username);
-            boolean authenticated = ldapTemplate.authenticate("", filter.encode(), password);
+		try {
+			// Usar LdapTemplate para verificar credenciales
+			Filter filter = new EqualsFilter("uid", username);
+			boolean authenticated = ldapTemplate.authenticate("", filter.encode(), password);
 
-            response.put("authenticated", authenticated);
+			response.put("authenticated", authenticated);
 
-            if (authenticated) {
-                response.put("message", "Usuario autenticado correctamente");
-            } else {
-                response.put("message", "Credenciales inválidas");
-            }
+			if (authenticated) {
+				response.put("message", "Usuario autenticado correctamente");
+			}
+			else {
+				response.put("message", "Credenciales inválidas");
+			}
 
-            return ResponseEntity.ok(response);
-        } catch (Exception e) {
-            response.put("authenticated", false);
-            response.put("message", "Error al verificar credenciales");
-            response.put("error", e.getMessage());
+			return ResponseEntity.ok(response);
+		}
+		catch (Exception e) {
+			response.put("authenticated", false);
+			response.put("message", "Error al verificar credenciales");
+			response.put("error", e.getMessage());
 
-            return ResponseEntity.status(401).body(response);
-        }
-    }
+			return ResponseEntity.status(401).body(response);
+		}
+	}
+
 }

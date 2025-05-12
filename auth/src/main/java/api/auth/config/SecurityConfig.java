@@ -35,41 +35,47 @@ public class SecurityConfig {
 	@Autowired
 	public void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.ldapAuthentication()
-				.userDnPatterns("uid={0},ou=people")
-				.groupSearchBase("ou=groups")
-				.contextSource()
-				.url("ldap://localhost:8389/dc=springframework,dc=org")
-				.and()
-				.passwordCompare()
-				.passwordEncoder(new LdapShaPasswordEncoder())
-				.passwordAttribute("userPassword");
+			.userDnPatterns("uid={0},ou=people")
+			.groupSearchBase("ou=groups")
+			.contextSource()
+			.url("ldap://localhost:8389/dc=springframework,dc=org")
+			.and()
+			.passwordCompare()
+			.passwordEncoder(new LdapShaPasswordEncoder())
+			.passwordAttribute("userPassword");
 	}
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		http.csrf(csrf -> csrf.disable())
-				.cors(cors -> cors.configurationSource(request -> {
-					CorsConfiguration configuration = new CorsConfiguration();
-					configuration.setAllowedOrigins(Arrays.asList(frontendUrl));
-					configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-					configuration.setAllowedHeaders(Arrays.asList("*"));
-					configuration.setAllowCredentials(true);
-					return configuration;
-				}))
-				.authorizeHttpRequests(auth -> auth
-						.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-						.requestMatchers("/", "/error", "/css/**", "/js/**", "/auth/token", "/token/**").permitAll()
-						.requestMatchers("/api/oauth2/authorization/**").permitAll()
-						.requestMatchers("/api/auth/ldap-login").permitAll()
-						.requestMatchers("/api/auth/validate-token").permitAll()
-						.requestMatchers("/api/admin/**").authenticated() // Proteger rutas admin solo con autenticación
-						.requestMatchers("/api/**").permitAll()
-						.anyRequest().authenticated()
-				)
-				.addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class)
-				.oauth2Login(oauth2 -> oauth2.successHandler(oAuth2LoginSuccessHandler)
-						.authorizationEndpoint(authorization -> authorization.baseUri("/api/oauth2/authorization")));
+		http.csrf(csrf -> csrf.disable()).cors(cors -> cors.configurationSource(request -> {
+			CorsConfiguration configuration = new CorsConfiguration();
+			configuration.setAllowedOrigins(Arrays.asList(frontendUrl));
+			configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+			configuration.setAllowedHeaders(Arrays.asList("*"));
+			configuration.setAllowCredentials(true);
+			return configuration;
+		}))
+			.authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.OPTIONS, "/**")
+				.permitAll()
+				.requestMatchers("/", "/error", "/css/**", "/js/**", "/auth/token", "/token/**")
+				.permitAll()
+				.requestMatchers("/api/oauth2/authorization/**")
+				.permitAll()
+				.requestMatchers("/api/auth/ldap-login")
+				.permitAll()
+				.requestMatchers("/api/auth/validate-token")
+				.permitAll()
+				.requestMatchers("/api/admin/**")
+				.authenticated() // Proteger rutas admin solo con autenticación
+				.requestMatchers("/api/**")
+				.permitAll()
+				.anyRequest()
+				.authenticated())
+			.addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class)
+			.oauth2Login(oauth2 -> oauth2.successHandler(oAuth2LoginSuccessHandler)
+				.authorizationEndpoint(authorization -> authorization.baseUri("/api/oauth2/authorization")));
 
 		return http.build();
 	}
+
 }

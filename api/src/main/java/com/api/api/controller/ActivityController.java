@@ -15,61 +15,64 @@ import java.util.Map;
 @RequestMapping("/api/activities")
 public class ActivityController {
 
-    @Autowired
-    private JwtUtil jwtUtil;
+	@Autowired
+	private JwtUtil jwtUtil;
 
-    @Autowired
-    private ActivityService activityService;
+	@Autowired
+	private ActivityService activityService;
 
-    @PostMapping
-    public ResponseEntity<?> addActivity(@RequestHeader("Authorization") String authHeader,
-                                          @RequestBody Map<String, String> requestBody) {
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            return ResponseEntity.badRequest().body("Invalid Authorization header format. Expected 'Bearer <token>'");
-        }
+	@PostMapping
+	public ResponseEntity<?> addActivity(@RequestHeader("Authorization") String authHeader,
+			@RequestBody Map<String, String> requestBody) {
+		if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+			return ResponseEntity.badRequest().body("Invalid Authorization header format. Expected 'Bearer <token>'");
+		}
 
-        String token = authHeader.substring(7);
-        SecretKey secretKey = jwtUtil.getSecretKey1();
+		String token = authHeader.substring(7);
+		SecretKey secretKey = jwtUtil.getSecretKey1();
 
-        try {
-            Map<String, Object> claims = JwtUtil.validateToken(token, secretKey);
-            String userId = (String) claims.get("id");
+		try {
+			Map<String, Object> claims = JwtUtil.validateToken(token, secretKey);
+			String userId = (String) claims.get("id");
 
-            String description = requestBody.get("description");
-            String category = requestBody.get("category"); // New field for category
+			String description = requestBody.get("description");
+			String category = requestBody.get("category"); // New field for category
 
-            if (description == null || description.isEmpty()) {
-                return ResponseEntity.badRequest().body("Description is required");
-            }
+			if (description == null || description.isEmpty()) {
+				return ResponseEntity.badRequest().body("Description is required");
+			}
 
-            if (category == null || category.isEmpty()) {
-                return ResponseEntity.badRequest().body("Category is required");
-            }
+			if (category == null || category.isEmpty()) {
+				return ResponseEntity.badRequest().body("Category is required");
+			}
 
-            Activity activity = activityService.addActivity(userId, description, category);
-            return ResponseEntity.ok(activity);
-        } catch (Exception e) {
-            return ResponseEntity.status(401).body("Invalid or expired token");
-        }
-    }
+			Activity activity = activityService.addActivity(userId, description, category);
+			return ResponseEntity.ok(activity);
+		}
+		catch (Exception e) {
+			return ResponseEntity.status(401).body("Invalid or expired token");
+		}
+	}
 
-    @GetMapping
-    public ResponseEntity<?> getActivities(@RequestHeader("Authorization") String authHeader) {
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            return ResponseEntity.badRequest().body("Invalid Authorization header format. Expected 'Bearer <token>'");
-        }
+	@GetMapping
+	public ResponseEntity<?> getActivities(@RequestHeader("Authorization") String authHeader) {
+		if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+			return ResponseEntity.badRequest().body("Invalid Authorization header format. Expected 'Bearer <token>'");
+		}
 
-        String token = authHeader.substring(7);
-        SecretKey secretKey = jwtUtil.getSecretKey1();
+		String token = authHeader.substring(7);
+		SecretKey secretKey = jwtUtil.getSecretKey1();
 
-        try {
-            Map<String, Object> claims = JwtUtil.validateToken(token, secretKey);
-            String userId = (String) claims.get("id");
+		try {
+			Map<String, Object> claims = JwtUtil.validateToken(token, secretKey);
+			String userId = (String) claims.get("id");
 
-            List<Activity> activities = activityService.getActivitiesByUserId(userId);
-            return ResponseEntity.ok(activities);
-        } catch (Exception e) {
-            return ResponseEntity.status(401).body("Invalid or expired token");
-        }
-    }
+			List<Activity> activities = activityService.getActivitiesByUserId(userId);
+			return ResponseEntity.ok(activities);
+		}
+		catch (Exception e) {
+			return ResponseEntity.status(401).body("Invalid or expired token");
+		}
+	}
+
 }

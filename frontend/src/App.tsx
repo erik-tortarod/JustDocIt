@@ -14,7 +14,7 @@ function App() {
 			<Route path="/" element={<Auth />} />
 			<Route path="/dashboard" element={<Dashboard />} />
 			<Route path="/documentation/:id/:language" element={<Documentation />} />
-			<Route path="/notfound/:id" element={<NotFound />} />
+			<Route path="*" element={<NotFound />} />
 			<Route path="/admin" element={<Admin />} />
 		</Routes>
 	);

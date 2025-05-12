@@ -31,7 +31,6 @@ function Dashboard() {
 	const [userData, setUserData] = useState<any>(null);
 	const [userRepositories, setUserRepositores] = useState<IRepository[]>([]);
 	const [addedRepositories, setAddedRepositories] = useState<IRepository[]>([]);
-	console.log(userData);
 
 	const environment = ENVIRONMENT;
 
@@ -99,7 +98,7 @@ function Dashboard() {
 
 	return (
 		<div className="grid grid-cols-5 w-screen">
-			<Sidebar />
+			<Sidebar userData={userData} />
 			<div className="col-start-2 col-span-4 ps-16 pt-8 pe-8">
 				<section className="flex justify-between items-center">
 					<h1>Dashboard</h1>

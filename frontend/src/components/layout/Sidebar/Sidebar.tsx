@@ -3,8 +3,9 @@ import logo from "../../../../public/logo.png";
 //COMPONENTS
 import NavSection from "../../ui/NavSection";
 import NavLink from "../../ui/NavLink";
+import { IUser } from "../../../types/interfaces";
 
-function Sidebar() {
+function Sidebar({ userData }: { userData: IUser }) {
 	return (
 		<aside className="w-64 bg-base-200 border-r border-base-300/10 py-6 flex flex-col h-screen sticky top-0">
 			{/* Logo */}
@@ -35,15 +36,15 @@ function Sidebar() {
 
 			{/* Perfil de usuario */}
 			<div className="mt-auto px-6 flex items-center gap-3">
-				<div className="w-9 h-9 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center text-white font-semibold">
-					JS
+				<div className="w-9 h-9 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center text-white font-semibold overflow-hidden">
+					<img src={userData.avatarUrl} alt={userData.username.slice(0, 2)} />
 				</div>
 				<div className="overflow-hidden">
 					<div className="font-medium whitespace-nowrap overflow-hidden text-ellipsis">
-						Juan Silva
+						{userData.username}
 					</div>
 					<div className="text-xs text-base-content/60 whitespace-nowrap overflow-hidden text-ellipsis">
-						juan.silva@ejemplo.com
+						{userData.email}
 					</div>
 				</div>
 			</div>

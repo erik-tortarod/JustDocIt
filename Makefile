@@ -3,7 +3,7 @@ DOCKER_USERNAME ?= eriktortarod
 PROJECT_NAME ?= justdocit
 SERVICES := frontend auth api
 
-.PHONY: start-all stop-all rebuild-all push-to-dockerhub make-logs make-shell make-help
+.PHONY: start-all stop-all rebuild-all push-to-dockerhub logs shell help format
 
 # Inicia todos los servicios
 start-all:
@@ -40,6 +40,19 @@ shell-%:
 	@echo "Abriendo shell en el contenedor $*..."
 	docker-compose -f docker/docker-compose.yml exec $* /bin/sh
 
+format:
+	@echo "Formateando frontend con npm..."
+	cd frontend && npm run format
+
+	@echo "Formateando backend (auth)..."
+	cd auth && ./mvnw spring-javaformat:apply
+
+	@echo "Formateando backend (api)..."
+	cd api && ./mvnw spring-javaformat:apply
+
+	@echo "Formato aplicado correctamente."
+
+
 # Muestra la ayuda
 help:
 	@echo "Comandos disponibles:"
@@ -49,4 +62,5 @@ help:
 	@echo "  make push-to-dockerhub        - Publica las imágenes en DockerHub"
 	@echo "  make logs-CONTENEDOR          - Muestra los logs del contenedor especificado"
 	@echo "  make shell-CONTENEDOR         - Abre un shell en el contenedor especificado"
+	@echo "  make format                   - Da formato al código del frontend y backend"
 	@echo "  make help                     - Muestra esta ayuda"

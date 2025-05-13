@@ -19,4 +19,6 @@ public interface CodeDocumentationRepository extends MongoRepository<CodeDocumen
 
 	List<CodeDocumentation> findByRepositoryIdAndUserId(String repositoryId, String userId);
 
+	void deleteByRepositoryId(String repositoryId);
+
 }

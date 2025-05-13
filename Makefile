@@ -3,7 +3,7 @@ DOCKER_USERNAME ?= eriktortarod
 PROJECT_NAME ?= justdocit
 SERVICES := frontend auth api
 
-.PHONY: start-all stop-all rebuild-all push-to-dockerhub logs shell help format
+.PHONY: start-all stop-all rebuild-all push-to-dockerhub logs shell help format run-all
 
 # Inicia todos los servicios
 start-all:
@@ -52,6 +52,16 @@ format:
 
 	@echo "Formato aplicado correctamente."
 
+# Ejecuta el proyecto en local sin contenedores
+run-all:
+	@echo "Ejecutando el proyecto en local sin contenedores..."
+	@echo "Iniciando frontend..."
+	cd frontend && npm run dev &
+	@echo "Iniciando backend (auth)..."
+	cd auth && ./mvnw spring-boot:run &
+	@echo "Iniciando backend (api)..."
+	cd api && ./mvnw spring-boot:run &
+	@echo "Todos los servicios están ejecutándose en local."
 
 # Muestra la ayuda
 help:
@@ -63,4 +73,5 @@ help:
 	@echo "  make logs-CONTENEDOR          - Muestra los logs del contenedor especificado"
 	@echo "  make shell-CONTENEDOR         - Abre un shell en el contenedor especificado"
 	@echo "  make format                   - Da formato al código del frontend y backend"
+	@echo "  make run-all                  - Ejecuta el proyecto en local sin contenedores"
 	@echo "  make help                     - Muestra esta ayuda"

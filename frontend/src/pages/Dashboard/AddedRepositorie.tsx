@@ -3,7 +3,8 @@ import { Link } from "react-router-dom";
 
 // COMPONENTS
 import SelectBtn from "../../components/common/SelectBtn";
-import ProgressBarModal from "../../components/ui/ProgressBarModal"; // Importamos el modal de progreso
+import ProgressBarModal from "../../components/ui/ProgressBarModal";
+import RepositorySettingsModal from "./RepositorySettingsModal"; // Importamos el nuevo modal
 
 // INTERFACES
 import { IRepository } from "../../types/interfaces";
@@ -25,6 +26,7 @@ function AddedRepositorie({ repo }: { repo: IRepository }) {
 	const [loading, setLoading] = useState(false);
 	const [isProgressModalOpen, setIsProgressModalOpen] = useState(false);
 	const [processingComplete, setProcessingComplete] = useState(false);
+	const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false); // Estado para el modal de configuración
 
 	// Referencia al selectBtn
 	const selectBtnRef = useRef(null);
@@ -33,21 +35,18 @@ function AddedRepositorie({ repo }: { repo: IRepository }) {
 		const documentRepositoryByLanguage = async () => {
 			if (selectedLanguage) {
 				setLoading(true);
-				setIsProgressModalOpen(true); // Abrimos el modal de progreso
-				setProcessingComplete(false); // Reiniciamos el estado de procesamiento
+				setIsProgressModalOpen(true);
+				setProcessingComplete(false);
 
 				try {
-					// Realizar la petición para documentar el repositorio
 					await DocumentationService.scanRepositoryByLanguage(
 						selectedLanguage,
 						repo.githubId ?? "",
 					);
-
-					// La petición se completó, actualizamos el estado
 					setProcessingComplete(true);
 				} catch (error) {
 					console.error("Error documentando repositorio:", error);
-					setProcessingComplete(true); // Aunque haya error, marcamos como completado
+					setProcessingComplete(true);
 				} finally {
 					setLoading(false);
 				}
@@ -57,25 +56,28 @@ function AddedRepositorie({ repo }: { repo: IRepository }) {
 		documentRepositoryByLanguage();
 	}, [selectedLanguage]);
 
-	// Manejar cierre del modal
 	const handleCloseProgressModal = () => {
-		// Solo permitimos cerrar el modal si el proceso ha terminado o si estamos cancelando
 		if (processingComplete || !loading) {
 			setIsProgressModalOpen(false);
-			setSelectedLanguage(""); // Reset del lenguaje seleccionado
+			setSelectedLanguage("");
 		}
 	};
 
-	// Manejar finalización
 	const handleProcessComplete = () => {
-		// Aquí podríamos hacer algo cuando el proceso termine completamente
-		// como actualizar la lista de lenguajes documentados
 		console.log("Proceso de documentación completado para:", selectedLanguage);
 	};
 
-	// Función para configurar el lenguaje seleccionado
 	const handleSetLanguage = (language: string) => {
 		setSelectedLanguage(language);
+	};
+
+	// Funciones para manejar el modal de configuración (solo visual)
+	const handleOpenSettings = () => {
+		setIsSettingsModalOpen(true);
+	};
+
+	const handleCloseSettings = () => {
+		setIsSettingsModalOpen(false);
 	};
 
 	return (
@@ -93,14 +95,15 @@ function AddedRepositorie({ repo }: { repo: IRepository }) {
 							</a>
 						</div>
 					</div>
-					<div
-						className={`project-status px-2 py-1 rounded-md text-xs font-medium cursor-pointer ${
-							repo.documentedLanguages?.length
-								? "bg-success-900 text-success-300"
-								: "bg-warning-900 text-warning-300"
-						}`}
-					>
-						{repo.documentedLanguages?.length ? ". . ." : "Pendiente"}
+					<div className="flex items-center gap-2">
+						{/* Botón de configuración (3 puntos) */}
+						<button
+							onClick={handleOpenSettings}
+							className="p-2 text-content-400 hover:text-content-100 hover:bg-base-700 rounded-md transition-colors"
+							aria-label="Configuración del repositorio"
+						>
+							<span className="text-lg">. . .</span>
+						</button>
 					</div>
 				</div>
 
@@ -179,6 +182,13 @@ function AddedRepositorie({ repo }: { repo: IRepository }) {
 				language={selectedLanguage}
 				isProcessing={loading}
 				onComplete={handleProcessComplete}
+			/>
+
+			{/* Modal de configuración del repositorio */}
+			<RepositorySettingsModal
+				isOpen={isSettingsModalOpen}
+				onClose={handleCloseSettings}
+				repository={repo}
 			/>
 		</>
 	);

@@ -9,6 +9,7 @@ import { SyncIcon } from "../../assets/images/svg/SyncIcon";
 import { ExternalLinkIcon } from "../../assets/images/svg/ExternalLinkIcon";
 import { ChevronRightIcon } from "../../assets/images/svg/ChevronRightIcon";
 import { TrashIcon } from "../../assets/images/svg/TrashIcon";
+import RepositoryService from "../../services/RepositoryService";
 
 interface Props {
 	isOpen: boolean;
@@ -18,6 +19,16 @@ interface Props {
 
 function RepositorySettingsModal({ isOpen, onClose, repository }: Props) {
 	const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+
+	const handleDeleteRepository = async () => {
+		try {
+			await RepositoryService.deleteRepository(repository.id);
+			alert("Repositorio eliminado correctamente.");
+			onClose();
+		} catch (error) {
+			alert("Error al eliminar el repositorio.");
+		}
+	};
 
 	if (!isOpen) return null;
 
@@ -142,7 +153,10 @@ function RepositorySettingsModal({ isOpen, onClose, repository }: Props) {
 								</div>
 							</div>
 							<div className="flex gap-3">
-								<button className="flex-1 bg-error-focus hover:bg-error text-white px-4 py-2 rounded-lg font-medium transition-colors">
+								<button
+									onClick={handleDeleteRepository}
+									className="flex-1 bg-error-focus hover:bg-error text-white px-4 py-2 rounded-lg font-medium transition-colors"
+								>
 									Confirmar eliminación
 								</button>
 								<button

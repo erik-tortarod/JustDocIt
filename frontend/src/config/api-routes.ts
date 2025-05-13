@@ -18,5 +18,6 @@ export const API_ROUTES = Object.freeze({
 		LIST_REPOSITORIES: `${DOCS_BASE_URL}/api/user-repositories`,
 		SCAN_REPOSITORIE_BY_LANGUAGE: `${DOCS_BASE_URL}/api/documentation/scan`,
 		GET_DOCUMENTATION: `${DOCS_BASE_URL}/api/documentation/repository`,
+		DELETE_REPOSITORY: `${DOCS_BASE_URL}/api/delete-repository`,
 	},
 });

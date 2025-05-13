@@ -84,6 +84,28 @@ class RepositoryService {
 
 		return await response.json();
 	}
+
+	static async deleteRepository(repositoryId: number): Promise<void> {
+		const token = StorageService.getToken();
+
+		if (!token) {
+			throw new Error(`No authentication token`);
+		}
+
+		const response = await fetch(
+			`${API_ROUTES.DOCS.DELETE_REPOSITORY}?repositoryId=${repositoryId}`,
+			{
+				method: "DELETE",
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			},
+		);
+
+		if (!response.ok) {
+			throw new Error(`Error deleting the repository ${response.status}`);
+		}
+	}
 }
 
 export default RepositoryService;

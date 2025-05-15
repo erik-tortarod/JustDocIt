@@ -30,6 +30,8 @@ public class Repository {
 
 	private int size; // New property to store repository size
 
+	private String branch; // Branch name of the repository
+
 	// Add missing setter methods
 	public void setGithubId(String githubId) {
 		this.githubId = githubId;
@@ -73,6 +75,14 @@ public class Repository {
 
 	public void setSize(int size) {
 		this.size = size;
+	}
+
+	public String getBranch() {
+		return branch;
+	}
+
+	public void setBranch(String branch) {
+		this.branch = branch;
 	}
 
 	public String getId() {

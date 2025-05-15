@@ -10,4 +10,6 @@ public interface RepositoryRepository extends MongoRepository<Repository, String
 
 	List<Repository> findByUserId(String userId); // Fetch repositories by userId
 
+	List<Repository> findByGithubIdAndUserId(String githubId, String userId);
+
 }

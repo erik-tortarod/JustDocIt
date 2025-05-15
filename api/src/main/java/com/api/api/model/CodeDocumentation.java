@@ -11,288 +11,298 @@ import java.util.Map;
 @Document(collection = "code_documentation")
 public class CodeDocumentation {
 
-	@Id
-	private String id;
+    @Id
+    private String id;
 
-	private String repositoryId;
+    private String repositoryId;
 
-	private String filePath;
+    private String filePath;
 
-	private Language language;
+    private Language language;
 
-	private DocumentationContent content;
+    private DocumentationContent content;
 
-	private String userId; // Add this field to associate documentation with a user
+    private String userId; // Add this field to associate documentation with a user
 
-	// Add missing setter methods
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
+    private String branch; // Branch of the repository this documentation belongs to
 
-	public void setRepositoryId(String repositoryId) {
-		this.repositoryId = repositoryId;
-	}
+    // Add missing setter methods
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
-	public void setFilePath(String filePath) {
-		this.filePath = filePath;
-	}
+    public void setRepositoryId(String repositoryId) {
+        this.repositoryId = repositoryId;
+    }
 
-	public void setLanguage(Language language) {
-		this.language = language;
-	}
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
 
-	public void setContent(DocumentationContent content) {
-		this.content = content;
-	}
+    public void setLanguage(Language language) {
+        this.language = language;
+    }
 
-	@Data
-	public static class DocumentationContent {
+    public void setContent(DocumentationContent content) {
+        this.content = content;
+    }
 
-		private List<CodeClass> classes;
+    public void setBranch(String branch) {
+        this.branch = branch;
+    }
 
-		private List<CodeFunction> functions;
+    public String getBranch() {
+        return branch;
+    }
 
-		private List<CodeInterface> interfaces;
+    @Data
+    public static class DocumentationContent {
 
-		private List<CodeVariable> variables;
+        private List<CodeClass> classes;
 
-		// Add missing setter methods for nested classes
-		public void setClasses(List<CodeClass> classes) {
-			this.classes = classes;
-		}
+        private List<CodeFunction> functions;
 
-		public void setFunctions(List<CodeFunction> functions) {
-			this.functions = functions;
-		}
+        private List<CodeInterface> interfaces;
 
-		public void setInterfaces(List<CodeInterface> interfaces) {
-			this.interfaces = interfaces;
-		}
+        private List<CodeVariable> variables;
 
-		public void setVariables(List<CodeVariable> variables) {
-			this.variables = variables;
-		}
+        // Add missing setter methods for nested classes
+        public void setClasses(List<CodeClass> classes) {
+            this.classes = classes;
+        }
 
-	}
+        public void setFunctions(List<CodeFunction> functions) {
+            this.functions = functions;
+        }
 
-	@Data
-	public static class CodeClass {
+        public void setInterfaces(List<CodeInterface> interfaces) {
+            this.interfaces = interfaces;
+        }
 
-		private String name;
+        public void setVariables(List<CodeVariable> variables) {
+            this.variables = variables;
+        }
 
-		private String description;
+    }
 
-		private List<CodeProperty> properties;
+    @Data
+    public static class CodeClass {
 
-		private List<CodeMethod> methods;
+        private String name;
 
-		// Add missing setter methods
-		public void setName(String name) {
-			this.name = name;
-		}
+        private String description;
 
-		public void setDescription(String description) {
-			this.description = description;
-		}
+        private List<CodeProperty> properties;
 
-		public void setProperties(List<CodeProperty> properties) {
-			this.properties = properties;
-		}
+        private List<CodeMethod> methods;
 
-		public void setMethods(List<CodeMethod> methods) {
-			this.methods = methods;
-		}
+        // Add missing setter methods
+        public void setName(String name) {
+            this.name = name;
+        }
 
-	}
+        public void setDescription(String description) {
+            this.description = description;
+        }
 
-	@Data
-	public static class CodeProperty {
+        public void setProperties(List<CodeProperty> properties) {
+            this.properties = properties;
+        }
 
-		private String name;
+        public void setMethods(List<CodeMethod> methods) {
+            this.methods = methods;
+        }
 
-		private String type;
+    }
 
-		private String description;
+    @Data
+    public static class CodeProperty {
 
-	}
+        private String name;
 
-	@Data
-	public static class CodeMethod {
+        private String type;
 
-		private String name;
+        private String description;
 
-		private String signature;
+    }
 
-		private String description;
+    @Data
+    public static class CodeMethod {
 
-		private List<CodeParameter> parameters;
+        private String name;
 
-		private String returnType;
+        private String signature;
 
-		private String returnDescription;
+        private String description;
 
-		private List<String> examples;
+        private List<CodeParameter> parameters;
 
-		// Add missing setter methods
-		public void setName(String name) {
-			this.name = name;
-		}
+        private String returnType;
 
-		public void setSignature(String signature) {
-			this.signature = signature;
-		}
+        private String returnDescription;
 
-		public void setDescription(String description) {
-			this.description = description;
-		}
+        private List<String> examples;
 
-		public void setParameters(List<CodeParameter> parameters) {
-			this.parameters = parameters;
-		}
+        // Add missing setter methods
+        public void setName(String name) {
+            this.name = name;
+        }
 
-		public void setReturnType(String returnType) {
-			this.returnType = returnType;
-		}
+        public void setSignature(String signature) {
+            this.signature = signature;
+        }
 
-		public void setReturnDescription(String returnDescription) {
-			this.returnDescription = returnDescription;
-		}
+        public void setDescription(String description) {
+            this.description = description;
+        }
 
-		public void setExamples(List<String> examples) {
-			this.examples = examples;
-		}
+        public void setParameters(List<CodeParameter> parameters) {
+            this.parameters = parameters;
+        }
 
-	}
+        public void setReturnType(String returnType) {
+            this.returnType = returnType;
+        }
 
-	@Data
-	public static class CodeParameter {
+        public void setReturnDescription(String returnDescription) {
+            this.returnDescription = returnDescription;
+        }
 
-		private String name;
+        public void setExamples(List<String> examples) {
+            this.examples = examples;
+        }
 
-		private String type;
+    }
 
-		private String description;
+    @Data
+    public static class CodeParameter {
 
-		// Add missing setter methods
-		public void setName(String name) {
-			this.name = name;
-		}
+        private String name;
 
-		public void setType(String type) {
-			this.type = type;
-		}
+        private String type;
 
-		public void setDescription(String description) {
-			this.description = description;
-		}
+        private String description;
 
-		// Add missing getter methods
-		public String getDescription() {
-			return description;
-		}
+        // Add missing setter methods
+        public void setName(String name) {
+            this.name = name;
+        }
 
-	}
+        public void setType(String type) {
+            this.type = type;
+        }
 
-	@Data
-	public static class CodeFunction {
+        public void setDescription(String description) {
+            this.description = description;
+        }
 
-		private String name;
+        // Add missing getter methods
+        public String getDescription() {
+            return description;
+        }
 
-		private String signature;
+    }
 
-		private String description;
+    @Data
+    public static class CodeFunction {
 
-		private List<CodeParameter> parameters;
+        private String name;
 
-		private String returnType;
+        private String signature;
 
-		private String returnDescription;
+        private String description;
 
-		private List<String> examples;
+        private List<CodeParameter> parameters;
 
-		// Add missing setter methods
-		public void setName(String name) {
-			this.name = name;
-		}
+        private String returnType;
 
-		public void setSignature(String signature) {
-			this.signature = signature;
-		}
+        private String returnDescription;
 
-		public void setDescription(String description) {
-			this.description = description;
-		}
+        private List<String> examples;
 
-		public void setParameters(List<CodeParameter> parameters) {
-			this.parameters = parameters;
-		}
+        // Add missing setter methods
+        public void setName(String name) {
+            this.name = name;
+        }
 
-		public void setReturnType(String returnType) {
-			this.returnType = returnType;
-		}
+        public void setSignature(String signature) {
+            this.signature = signature;
+        }
 
-		public void setReturnDescription(String returnDescription) {
-			this.returnDescription = returnDescription;
-		}
+        public void setDescription(String description) {
+            this.description = description;
+        }
 
-		public void setExamples(List<String> examples) {
-			this.examples = examples;
-		}
+        public void setParameters(List<CodeParameter> parameters) {
+            this.parameters = parameters;
+        }
 
-	}
+        public void setReturnType(String returnType) {
+            this.returnType = returnType;
+        }
 
-	@Data
-	public static class CodeInterface {
+        public void setReturnDescription(String returnDescription) {
+            this.returnDescription = returnDescription;
+        }
 
-		private String name;
+        public void setExamples(List<String> examples) {
+            this.examples = examples;
+        }
 
-		private String description;
+    }
 
-		private List<CodeProperty> properties;
+    @Data
+    public static class CodeInterface {
 
-		private List<CodeMethod> methods;
+        private String name;
 
-		// Add missing setter methods
-		public void setName(String name) {
-			this.name = name;
-		}
+        private String description;
 
-		public void setDescription(String description) {
-			this.description = description;
-		}
+        private List<CodeProperty> properties;
 
-		public void setProperties(List<CodeProperty> properties) {
-			this.properties = properties;
-		}
+        private List<CodeMethod> methods;
 
-		public void setMethods(List<CodeMethod> methods) {
-			this.methods = methods;
-		}
+        // Add missing setter methods
+        public void setName(String name) {
+            this.name = name;
+        }
 
-	}
+        public void setDescription(String description) {
+            this.description = description;
+        }
 
-	@Data
-	public static class CodeVariable {
+        public void setProperties(List<CodeProperty> properties) {
+            this.properties = properties;
+        }
 
-		private String name;
+        public void setMethods(List<CodeMethod> methods) {
+            this.methods = methods;
+        }
 
-		private String type;
+    }
 
-		private String description;
+    @Data
+    public static class CodeVariable {
 
-		// Add missing setter methods
-		public void setName(String name) {
-			this.name = name;
-		}
+        private String name;
 
-		public void setType(String type) {
-			this.type = type;
-		}
+        private String type;
 
-		public void setDescription(String description) {
-			this.description = description;
-		}
+        private String description;
 
-	}
+        // Add missing setter methods
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public void setType(String type) {
+            this.type = type;
+        }
+
+        public void setDescription(String description) {
+            this.description = description;
+        }
+
+    }
 
 }

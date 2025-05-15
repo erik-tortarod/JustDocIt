@@ -8,17 +8,20 @@ import java.util.List;
 
 public interface CodeDocumentationRepository extends MongoRepository<CodeDocumentation, String> {
 
-	List<CodeDocumentation> findByRepositoryId(String repositoryId);
+    List<CodeDocumentation> findByRepositoryId(String repositoryId);
 
-	List<CodeDocumentation> findByRepositoryIdAndLanguage(String repositoryId, Language language);
+    List<CodeDocumentation> findByRepositoryIdAndLanguage(String repositoryId, Language language);
 
-	CodeDocumentation findByRepositoryIdAndFilePath(String repositoryId, String filePath);
+    List<CodeDocumentation> findByRepositoryIdAndBranch(String repositoryId, String branch);
 
-	List<CodeDocumentation> findByRepositoryIdAndUserIdAndLanguage(String repositoryId, String userId,
-			Language language);
+    List<CodeDocumentation> findByRepositoryIdAndLanguageAndBranch(String repositoryId, Language language, String branch);
 
-	List<CodeDocumentation> findByRepositoryIdAndUserId(String repositoryId, String userId);
+    List<CodeDocumentation> findByRepositoryIdAndFilePath(String repositoryId, String filePath);
 
-	void deleteByRepositoryId(String repositoryId);
+    List<CodeDocumentation> findByRepositoryIdAndUserId(String repositoryId, String userId);
+
+    List<CodeDocumentation> findByRepositoryIdAndUserIdAndLanguage(String repositoryId, String userId, Language language);
+
+    void deleteByRepositoryId(String repositoryId);
 
 }

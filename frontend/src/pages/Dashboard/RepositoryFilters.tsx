@@ -18,12 +18,16 @@ function RepositoryFilters({
 	useEffect(() => {
 		// Get unique languages from repositories
 		const languages = Array.from(
-			new Set(repositories.map((repo) => repo.language || "Unknown")),
+			new Set(repositories.flatMap((repo) => repo.documentedLanguages || [])),
 		).sort();
 		setAvailableLanguages(languages);
 	}, [repositories]);
 
 	useEffect(() => {
+		// Create a Map to store unique repositories by githubId
+		const uniqueReposMap = new Map<string, IRepository>();
+
+		// First filter the repositories
 		let filteredRepos = [...repositories];
 
 		// Apply search filter
@@ -35,18 +39,28 @@ function RepositoryFilters({
 
 		// Apply language filter
 		if (selectedLanguage !== "all") {
-			filteredRepos = filteredRepos.filter(
-				(repo) => repo.language === selectedLanguage,
+			filteredRepos = filteredRepos.filter((repo) =>
+				repo.documentedLanguages?.includes(selectedLanguage),
 			);
 		}
 
+		// Store unique repositories in the Map
+		filteredRepos.forEach((repo) => {
+			if (repo.githubId && !uniqueReposMap.has(repo.githubId)) {
+				uniqueReposMap.set(repo.githubId, repo);
+			}
+		});
+
+		// Convert Map values back to array and sort
+		let uniqueFilteredRepos = Array.from(uniqueReposMap.values());
+
 		// Apply sorting
-		filteredRepos.sort((a, b) => {
+		uniqueFilteredRepos.sort((a, b) => {
 			const comparison = (a.name || "").localeCompare(b.name || "");
 			return sortOrder === "asc" ? comparison : -comparison;
 		});
 
-		onFilterChange(filteredRepos);
+		onFilterChange(uniqueFilteredRepos);
 	}, [searchTerm, sortOrder, selectedLanguage, repositories]);
 
 	return (

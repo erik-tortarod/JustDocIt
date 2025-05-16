@@ -42,9 +42,11 @@ function Dashboard() {
 		try {
 			const repositories = await RepositoryService.getAddedRepositories();
 			const repos = repositories;
+
 			if (environment === EEnvironment.DEV) {
 				repos.push(...mockRepositories);
 			}
+
 			setAddedRepositories(repos);
 			setFilteredRepositories(repos);
 		} catch (error) {

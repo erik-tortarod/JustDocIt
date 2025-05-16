@@ -24,7 +24,6 @@ import {
  * @param repo - The repository to display.
  */
 function AddedRepositorie({ repo }: { repo: IRepository }) {
-	console.log(repo);
 	const availableLanguages = ["TYPESCRIPT"];
 
 	const [selectedLanguage, setSelectedLanguage] = useState("");

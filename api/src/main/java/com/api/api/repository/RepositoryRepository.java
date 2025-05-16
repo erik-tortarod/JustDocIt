@@ -6,12 +6,12 @@ import java.util.List;
 
 public interface RepositoryRepository extends MongoRepository<Repository, String> {
 
-    Repository findByGithubId(String githubId);
+	Repository findByGithubId(String githubId);
 
-    List<Repository> findByUserId(String userId); // Fetch repositories by userId
+	List<Repository> findByUserId(String userId); // Fetch repositories by userId
 
-    List<Repository> findByGithubIdAndUserId(String githubId, String userId);
+	List<Repository> findByGithubIdAndUserId(String githubId, String userId);
 
-    Repository findByGithubIdAndBranch(String githubId, String branch);
+	Repository findByGithubIdAndBranch(String githubId, String branch);
 
 }

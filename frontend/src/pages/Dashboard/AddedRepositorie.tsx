@@ -14,12 +14,17 @@ import DocumentationService from "../../services/DocumentationService";
 
 // UTILS
 import { replaceLanguageByIcon } from "../../utils/replaceLanguageByIcon";
+import {
+	generateContrastingTextColor,
+	generateRandomColor,
+} from "../../utils/generateRandomColor";
 
 /**
  * Component for displaying an added repository.
  * @param repo - The repository to display.
  */
 function AddedRepositorie({ repo }: { repo: IRepository }) {
+	console.log(repo);
 	const availableLanguages = ["TYPESCRIPT"];
 
 	const [selectedLanguage, setSelectedLanguage] = useState("");
@@ -80,13 +85,29 @@ function AddedRepositorie({ repo }: { repo: IRepository }) {
 		setIsSettingsModalOpen(false);
 	};
 
+	const branchColor = generateRandomColor();
+	const textColor = generateContrastingTextColor(branchColor);
+
 	return (
 		<>
 			<div className="project-card bg-base-800 shadow-md rounded-lg border border-base-700 transition-all hover:translate-y-[-5px] hover:shadow-xl">
 				<div className="project-header p-6 flex justify-between items-start">
 					<div>
 						<div className="project-name text-lg font-semibold mb-2 flex items-center gap-2 text-content-100">
-							{repo.name}
+							{repo.name?.slice(0, 20) + "..."}
+							{repo.branch && (
+								<span
+									className="px-2 py-1   text-accent-400 text-xs rounded-md border border-accent-400/30"
+									style={{
+										backgroundColor: branchColor,
+										color: textColor,
+										borderColor: textColor,
+									}}
+								>
+									<span className="mr-1">🌿</span>
+									{repo.branch}
+								</span>
+							)}
 						</div>
 						<div className="project-repo text-content-400 text-sm flex items-center gap-2">
 							<span>📦</span>

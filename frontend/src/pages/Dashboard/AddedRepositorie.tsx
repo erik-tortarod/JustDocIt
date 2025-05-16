@@ -47,6 +47,7 @@ function AddedRepositorie({ repo }: { repo: IRepository }) {
 					await DocumentationService.scanRepositoryByLanguage(
 						selectedLanguage,
 						repo.githubId ?? "",
+						repo.branch,
 					);
 					setProcessingComplete(true);
 				} catch (error) {
@@ -59,7 +60,7 @@ function AddedRepositorie({ repo }: { repo: IRepository }) {
 		};
 
 		documentRepositoryByLanguage();
-	}, [selectedLanguage]);
+	}, [selectedLanguage, repo.githubId, repo.branch]);
 
 	const handleCloseProgressModal = () => {
 		if (processingComplete || !loading) {

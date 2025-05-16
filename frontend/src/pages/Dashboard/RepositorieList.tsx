@@ -10,25 +10,25 @@ function RepositorieList({
 	refreshAddedRepositories: () => Promise<void>;
 }) {
 	const [selectedRepo, setSelectedRepo] = useState<IRepository | null>(null);
-	const [branch, setBranch] = useState<string>("main");
+	const [branch, setBranch] = useState<string>("");
 	const [directory, setDirectory] = useState<string>("/");
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [searchTerm, setSearchTerm] = useState<string>("");
 
 	const configSectionRef = useRef<HTMLDivElement>(null);
 
-	// Lista de ramas de ejemplo (en una implementación real, estas se cargarían desde la API)
-	const branchOptions = ["main", "develop", "staging", "feature/new-docs"];
-
 	const handleAddRepository = async () => {
-		if (!selectedRepo) return;
+		if (!selectedRepo || !branch) {
+			alert("Por favor selecciona un repositorio y especifica una rama.");
+			return;
+		}
 
 		setIsLoading(true);
 		try {
-			await RepositoryService.addRepository(selectedRepo.id);
+			await RepositoryService.addRepository(selectedRepo.id, branch);
 			alert("Repositorio agregado correctamente.");
 			setSelectedRepo(null);
-			setBranch("main");
+			setBranch("");
 			setDirectory("/");
 			await refreshAddedRepositories(); // Refresh the list of added repositories
 		} catch (error) {
@@ -41,11 +41,9 @@ function RepositorieList({
 	const handleSelectRepo = (repo: IRepository) => {
 		if (repo.id === selectedRepo?.id) {
 			setSelectedRepo(null);
-			setBranch("main");
 			setDirectory("/");
 		} else {
 			setSelectedRepo(repo);
-			setBranch("main");
 			setDirectory("/");
 
 			// Hacer scroll hasta la sección de configuración con una pequeña animación
@@ -166,17 +164,16 @@ function RepositorieList({
 
 						<div className="mb-3">
 							<label className="block text-sm font-medium mb-1">Rama</label>
-							<select
+							<input
 								className="w-full p-2 border border-gray-700 rounded bg-gray-800 text-white"
 								value={branch}
 								onChange={(e) => setBranch(e.target.value)}
-							>
-								{branchOptions.map((b) => (
-									<option key={b} value={b}>
-										{b}
-									</option>
-								))}
-							</select>
+								placeholder={selectedRepo.defaultBranch || "main"}
+								required
+							/>
+							<p className="text-xs text-gray-500 mt-1">
+								Especifica la rama del repositorio que deseas documentar
+							</p>
 						</div>
 
 						<div className="mb-2">

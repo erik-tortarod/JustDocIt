@@ -2,16 +2,16 @@ import { API_ROUTES } from "../config/api-routes";
 import StorageService from "./StorageService";
 
 /**
- * Servicio para gestionar las operaciones relacionadas con repositorios de GitHub.
- * Proporciona métodos para obtener y manipular información de repositorios.
+ * Service for managing GitHub repository operations.
+ * Provides methods for fetching and manipulating repository information.
  */
 class RepositoryService {
 	/**
-	 * Obtiene la lista de repositorios del usuario autenticado.
-	 * Requiere que el token JWT esté almacenado.
+	 * Gets the list of user's GitHub repositories.
+	 * Requires JWT token to be stored.
 	 *
-	 * @returns Una promesa que resuelve a la lista de repositorios del usuario
-	 * @throws Error si no hay token o si la solicitud falla
+	 * @returns A promise resolving to the list of user's repositories
+	 * @throws Error if no token or if request fails
 	 */
 	static async getUserRepositories(): Promise<any> {
 		const token = StorageService.getToken();
@@ -35,33 +35,46 @@ class RepositoryService {
 		return await response.json();
 	}
 
-	static async addRepository(githubRepoId: number): Promise<any> {
+	/**
+	 * Adds a repository to the user's dashboard.
+	 * @param githubRepoId - The GitHub repository ID.
+	 * @param branch - The branch to track.
+	 * @returns A promise resolving to the added repository data.
+	 */
+	static async addRepository(
+		githubRepoId: number,
+		branch: string,
+	): Promise<any> {
 		const token = StorageService.getToken();
 
 		if (!token) {
 			throw new Error(`No authentication token`);
 		}
 
-		const response = await fetch(API_ROUTES.DOCS.ADD_REPOSITORY, {
+		const url = new URL(API_ROUTES.DOCS.ADD_REPOSITORY);
+		url.searchParams.append("githubRepoId", String(githubRepoId));
+		url.searchParams.append("branch", branch);
+
+		const response = await fetch(url.toString(), {
 			method: "POST",
 			headers: {
 				Authorization: `Bearer ${token}`,
-				"Content-Type": "application/x-www-form-urlencoded",
 			},
-			body: new URLSearchParams({
-				githubRepoId: String(githubRepoId),
-			}),
 		});
 
 		if (!response.ok) {
-			throw new Error(`
-				Error adding the repository to the dashboard ${response.status}	
-			`);
+			throw new Error(
+				`Error adding the repository to the dashboard ${response.status}`,
+			);
 		}
 
 		return await response.json();
 	}
 
+	/**
+	 * Gets the list of repositories added to the user's dashboard.
+	 * @returns A promise resolving to the list of added repositories.
+	 */
 	static async getAddedRepositories(): Promise<any> {
 		const token = StorageService.getToken();
 
@@ -77,14 +90,16 @@ class RepositoryService {
 		});
 
 		if (!response.ok) {
-			throw new Error(`
-				Error listing the user added repositories	
-			`);
+			throw new Error(`Error listing the user added repositories`);
 		}
 
 		return await response.json();
 	}
 
+	/**
+	 * Deletes a repository from the user's dashboard.
+	 * @param repositoryId - The ID of the repository to delete.
+	 */
 	static async deleteRepository(repositoryId: number): Promise<void> {
 		const token = StorageService.getToken();
 
@@ -92,15 +107,15 @@ class RepositoryService {
 			throw new Error(`No authentication token`);
 		}
 
-		const response = await fetch(
-			`${API_ROUTES.DOCS.DELETE_REPOSITORY}?repositoryId=${repositoryId}`,
-			{
-				method: "DELETE",
-				headers: {
-					Authorization: `Bearer ${token}`,
-				},
+		const url = new URL(API_ROUTES.DOCS.DELETE_REPOSITORY);
+		url.searchParams.append("repositoryId", String(repositoryId));
+
+		const response = await fetch(url.toString(), {
+			method: "DELETE",
+			headers: {
+				Authorization: `Bearer ${token}`,
 			},
-		);
+		});
 
 		if (!response.ok) {
 			throw new Error(`Error deleting the repository ${response.status}`);

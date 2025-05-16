@@ -4,6 +4,7 @@ import logo from "../../../../public/logo.png";
 import NavSection from "../../ui/NavSection";
 import NavLink from "../../ui/NavLink";
 import { IUser } from "../../../types/interfaces";
+import { Link } from "react-router-dom";
 
 function Sidebar({ userData }: { userData: IUser }) {
 	return (
@@ -30,7 +31,9 @@ function Sidebar({ userData }: { userData: IUser }) {
 			</NavSection>
 
 			<NavSection title="Personal">
-				<NavLink icon="👤" text="Perfil" />
+				<Link to="/user" className="decoration-transparent">
+					<NavLink icon="👤" text="Perfil" />
+				</Link>
 				<NavLink icon="⚙️" text="Configuración" />
 			</NavSection>
 

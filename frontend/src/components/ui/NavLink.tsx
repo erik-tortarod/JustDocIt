@@ -12,7 +12,7 @@ function NavLink({ icon, text, active = false, href = "#" }: INavLinkProps) {
 		<div>
 			<a
 				href={href}
-				className={`flex items-center gap-3 py-2 px-6 decoration-transparent text-base-content/70 hover:text-base-content hover:bg-primary/10 transition-all relative ${
+				className={`flex items-center gap-3 py-2 px-6 decoration-transparent text-base-content/70 hover:text-base-content hover:bg-primary/10 transition-all relative decoration-none ${
 					active
 						? "text-base-content bg-primary/10 before:absolute before:left-0 before:top-0 before:h-full before:w-1 before:bg-primary"
 						: ""

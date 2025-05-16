@@ -14,6 +14,7 @@ import ModalBtn from "../../components/common/ModalBtn";
 import Sidebar from "../../components/layout/Sidebar/Sidebar";
 import DashboardStats from "./DashboardStats";
 import RepoModal from "./RepoModal";
+import RepositoryFilters from "./RepositoryFilters";
 
 //INTERFACES
 import { IRepository } from "../../types/interfaces";
@@ -31,16 +32,21 @@ function Dashboard() {
 	const [userData, setUserData] = useState<any>(null);
 	const [userRepositories, setUserRepositores] = useState<IRepository[]>([]);
 	const [addedRepositories, setAddedRepositories] = useState<IRepository[]>([]);
+	const [filteredRepositories, setFilteredRepositories] = useState<
+		IRepository[]
+	>([]);
 
 	const environment = ENVIRONMENT;
 
 	const refreshAddedRepositories = async () => {
 		try {
 			const repositories = await RepositoryService.getAddedRepositories();
-			setAddedRepositories(repositories);
+			const repos = repositories;
 			if (environment === EEnvironment.DEV) {
-				setAddedRepositories((prev) => [...prev, ...mockRepositories]);
+				repos.push(...mockRepositories);
 			}
+			setAddedRepositories(repos);
+			setFilteredRepositories(repos);
 		} catch (error) {
 			console.error("Error refreshing added repositories:", error);
 		}
@@ -131,7 +137,11 @@ function Dashboard() {
 				</div>
 				<section>
 					<h2>Lista de Proyectos</h2>
-					<AddedRepositories addedRepositories={addedRepositories} />
+					<RepositoryFilters
+						repositories={addedRepositories}
+						onFilterChange={setFilteredRepositories}
+					/>
+					<AddedRepositories addedRepositories={filteredRepositories} />
 				</section>
 			</div>
 		</div>

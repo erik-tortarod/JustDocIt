@@ -10,11 +10,10 @@ import RepositoryService from "../../services/RepositoryService";
 //COMPONENTS
 import RepositorieList from "./RepositorieList";
 import AddedRepositories from "./AddedRepositories";
-import ModalBtn from "../../components/common/ModalBtn";
 import Sidebar from "../../components/layout/Sidebar/Sidebar";
 import DashboardStats from "./DashboardStats";
-import RepoModal from "./RepoModal";
 import RepositoryFilters from "./RepositoryFilters";
+import AddRepositoryModal from "./AddRepositoryModal";
 
 //INTERFACES
 import { IRepository } from "../../types/interfaces";
@@ -35,6 +34,12 @@ function Dashboard() {
 	const [filteredRepositories, setFilteredRepositories] = useState<
 		IRepository[]
 	>([]);
+	const [selectedRepository, setSelectedRepository] =
+		useState<IRepository | null>(null);
+	const [branch, setBranch] = useState<string>("");
+	const [directory, setDirectory] = useState<string>("/");
+	const [isAddingRepo, setIsAddingRepo] = useState<boolean>(false);
+	const [showAddModal, setShowAddModal] = useState<boolean>(false);
 
 	const environment = ENVIRONMENT;
 
@@ -52,6 +57,35 @@ function Dashboard() {
 		} catch (error) {
 			console.error("Error refreshing added repositories:", error);
 		}
+	};
+
+	const handleAddRepository = async () => {
+		if (!selectedRepository || !branch) {
+			alert("Por favor selecciona un repositorio y especifica una rama.");
+			return;
+		}
+
+		setIsAddingRepo(true);
+		try {
+			await RepositoryService.addRepository(selectedRepository.id, branch);
+			alert("Repositorio agregado correctamente.");
+			setSelectedRepository(null);
+			setBranch("");
+			setDirectory("/");
+			setShowAddModal(false);
+			await refreshAddedRepositories();
+		} catch (error) {
+			alert("Error al agregar el repositorio.");
+		} finally {
+			setIsAddingRepo(false);
+		}
+	};
+
+	const handleCloseModal = () => {
+		setShowAddModal(false);
+		setSelectedRepository(null);
+		setBranch("");
+		setDirectory("/");
 	};
 
 	useEffect(() => {
@@ -110,20 +144,12 @@ function Dashboard() {
 			<div className="col-start-2 col-span-4 ps-16 pt-8 pe-8">
 				<section className="flex justify-between items-center">
 					<h1>Dashboard</h1>
-					<ModalBtn
-						btnText="Agregar proyecto nuevo"
-						content={
-							<RepoModal
-								content={
-									<RepositorieList
-										userRepositories={userRepositories}
-										refreshAddedRepositories={refreshAddedRepositories}
-									/>
-								}
-							/>
-						}
-						id="modal"
-					/>
+					<button
+						onClick={() => setShowAddModal(true)}
+						className="px-4 py-2 bg-purple-700 text-white rounded hover:bg-purple-600"
+					>
+						Agregar proyecto nuevo
+					</button>
 				</section>
 				<div className="grid grid-cols-3 gap-6 pe-8 py-8">
 					<DashboardStats
@@ -145,6 +171,23 @@ function Dashboard() {
 					/>
 					<AddedRepositories addedRepositories={filteredRepositories} />
 				</section>
+
+				{/* Modal de selección de repositorio */}
+				{showAddModal && (
+					<AddRepositoryModal
+						userRepositories={userRepositories}
+						refreshAddedRepositories={refreshAddedRepositories}
+						selectedRepository={selectedRepository}
+						onSelectRepository={setSelectedRepository}
+						branch={branch}
+						onBranchChange={setBranch}
+						directory={directory}
+						onDirectoryChange={setDirectory}
+						isAddingRepo={isAddingRepo}
+						onAddRepository={handleAddRepository}
+						onClose={handleCloseModal}
+					/>
+				)}
 			</div>
 		</div>
 	);

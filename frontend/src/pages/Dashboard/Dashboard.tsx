@@ -107,6 +107,7 @@ function Dashboard() {
 
 				const userData = await ApiService.getUserData();
 				setUserData(userData);
+				localStorage.setItem("userData", JSON.stringify(userData));
 			} catch (error) {
 				console.error(`Error: ${error}`);
 				setError(`Error : ${error}`);

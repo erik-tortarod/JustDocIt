@@ -18,6 +18,13 @@ function AddedRepositories({
 		setVisibleRepos(visibleReposFactor);
 	}, [addedRepositories]);
 
+	useEffect(() => {
+		localStorage.setItem(
+			"addedRepositoriesLength",
+			JSON.stringify(addedRepositories.length),
+		);
+	}, [addedRepositories]);
+
 	const currentRepos = addedRepositories.slice(0, visibleRepos);
 	const hasMoreRepos = visibleRepos < addedRepositories.length;
 

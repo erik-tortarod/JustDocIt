@@ -1,4 +1,54 @@
+import { useEffect, useState } from "react";
+import { IUser } from "../../types/interfaces";
+
 function User() {
+	const [userData, setUserData] = useState<IUser>();
+	useEffect(() => {
+		const userDataStr = localStorage.getItem("userData");
+		if (userDataStr) {
+			const userData = JSON.parse(userDataStr) as IUser;
+			console.log(userData);
+			setUserData(userData);
+		}
+	}, []);
+
+	const capitalize = (str: string) => {
+		return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+	};
+
+	const repositoriesLength = localStorage.getItem("addedRepositoriesLength");
+
+	const formatDate = (dateString: string) => {
+		const date = new Date(dateString);
+		const days = [
+			"Domingo",
+			"Lunes",
+			"Martes",
+			"Miércoles",
+			"Jueves",
+			"Viernes",
+			"Sábado",
+		];
+		const months = [
+			"Enero",
+			"Febrero",
+			"Marzo",
+			"Abril",
+			"Mayo",
+			"Junio",
+			"Julio",
+			"Agosto",
+			"Septiembre",
+			"Octubre",
+			"Noviembre",
+			"Diciembre",
+		];
+
+		return `${days[date.getDay()]}, ${date.getDate()} de ${
+			months[date.getMonth()]
+		} ${date.getFullYear()}`;
+	};
+
 	return (
 		<div className="min-h-screen bg-base-200 p-6 w-screen">
 			<div className="max-w-4xl mx-auto bg-base-100 shadow-lg rounded-lg p-6">
@@ -6,12 +56,12 @@ function User() {
 				<div className="flex items-center gap-6 mb-8">
 					<img
 						className="w-24 h-24 rounded-full border-4 border-primary"
-						src="https://avatars.githubusercontent.com/u/128736440?v=4"
+						src={userData?.avatarUrl}
 						alt="User Avatar"
 					/>
 					<div>
-						<h1 className="text-3xl font-bold">John Doe</h1>
-						<p className="text-base-content/70 text-sm">johndoe@example.com</p>
+						<h1 className="text-3xl font-bold">{userData?.username}</h1>
+						<p className="text-base-content/70 text-sm">{userData?.email}</p>
 					</div>
 				</div>
 
@@ -23,13 +73,14 @@ function User() {
 								Account Details
 							</h2>
 							<p className="text-base-content/80 text-lg">
-								<strong>Username:</strong> johndoe
+								<strong>Username:</strong> {userData?.username}
 							</p>
 							<p className="text-base-content/80 text-lg">
-								<strong>Joined:</strong> January 1, 2023
+								<strong>Joined:</strong>{" "}
+								{userData?.createdAt && formatDate(userData.createdAt)}
 							</p>
 							<p className="text-base-content/80 text-lg">
-								<strong>Repositories:</strong> 12 connected
+								<strong>Repositories:</strong> {repositoriesLength} connected
 							</p>
 						</div>
 					</div>
@@ -39,10 +90,14 @@ function User() {
 								Preferences
 							</h2>
 							<p className="text-base-content/80 text-lg">
-								<strong>Theme:</strong> Dark
+								<strong>Theme:</strong>{" "}
+								{userData?.preferences.theme &&
+									capitalize(userData.preferences.theme)}
 							</p>
 							<p className="text-base-content/80 text-lg">
-								<strong>Language:</strong> English
+								<strong>Language:</strong>{" "}
+								{userData?.preferences.language &&
+									capitalize(userData.preferences.language)}
 							</p>
 						</div>
 					</div>

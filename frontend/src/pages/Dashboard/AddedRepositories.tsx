@@ -9,42 +9,20 @@ function AddedRepositories({
 }: {
 	addedRepositories: IRepository[];
 }) {
-	const [currentPage, setCurrentPage] = useState(1);
-	const reposPerPage = 4;
+	const visibleReposFactor = 4;
 
-	// Reset page when repositories change (due to filtering)
+	const [visibleRepos, setVisibleRepos] = useState(visibleReposFactor);
+
+	// Reset visible repos when repositories change (due to filtering)
 	useEffect(() => {
-		setCurrentPage(1);
+		setVisibleRepos(visibleReposFactor);
 	}, [addedRepositories]);
 
-	// Calculate total pages
-	const totalPages = Math.max(
-		1,
-		Math.ceil(addedRepositories.length / reposPerPage),
-	);
+	const currentRepos = addedRepositories.slice(0, visibleRepos);
+	const hasMoreRepos = visibleRepos < addedRepositories.length;
 
-	// Ensure current page is valid
-	useEffect(() => {
-		if (currentPage > totalPages) {
-			setCurrentPage(totalPages);
-		}
-	}, [currentPage, totalPages]);
-
-	// Calculate pagination indexes
-	const indexOfLastRepo = Math.min(
-		currentPage * reposPerPage,
-		addedRepositories.length,
-	);
-	const indexOfFirstRepo = Math.max(0, indexOfLastRepo - reposPerPage);
-	const currentRepos = addedRepositories.slice(
-		indexOfFirstRepo,
-		indexOfLastRepo,
-	);
-
-	// Change page
-	const paginate = (pageNumber: number) => {
-		const validPageNumber = Math.max(1, Math.min(pageNumber, totalPages));
-		setCurrentPage(validPageNumber);
+	const loadMore = () => {
+		setVisibleRepos((prev) => prev + visibleReposFactor);
 	};
 
 	return (
@@ -58,42 +36,13 @@ function AddedRepositories({
 				))}
 			</section>
 
-			{totalPages > 1 && (
-				<div className="flex justify-center gap-2 mt-4">
+			{hasMoreRepos && (
+				<div className="flex justify-center mt-4">
 					<button
-						onClick={() => paginate(currentPage - 1)}
-						disabled={currentPage === 1}
-						className={`px-3 py-1 rounded ${
-							currentPage === 1
-								? "bg-gray-200 text-gray-500 cursor-not-allowed"
-								: "bg-blue-500 text-white hover:bg-blue-600"
-						}`}
+						onClick={loadMore}
+						className="px-6 py-2 bg-purple-700 text-white rounded hover:bg-purple-600 transition-colors"
 					>
-						Anterior
-					</button>
-					{Array.from({ length: totalPages }, (_, i) => i + 1).map((number) => (
-						<button
-							key={number}
-							onClick={() => paginate(number)}
-							className={`px-3 py-1 rounded ${
-								currentPage === number
-									? "bg-blue-500 text-white"
-									: "bg-gray-200 hover:bg-gray-300"
-							}`}
-						>
-							{number}
-						</button>
-					))}
-					<button
-						onClick={() => paginate(currentPage + 1)}
-						disabled={currentPage === totalPages}
-						className={`px-3 py-1 rounded ${
-							currentPage === totalPages
-								? "bg-gray-200 text-gray-500 cursor-not-allowed"
-								: "bg-blue-500 text-white hover:bg-blue-600"
-						}`}
-					>
-						Siguiente
+						Cargar más
 					</button>
 				</div>
 			)}

@@ -163,7 +163,7 @@ function Dashboard() {
 					<h1>Dashboard</h1>
 					<button
 						onClick={() => setShowAddModal(true)}
-						className="px-4 py-2 bg-purple-700 text-white rounded hover:bg-purple-600"
+						className="px-4 py-2 btn btn-info"
 					>
 						Agregar proyecto nuevo
 					</button>

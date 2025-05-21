@@ -2,5 +2,5 @@
 @plugin "@tailwindcss/typography";
 
 @plugin "daisyui" {
-	themes: business --default, business --prefersdark, business;
+	themes: dim --default, dim --prefersdark, dim;
 }

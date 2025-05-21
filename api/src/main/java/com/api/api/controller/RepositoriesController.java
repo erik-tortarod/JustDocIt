@@ -169,6 +169,8 @@ public class RepositoriesController {
 			repository.setSize((Integer) repoData.get("size"));
 			repository.setUserId(userId);
 			repository.setBranch(branch);
+			repository.setStargazersCount((Integer) repoData.get("stargazers_count"));
+			repository.setForksCount((Integer) repoData.get("forks_count"));
 
 			Repository savedRepository = repositoryService.saveRepository(repository);
 			return ResponseEntity.ok(savedRepository);

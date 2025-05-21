@@ -115,6 +115,16 @@ function AddedRepositorie({ repo }: { repo: IRepository }) {
 								{repo.htmlUrl?.replace("https://", "") ?? "URL not available"}
 							</a>
 						</div>
+						<div className="flex items-center gap-4 mt-2 text-sm text-content-400">
+							<span className="flex items-center gap-1">
+								<span>⭐</span>
+								{repo.stargazersCount || 0}
+							</span>
+							<span className="flex items-center gap-1">
+								<span>🔄</span>
+								{repo.forksCount || 0}
+							</span>
+						</div>
 					</div>
 					<div className="flex items-center gap-2">
 						{/* Botón de configuración (3 puntos) */}

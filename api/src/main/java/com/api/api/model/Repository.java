@@ -32,6 +32,10 @@ public class Repository {
 
 	private String branch; // Branch name of the repository
 
+	private int stargazersCount; // Number of stars
+
+	private int forksCount; // Number of forks
+
 	// Add missing setter methods
 	public void setGithubId(String githubId) {
 		this.githubId = githubId;
@@ -83,6 +87,22 @@ public class Repository {
 
 	public void setBranch(String branch) {
 		this.branch = branch;
+	}
+
+	public int getStargazersCount() {
+		return stargazersCount;
+	}
+
+	public void setStargazersCount(int stargazersCount) {
+		this.stargazersCount = stargazersCount;
+	}
+
+	public int getForksCount() {
+		return forksCount;
+	}
+
+	public void setForksCount(int forksCount) {
+		this.forksCount = forksCount;
 	}
 
 	public String getId() {

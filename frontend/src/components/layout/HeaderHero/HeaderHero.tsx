@@ -7,23 +7,19 @@ import { Link } from "react-router-dom";
 import { ChangeEvent, useEffect, useState } from "react";
 
 function HeaderHero() {
-	const [theme, setTheme] = useState("light");
+	const [theme, setTheme] = useState(() => {
+		return localStorage.getItem("theme") || "light";
+	});
 
 	const handleThemeChange = (e: ChangeEvent<HTMLSelectElement>) => {
-		setTheme(e.target.value);
+		const newTheme = e.target.value;
+		setTheme(newTheme);
+		localStorage.setItem("theme", newTheme);
+		document.documentElement.setAttribute("data-theme", newTheme);
 	};
 
 	useEffect(() => {
-		const setGlobalTheme = () => {
-			const body = document.querySelector("body");
-
-			if (body) {
-				body.setAttribute("data-theme", theme);
-				localStorage.setItem("theme", theme);
-			}
-		};
-
-		setGlobalTheme();
+		document.documentElement.setAttribute("data-theme", theme);
 	}, [theme]);
 
 	return (
@@ -69,12 +65,13 @@ function HeaderHero() {
 			<div className="navbar-end flex gap-3 lg:pr-6">
 				<SelectBtn
 					title={<LanguageIcon className="w-10" />}
-					children={["Español", "English"]}
+					children={["Español", "English"]}
 				/>
 				<select
 					name="theme"
 					id="theme"
-					onChange={(e) => handleThemeChange(e)}
+					value={theme}
+					onChange={handleThemeChange}
 					className="select select-ghost w-25"
 				>
 					<option value="light">Light</option>

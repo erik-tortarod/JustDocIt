@@ -13,7 +13,16 @@ import { useEffect } from "react";
 
 function App() {
 	useEffect(() => {
-		const checkTheme = () => {};
+		const checkTheme = () => {
+			const savedTheme = localStorage.getItem("theme");
+			if (savedTheme) {
+				document.documentElement.setAttribute("data-theme", savedTheme);
+			} else {
+				const defaultTheme = "light";
+				localStorage.setItem("theme", defaultTheme);
+				document.documentElement.setAttribute("data-theme", defaultTheme);
+			}
+		};
 		checkTheme();
 	}, []);
 

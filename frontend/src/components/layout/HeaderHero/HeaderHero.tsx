@@ -4,6 +4,7 @@ import { MenuIcon } from "../../../assets/images/svg/MenuIcon";
 import logo from "../../../../public/logo.png";
 import UserProfile from "../../ui/UserProfile";
 import SelectBtn from "../../common/SelectBtn";
+import { Link } from "react-router-dom";
 
 function HeaderHero() {
 	return (
@@ -21,18 +22,10 @@ function HeaderHero() {
 							<a>Características</a>
 						</li>
 						<li>
-							<a>Cómo funciona</a>
-							<ul className="p-2">
-								<li>
-									<a>Documentación</a>
-								</li>
-								<li>
-									<a>Foro</a>
-								</li>
-							</ul>
+							<Link to="/proyect_docs">Documentation</Link>
 						</li>
 						<li>
-							<a>Dashboard</a>
+							<Link to="/dashboard">Dashboard</Link>
 						</li>
 					</ul>
 				</div>
@@ -47,20 +40,10 @@ function HeaderHero() {
 						<a>Características</a>
 					</li>
 					<li>
-						<details>
-							<summary>Cómo funciona</summary>
-							<ul className="p-2">
-								<li>
-									<a>Documentación</a>
-								</li>
-								<li>
-									<a>Foro</a>
-								</li>
-							</ul>
-						</details>
+						<Link to="/proyect_docs">Documentation</Link>
 					</li>
 					<li>
-						<a>Dashboard</a>
+						<Link to="/dashboard">Dashboard</Link>
 					</li>
 				</ul>
 			</div>

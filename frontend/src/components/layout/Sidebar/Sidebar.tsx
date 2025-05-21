@@ -10,23 +10,29 @@ function Sidebar({ userData }: { userData: IUser }) {
 	return (
 		<aside className="w-64 bg-base-200 border-r border-base-300/10 py-6 flex flex-col h-screen sticky top-0">
 			{/* Logo */}
-			<div className="flex items-center gap-3 font-bold text-lg px-6 mt-[-2rem] mb-[-1rem]">
-				<div className="flex items-center justify-center text-primary">
-					<img src={logo} alt="Logo" className="w-8 h-8 object-contain" />
+			<Link to="/" className="decoration-transparent">
+				<div className="flex items-center gap-3 font-bold text-lg px-6 mt-[-2rem] mb-[-1rem]">
+					<div className="flex items-center justify-center text-primary">
+						<img src={logo} alt="Logo" className="w-8 h-8 object-contain" />
+					</div>
+					<div className="flex items-center">
+						JustDocIt
+						<span className="inline-flex items-center bg-gradient-to-r from-secondary to-primary text-white px-2 py-0.5 rounded-full text-[10px] font-semibold ml-2 uppercase tracking-wider">
+							<span className="w-1.5 h-1.5 bg-success rounded-full mr-1 animate-pulse"></span>
+							Online
+						</span>
+					</div>
 				</div>
-				<div className="flex items-center">
-					JustDocIt
-					<span className="inline-flex items-center bg-gradient-to-r from-secondary to-primary text-white px-2 py-0.5 rounded-full text-[10px] font-semibold ml-2 uppercase tracking-wider">
-						<span className="w-1.5 h-1.5 bg-success rounded-full mr-1 animate-pulse"></span>
-						Online
-					</span>
-				</div>
-			</div>
+			</Link>
 
 			{/* Navegación */}
 			<NavSection title="General">
-				<NavLink icon="📊" text="Dashboard" active={true} />
-				<NavLink icon="📑" text="Proyectos" />
+				<Link to="/dashboard" className="decoration-transparent">
+					<NavLink icon="📊" text="Dashboard" />
+				</Link>
+				<Link to="/proyect_docs" className="decoration-transparent">
+					<NavLink icon="📑" text="Documentation" />
+				</Link>
 				<NavLink icon="🔄" text="Integraciones" />
 			</NavSection>
 

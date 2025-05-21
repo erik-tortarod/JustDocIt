@@ -9,8 +9,14 @@ import Documentation from "./pages/Documentation/Documentation";
 import Admin from "./pages/Admin/Admin";
 import User from "./pages/User/User";
 import ProyectDocumentation from "./pages/ProyectDocumentation/ProyectDocumentation";
+import { useEffect } from "react";
 
 function App() {
+	useEffect(() => {
+		const checkTheme = () => {};
+		checkTheme();
+	}, []);
+
 	return (
 		<Routes>
 			<Route path="/" element={<Auth />} />

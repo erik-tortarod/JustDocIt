@@ -1,12 +1,31 @@
 import { LanguageIcon } from "../../../assets/images/svg/LanguageIcon";
-import { MoonIcon } from "../../../assets/images/svg/MoonIcon";
 import { MenuIcon } from "../../../assets/images/svg/MenuIcon";
 import logo from "../../../../public/logo.png";
 import UserProfile from "../../ui/UserProfile";
 import SelectBtn from "../../common/SelectBtn";
 import { Link } from "react-router-dom";
+import { ChangeEvent, useEffect, useState } from "react";
 
 function HeaderHero() {
+	const [theme, setTheme] = useState("light");
+
+	const handleThemeChange = (e: ChangeEvent<HTMLSelectElement>) => {
+		setTheme(e.target.value);
+	};
+
+	useEffect(() => {
+		const setGlobalTheme = () => {
+			const body = document.querySelector("body");
+
+			if (body) {
+				body.setAttribute("data-theme", theme);
+				localStorage.setItem("theme", theme);
+			}
+		};
+
+		setGlobalTheme();
+	}, [theme]);
+
 	return (
 		<div className="navbar shadow-sm shadow-gray-100/10 w-screen h-16">
 			<div className="navbar-start">
@@ -52,7 +71,18 @@ function HeaderHero() {
 					title={<LanguageIcon className="w-10" />}
 					children={["Español", "English"]}
 				/>
-				<MoonIcon className="w-10" />
+				<select
+					name="theme"
+					id="theme"
+					onChange={(e) => handleThemeChange(e)}
+					className="select select-ghost w-25"
+				>
+					<option value="light">Light</option>
+					<option value="dark">Dark</option>
+					<option value="dim">Dim</option>
+					<option value="autumn">Autumn</option>
+					<option value="abyss">Abyss</option>
+				</select>
 				<UserProfile />
 			</div>
 		</div>

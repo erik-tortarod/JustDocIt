@@ -22,10 +22,26 @@ import { IRepository } from "../../types/interfaces";
 import { mockRepositories } from "../../fixtures/mockData";
 
 //ENUMS
-import { ENVIRONMENT } from "../../config/api-routes";
+import { API_ROUTES, ENVIRONMENT } from "../../config/api-routes";
 import { EEnvironment } from "../../types/enums";
 
+//HOOKS
+import useValidation from "../../hooks/useValidation";
+
 function Dashboard() {
+	useEffect(() => {
+		const checkValidation = async () => {
+			const validation = new useValidation();
+			const isExpired = await validation.validateToken();
+
+			if (isExpired) {
+				window.location.href = `${API_ROUTES.AUTH.LOGIN}`;
+			}
+		};
+
+		checkValidation();
+	}, []);
+
 	const [loading, setLoading] = useState<boolean>(true);
 	const [error, setError] = useState<string | undefined>(undefined);
 	const [userData, setUserData] = useState<any>(null);

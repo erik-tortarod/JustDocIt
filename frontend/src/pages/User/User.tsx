@@ -1,8 +1,23 @@
 import { useEffect, useState } from "react";
 import { IUser } from "../../types/interfaces";
 import Sidebar from "../../components/layout/Sidebar/Sidebar";
+import useValidation from "@/hooks/useValidation";
+import { API_ROUTES } from "@/config/api-routes";
 
 function User() {
+	useEffect(() => {
+		const checkValidation = async () => {
+			const validation = new useValidation();
+			const isExpired = await validation.validateToken();
+
+			if (isExpired) {
+				window.location.href = `${API_ROUTES.AUTH.LOGIN}`;
+			}
+		};
+
+		checkValidation();
+	}, []);
+
 	const [userData, setUserData] = useState<IUser>();
 	useEffect(() => {
 		const userDataStr = localStorage.getItem("userData");

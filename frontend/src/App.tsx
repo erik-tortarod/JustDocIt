@@ -8,6 +8,7 @@ import NotFound from "./pages/NotFound/NotFound";
 import Documentation from "./pages/Documentation/Documentation";
 import Admin from "./pages/Admin/Admin";
 import User from "./pages/User/User";
+import ProyectDocumentation from "./pages/ProyectDocumentation/ProyectDocumentation";
 
 function App() {
 	return (
@@ -15,6 +16,7 @@ function App() {
 			<Route path="/" element={<Auth />} />
 			<Route path="/dashboard" element={<Dashboard />} />
 			<Route path="/documentation/:id/:language" element={<Documentation />} />
+			<Route path="/proyect_docs" element={<ProyectDocumentation />} />
 			<Route path="*" element={<NotFound />} />
 			<Route path="/admin" element={<Admin />} />
 			<Route path="/user" element={<User />} />

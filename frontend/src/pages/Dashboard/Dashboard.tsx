@@ -156,55 +156,57 @@ function Dashboard() {
 	}
 
 	return (
-		<div className="grid grid-cols-5 w-screen">
+		<div className="flex w-screen">
 			<Sidebar userData={userData} />
-			<div className="col-start-2 col-span-4 ps-16 pt-8 pe-8">
-				<section className="flex justify-between items-center">
-					<h1>Dashboard</h1>
-					<button
-						onClick={() => setShowAddModal(true)}
-						className="px-4 py-2 btn btn-info"
-					>
-						Agregar proyecto nuevo
-					</button>
-				</section>
-				<div className="grid grid-cols-3 gap-6 pe-8 py-8">
-					<DashboardStats
-						amount={addedRepositories.length}
-						stat={`↑ ${addedRepositories.length} repositorios desde el último mes`}
-						title="Proyectos Activos"
-					/>
-					<DashboardStats
-						amount={0}
-						stat="Pendiente de implementación"
-						title="Visitas totales"
-					/>
-				</div>
-				<section>
-					<h2>Lista de Proyectos</h2>
-					<RepositoryFilters
-						repositories={addedRepositories}
-						onFilterChange={setFilteredRepositories}
-					/>
-					<AddedRepositories addedRepositories={filteredRepositories} />
-				</section>
+			<div className="flex-1 transition-all duration-300 ease-in-out">
+				<div className="px-8 pt-8">
+					<section className="flex justify-between items-center">
+						<h1>Dashboard</h1>
+						<button
+							onClick={() => setShowAddModal(true)}
+							className="px-4 py-2 btn btn-info"
+						>
+							Agregar proyecto nuevo
+						</button>
+					</section>
+					<div className="grid grid-cols-3 gap-6 py-8">
+						<DashboardStats
+							amount={addedRepositories.length}
+							stat={`↑ ${addedRepositories.length} repositorios desde el último mes`}
+							title="Proyectos Activos"
+						/>
+						<DashboardStats
+							amount={0}
+							stat="Pendiente de implementación"
+							title="Visitas totales"
+						/>
+					</div>
+					<section>
+						<h2>Lista de Proyectos</h2>
+						<RepositoryFilters
+							repositories={addedRepositories}
+							onFilterChange={setFilteredRepositories}
+						/>
+						<AddedRepositories addedRepositories={filteredRepositories} />
+					</section>
 
-				{/* Modal de selección de repositorio */}
-				{showAddModal && (
-					<AddRepositoryModal
-						userRepositories={userRepositories}
-						refreshAddedRepositories={refreshAddedRepositories}
-						selectedRepository={selectedRepository}
-						onSelectRepository={setSelectedRepository}
-						branch={branch}
-						onBranchChange={setBranch}
-						directory={directory}
-						onDirectoryChange={setDirectory}
-						isAddingRepo={isAddingRepo}
-						onAddRepository={handleAddRepository}
-						onClose={handleCloseModal}
-					/>
-				)}
+					{/* Modal de selección de repositorio */}
+					{showAddModal && (
+						<AddRepositoryModal
+							userRepositories={userRepositories}
+							refreshAddedRepositories={refreshAddedRepositories}
+							selectedRepository={selectedRepository}
+							onSelectRepository={setSelectedRepository}
+							branch={branch}
+							onBranchChange={setBranch}
+							directory={directory}
+							onDirectoryChange={setDirectory}
+							isAddingRepo={isAddingRepo}
+							onAddRepository={handleAddRepository}
+							onClose={handleCloseModal}
+						/>
+					)}
+				</div>
 			</div>
 		</div>
 	);

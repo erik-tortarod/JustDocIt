@@ -1,13 +1,21 @@
 import { ReactNode } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface INavLinkProps {
 	icon: ReactNode;
 	text: string;
 	active?: boolean;
 	href?: string;
+	isOpen: boolean;
 }
 
-function NavLink({ icon, text, active = false, href = "#" }: INavLinkProps) {
+function NavLink({
+	icon,
+	text,
+	active = false,
+	href = "#",
+	isOpen,
+}: INavLinkProps) {
 	return (
 		<div>
 			<a
@@ -19,7 +27,18 @@ function NavLink({ icon, text, active = false, href = "#" }: INavLinkProps) {
 				}`}
 			>
 				<span className="text-xl">{icon}</span>
-				<span>{text}</span>
+				<AnimatePresence>
+					{isOpen && (
+						<motion.span
+							initial={{ opacity: 0, width: 0 }}
+							animate={{ opacity: 1, width: "auto" }}
+							exit={{ opacity: 0, width: 0 }}
+							transition={{ duration: 0.2 }}
+						>
+							{text}
+						</motion.span>
+					)}
+				</AnimatePresence>
 			</a>
 		</div>
 	);

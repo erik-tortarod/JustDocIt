@@ -5,108 +5,153 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.List;
 
+/**
+ * Represents a GitHub repository in the system. This class stores information
+ * about repositories that users have added to track. Repositories are stored in
+ * MongoDB in the 'repositories' collection.
+ */
 @Data
 @Document(collection = "repositories")
 public class Repository {
 
-	@Id
-	private String id;
+    /**
+     * Unique identifier for the repository in our system.
+     */
+    @Id
+    private String id;
 
-	private String githubId;
+    /**
+     * GitHub's unique identifier for the repository.
+     */
+    private String githubId;
 
-	private String name;
+    /**
+     * Name of the repository.
+     */
+    private String name;
 
-	private String description;
+    /**
+     * Description of the repository.
+     */
+    private String description;
 
-	private boolean isPrivate;
+    /**
+     * Whether the repository is private or public.
+     */
+    private boolean isPrivate;
 
-	private String owner;
+    /**
+     * GitHub username of the repository owner.
+     */
+    private String owner;
 
-	private String htmlUrl;
+    /**
+     * URL to the repository's GitHub page.
+     */
+    private String htmlUrl;
 
-	private String userId; // Add this field to associate the repository with a user
+    /**
+     * ID of the user who added this repository.
+     */
+    private String userId;
 
-	private List<String> documentedLanguages; // New attribute
+    /**
+     * List of programming languages that have been documented in this
+     * repository.
+     */
+    private List<String> documentedLanguages;
 
-	private int size; // New property to store repository size
+    /**
+     * Size of the repository in kilobytes.
+     */
+    private int size;
 
-	private String branch; // Branch name of the repository
+    /**
+     * Name of the branch being tracked.
+     */
+    private String branch;
 
-	private int stargazersCount; // Number of stars
+    /**
+     * Number of stars the repository has on GitHub.
+     */
+    private int stargazersCount;
 
-	private int forksCount; // Number of forks
+    /**
+     * Number of forks the repository has on GitHub.
+     */
+    private int forksCount;
 
-	// Add missing setter methods
-	public void setGithubId(String githubId) {
-		this.githubId = githubId;
-	}
+    // Getters and setters
+    public void setGithubId(String githubId) {
+        this.githubId = githubId;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public void setPrivate(boolean isPrivate) {
-		this.isPrivate = isPrivate;
-	}
+    public void setPrivate(boolean isPrivate) {
+        this.isPrivate = isPrivate;
+    }
 
-	public void setOwner(String owner) {
-		this.owner = owner;
-	}
+    public void setOwner(String owner) {
+        this.owner = owner;
+    }
 
-	public void setHtmlUrl(String htmlUrl) {
-		this.htmlUrl = htmlUrl;
-	}
+    public void setHtmlUrl(String htmlUrl) {
+        this.htmlUrl = htmlUrl;
+    }
 
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
-	public List<String> getDocumentedLanguages() {
-		return documentedLanguages;
-	}
+    public List<String> getDocumentedLanguages() {
+        return documentedLanguages;
+    }
 
-	public void setDocumentedLanguages(List<String> documentedLanguages) {
-		this.documentedLanguages = documentedLanguages;
-	}
+    public void setDocumentedLanguages(List<String> documentedLanguages) {
+        this.documentedLanguages = documentedLanguages;
+    }
 
-	public int getSize() {
-		return size;
-	}
+    public int getSize() {
+        return size;
+    }
 
-	public void setSize(int size) {
-		this.size = size;
-	}
+    public void setSize(int size) {
+        this.size = size;
+    }
 
-	public String getBranch() {
-		return branch;
-	}
+    public String getBranch() {
+        return branch;
+    }
 
-	public void setBranch(String branch) {
-		this.branch = branch;
-	}
+    public void setBranch(String branch) {
+        this.branch = branch;
+    }
 
-	public int getStargazersCount() {
-		return stargazersCount;
-	}
+    public int getStargazersCount() {
+        return stargazersCount;
+    }
 
-	public void setStargazersCount(int stargazersCount) {
-		this.stargazersCount = stargazersCount;
-	}
+    public void setStargazersCount(int stargazersCount) {
+        this.stargazersCount = stargazersCount;
+    }
 
-	public int getForksCount() {
-		return forksCount;
-	}
+    public int getForksCount() {
+        return forksCount;
+    }
 
-	public void setForksCount(int forksCount) {
-		this.forksCount = forksCount;
-	}
+    public void setForksCount(int forksCount) {
+        this.forksCount = forksCount;
+    }
 
-	public String getId() {
-		return id;
-	}
+    public String getId() {
+        return id;
+    }
 
 }

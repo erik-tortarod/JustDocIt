@@ -143,16 +143,22 @@ function Documentation() {
 							cls.name.toLowerCase().includes(term) ||
 							(cls.description && cls.description.toLowerCase().includes(term)),
 					) ||
-					doc.content?.functions?.some((func: any) =>
-						func.name.toLowerCase().includes(term),
+					doc.content?.functions?.some(
+						(func: any) =>
+							func.name.toLowerCase().includes(term) ||
+							(func.description &&
+								func.description.toLowerCase().includes(term)),
 					) ||
-					doc.content?.interfaces?.some((intf: any) =>
-						intf.name.toLowerCase().includes(term),
+					doc.content?.interfaces?.some(
+						(intf: any) =>
+							intf.name.toLowerCase().includes(term) ||
+							(intf.description &&
+								intf.description.toLowerCase().includes(term)),
 					),
 			);
 			setFilteredFiles(filteredDocs);
 		}
-	}, [searchTerm, codeDocumentation]); // Removed `allClasses` from dependencies
+	}, [searchTerm, codeDocumentation, allClasses]);
 
 	const selectClass = (className: string) => {
 		const selectedClass = allClasses.find((cls) => cls.name === className);
@@ -347,46 +353,78 @@ function Documentation() {
 							)}
 
 							{/* Interfaces */}
-							{allInterfaces.length > 0 && (
+							{allInterfaces.length > 0 ? (
 								<div className="mt-8">
 									<div className="uppercase text-xs font-semibold text-base-content/70 mb-2">
 										Tipos & Interfaces
 									</div>
 									<ul className="space-y-1">
-										{allInterfaces.map((intf, index) => (
-											<li key={index}>
-												<a
-													href="#"
-													className="flex items-center py-1 px-3 hover:bg-base-300 rounded-md text-sm"
-												>
-													<NavBadge type="I" />
-													<span>{intf.name}</span>
-												</a>
-											</li>
-										))}
+										{allInterfaces
+											.filter((intf) =>
+												searchTerm.trim() === ""
+													? true
+													: intf.name
+															.toLowerCase()
+															.includes(searchTerm.toLowerCase()) ||
+														(intf.description &&
+															intf.description
+																.toLowerCase()
+																.includes(searchTerm.toLowerCase())),
+											)
+											.map((intf, index) => (
+												<li key={index}>
+													<a
+														href="#"
+														className="flex items-center py-1 px-3 hover:bg-base-300 rounded-md text-sm"
+													>
+														<NavBadge type="I" />
+														<span>{intf.name}</span>
+													</a>
+												</li>
+											))}
 									</ul>
+								</div>
+							) : (
+								<div className="mt-8 text-center py-4 text-base-content/50">
+									No hay interfaces documentadas
 								</div>
 							)}
 
 							{/* Funciones */}
-							{allFunctions.length > 0 && (
+							{allFunctions.length > 0 ? (
 								<div className="mt-8">
 									<div className="uppercase text-xs font-semibold text-base-content/70 mb-2">
 										Funciones
 									</div>
 									<ul className="space-y-1">
-										{allFunctions.map((func, index) => (
-											<li key={index}>
-												<a
-													href="#"
-													className="flex items-center py-1 px-3 hover:bg-base-300 rounded-md text-sm"
-												>
-													<NavBadge type="F" />
-													<span>{func.name}</span>
-												</a>
-											</li>
-										))}
+										{allFunctions
+											.filter((func) =>
+												searchTerm.trim() === ""
+													? true
+													: func.name
+															.toLowerCase()
+															.includes(searchTerm.toLowerCase()) ||
+														(func.description &&
+															func.description
+																.toLowerCase()
+																.includes(searchTerm.toLowerCase())),
+											)
+											.map((func, index) => (
+												<li key={index}>
+													<a
+														href="#"
+														className="flex items-center py-1 px-3 hover:bg-base-300 rounded-md text-sm"
+													>
+														<NavBadge type="F" />
+														<span>{func.name}</span>
+													</a>
+												</li>
+											))}
 									</ul>
+								</div>
+							) : (
+								<div className="mt-8 text-center py-4 text-base-content/50">
+									No hay funciones documentadas
 								</div>
 							)}
 						</div>

@@ -179,9 +179,15 @@ function AddedRepositorie({ repo }: { repo: IRepository }) {
 								</Link>
 							))
 						) : (
-							<span className="text-sm text-content-400 italic">
-								No hay documentación disponible
-							</span>
+							<div className="flex items-center gap-2">
+								<div
+									aria-label="warning"
+									className="status status-warning"
+								></div>
+								<span className="text-sm text-content-400 italic">
+									No hay documentación disponible
+								</span>
+							</div>
 						)}
 					</div>
 

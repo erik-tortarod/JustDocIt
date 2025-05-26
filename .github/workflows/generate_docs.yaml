@@ -9,6 +9,16 @@ on:
          - "frontend/src/**"
          - "frontend/package.json"
          - "frontend/package-lock.json"
+   workflow_dispatch:
+      inputs:
+         branch:
+            description: "Rama donde generar la documentación"
+            required: true
+            default: "dev"
+            type: choice
+            options:
+               - dev
+               - main
 
 jobs:
    generate-docs:
@@ -20,6 +30,8 @@ jobs:
       steps:
          - name: Checkout repository
            uses: actions/checkout@v4
+           with:
+              ref: ${{ github.event_name == 'workflow_dispatch' && inputs.branch || github.ref }}
 
          - name: Setup Node.js
            uses: actions/setup-node@v4

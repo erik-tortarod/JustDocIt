@@ -18,7 +18,7 @@ describe("getFileName", () => {
 		expect(getFileName("")).toBe("");
 	});
 });
-
+//
 describe("getFileExtension", () => {
 	it("should extract file extension", () => {
 		expect(getFileExtension("file.ts")).toBe("ts");

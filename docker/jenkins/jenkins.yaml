@@ -1,0 +1,45 @@
+jenkins:
+   systemMessage: "Jenkins configured automatically by Jenkins Configuration as Code plugin"
+   numExecutors: 2
+   scmCheckoutRetryCount: 3
+   mode: NORMAL
+
+   securityRealm:
+      local:
+         allowsSignup: false
+         users:
+            - id: "admin"
+              password: "admin"
+
+   authorizationStrategy:
+      roleBased:
+         roles:
+            global:
+               - name: "admin"
+                 description: "Jenkins administrators"
+                 permissions:
+                    - "Overall/Administer"
+                 assignments:
+                    - "admin"
+               - name: "developer"
+                 description: "Jenkins developers"
+                 permissions:
+                    - "Overall/Read"
+                    - "Job/Build"
+                    - "Job/Read"
+                 assignments:
+                    - "developer"
+
+   nodes:
+      - permanent:
+           name: "master"
+           remoteFS: "/var/jenkins_home"
+           numExecutors: 2
+           labelString: "master"
+           mode: NORMAL
+
+tool:
+   nodejs:
+      installations:
+         - name: "NodeJS 22"
+           home: "/usr/bin/node"

@@ -19,6 +19,11 @@ stop-all:
 rebuild-all:
 	@echo "Reconstruyendo todos los servicios..."
 	docker-compose -f docker/docker-compose.yml down
+	@echo "Eliminando imágenes del proyecto..."
+	@for service in $(SERVICES); do \
+		echo "Eliminando $(DOCKER_USERNAME)/$(PROJECT_NAME)-$$service..."; \
+		docker rmi $(DOCKER_USERNAME)/$(PROJECT_NAME)-$$service:latest 2>/dev/null || true; \
+	done
 	docker-compose -f docker/docker-compose.yml build --no-cache
 	docker-compose -f docker/docker-compose.yml up -d
 

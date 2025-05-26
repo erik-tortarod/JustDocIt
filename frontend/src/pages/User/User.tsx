@@ -28,7 +28,7 @@ function User() {
 		}
 	}, []);
 
-	const capitalize = (str: string) => {
+	const capitalize = (str: string):string => {
 		return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 	};
 
@@ -123,7 +123,7 @@ function User() {
 							<div className="stat-figure text-primary text-3xl">⚙️</div>
 							<div className="stat-title">Preferences</div>
 							<div className="stat-value text-lg">
-								{localStorage.getItem("theme")}
+								{capitalize(localStorage.getItem("theme") || "Default")}
 							</div>
 							<div className="stat-desc">Current theme</div>
 						</div>

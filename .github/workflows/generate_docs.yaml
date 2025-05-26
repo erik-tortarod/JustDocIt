@@ -44,7 +44,17 @@ jobs:
            run: npm install
 
          - name: Generate documentation
-           run: npx typedoc --out docs src/
+           run: |
+              npx typedoc \
+                --out docs \
+                --entryPointStrategy expand \
+                --excludePrivate \
+                --excludeProtected \
+                --excludeExternals \
+                --theme default \
+                --name "JustDocIt Frontend" \
+                --readme none \
+                src/
 
          - name: Check for changes
            id: changes

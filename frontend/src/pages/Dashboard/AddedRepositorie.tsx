@@ -18,8 +18,15 @@ import { replaceLanguageByIcon } from "../../utils/replaceLanguageByIcon";
 /**
  * Component for displaying an added repository.
  * @param repo - The repository to display.
+ * @param onDocumentationComplete - Callback function to be called when documentation is complete.
  */
-function AddedRepositorie({ repo }: { repo: IRepository }) {
+function AddedRepositorie({
+	repo,
+	onDocumentationComplete,
+}: {
+	repo: IRepository;
+	onDocumentationComplete?: () => void;
+}) {
 	const availableLanguages = ["TYPESCRIPT", "PYTHON"];
 
 	const [selectedLanguage, setSelectedLanguage] = useState("");
@@ -45,6 +52,7 @@ function AddedRepositorie({ repo }: { repo: IRepository }) {
 						repo.branch,
 					);
 					setProcessingComplete(true);
+					onDocumentationComplete?.(); // Notify parent when documentation is complete
 				} catch (error) {
 					console.error("Error documentando repositorio:", error);
 					setProcessingComplete(true);

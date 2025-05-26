@@ -186,7 +186,10 @@ function Dashboard() {
 							repositories={addedRepositories}
 							onFilterChange={setFilteredRepositories}
 						/>
-						<AddedRepositories addedRepositories={filteredRepositories} />
+						<AddedRepositories
+							addedRepositories={filteredRepositories}
+							refreshRepositories={refreshAddedRepositories}
+						/>
 					</section>
 
 					{/* Modal de selección de repositorio */}

@@ -6,8 +6,10 @@ import AddedRepositorie from "./AddedRepositorie";
 
 function AddedRepositories({
 	addedRepositories,
+	refreshRepositories,
 }: {
 	addedRepositories: IRepository[];
+	refreshRepositories: () => void;
 }) {
 	const visibleReposFactor = 4;
 
@@ -39,6 +41,7 @@ function AddedRepositories({
 					<AddedRepositorie
 						key={`${repo.githubId}-${repo.branch}`}
 						repo={repo}
+						onDocumentationComplete={refreshRepositories}
 					/>
 				))}
 			</section>

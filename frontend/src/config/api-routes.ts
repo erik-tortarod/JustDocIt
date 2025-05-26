@@ -3,7 +3,7 @@ import { EEnvironment } from "../types/enums";
 const API_BASE_URL = "http://localhost:8080";
 const DOCS_BASE_URL = "http://localhost:8082";
 
-export const ENVIRONMENT: EEnvironment = EEnvironment.DEV;
+export const ENVIRONMENT: EEnvironment = EEnvironment.PROD;
 
 export const API_ROUTES = Object.freeze({
 	AUTH: {

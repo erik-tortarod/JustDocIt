@@ -1,0 +1,11 @@
+workflow-aggregator
+git
+github
+nodejs
+docker-workflow
+pipeline-model-definition
+blueocean
+configuration-as-code
+credentials-binding
+ssh-agent
+ws-cleanup 

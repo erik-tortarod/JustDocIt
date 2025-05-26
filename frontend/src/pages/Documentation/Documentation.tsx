@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import DocumentationService from "../../services/DocumentationService";
 import { ICodeDocumentation } from "../../types/interfaces";
@@ -84,9 +84,17 @@ function Documentation() {
 					setCurrentFile(data[0]);
 					setCurrentIndex(0);
 
-					// Buscar si hay una clase en este archivo para mostrarla
+					// Buscar si hay una clase o función en este archivo para mostrarla
 					if (data[0].content?.classes?.length > 0) {
 						setCurrentClass(data[0].content.classes[0]);
+					} else if (data[0].content?.functions?.length > 0) {
+						// Para Python, también mostramos funciones globales como "clases" para mantener la consistencia
+						setCurrentClass({
+							name: data[0].content.functions[0].name,
+							description: data[0].content.functions[0].description,
+							methods: [data[0].content.functions[0]],
+							type: "function",
+						});
 					} else {
 						setCurrentClass(null);
 					}
@@ -102,14 +110,36 @@ function Documentation() {
 	}, [id, language, environment]);
 
 	// Extraer todas las clases, funciones, interfaces y variables
-	const allClasses = codeDocumentation.flatMap(
-		(doc) => doc.content?.classes || [],
+	const allClasses = useMemo(
+		() =>
+			codeDocumentation.flatMap((doc) => {
+				const classes = doc.content?.classes || [];
+				// Para Python, también incluimos funciones globales como "clases"
+				if (language?.toLowerCase() === "python") {
+					const functions = doc.content?.functions || [];
+					return [
+						...classes,
+						...functions.map((func) => ({
+							name: func.name,
+							description: func.description,
+							methods: [func],
+							type: "function",
+						})),
+					];
+				}
+				return classes;
+			}),
+		[codeDocumentation, language],
 	);
-	const allFunctions = codeDocumentation.flatMap(
-		(doc) => doc.content?.functions || [],
+
+	const allFunctions = useMemo(
+		() => codeDocumentation.flatMap((doc) => doc.content?.functions || []),
+		[codeDocumentation],
 	);
-	const allInterfaces = codeDocumentation.flatMap(
-		(doc) => doc.content?.interfaces || [],
+
+	const allInterfaces = useMemo(
+		() => codeDocumentation.flatMap((doc) => doc.content?.interfaces || []),
+		[codeDocumentation],
 	);
 
 	// Efecto para filtrar según el término de búsqueda
@@ -120,7 +150,7 @@ function Documentation() {
 		} else {
 			const term = searchTerm.toLowerCase();
 
-			// Filtrar clases
+			// Filtrar clases y funciones
 			const filtered = allClasses.filter(
 				(cls) =>
 					cls.name.toLowerCase().includes(term) ||
@@ -165,14 +195,14 @@ function Documentation() {
 		if (selectedClass) {
 			setCurrentClass(selectedClass);
 
-			// Actualizar el archivo actual basado en la clase
+			// Actualizar el archivo actual basado en la clase o función
 			for (let i = 0; i < codeDocumentation.length; i++) {
+				const doc = codeDocumentation[i];
 				if (
-					codeDocumentation[i].content?.classes?.some(
-						(c) => c.name === className,
-					)
+					doc.content?.classes?.some((c) => c.name === className) ||
+					doc.content?.functions?.some((f) => f.name === className)
 				) {
-					setCurrentFile(codeDocumentation[i]);
+					setCurrentFile(doc);
 					setCurrentIndex(i);
 					break;
 				}
@@ -593,7 +623,7 @@ function Documentation() {
 									<span>
 										Tipo:{" "}
 										<span className="inline-block px-2 py-1 bg-primary/20 text-primary text-xs rounded">
-											Clase
+											{currentClass.type === "function" ? "Función" : "Clase"}
 										</span>
 									</span>
 								</div>
@@ -730,7 +760,7 @@ function Documentation() {
 							{/* Métodos */}
 							<section id="metodos" className="mb-8">
 								<h2 className="text-2xl font-semibold mb-6 pb-2 border-b border-base-300">
-									Métodos
+									{currentClass.type === "function" ? "Función" : "Métodos"}
 								</h2>
 
 								{currentClass.methods?.map((method: any, index: number) => (
@@ -741,9 +771,11 @@ function Documentation() {
 									>
 										<h3 className="text-xl font-semibold mb-4 flex items-center">
 											{method.name}()
-											<span className="ml-2 text-xs bg-base-300 px-2 py-1 rounded">
-												{method.signature}
-											</span>
+											{method.signature && (
+												<span className="ml-2 text-xs bg-base-300 px-2 py-1 rounded">
+													{method.signature}
+												</span>
+											)}
 										</h3>
 										<p className="text-base-content/80 mb-4">
 											{method.description}
@@ -790,7 +822,7 @@ function Documentation() {
 												<h4 className="font-semibold mb-2">Retorna</h4>
 												<p className="text-base-content/80 mb-4">
 													<span className="px-2 py-0.5 bg-info/10 text-info text-xs rounded font-mono mr-2">
-														{method.returnType || "Promise<any>"}
+														{method.returnType || "any"}
 													</span>
 													{method.returnDescription}
 												</p>
@@ -800,13 +832,20 @@ function Documentation() {
 										<h4 className="font-semibold mb-2">Ejemplo</h4>
 										<pre className="bg-base-300 p-4 rounded-lg mb-4 overflow-x-auto">
 											<code className="text-sm font-mono">
-												{`// Ejemplo de uso para ${method.name}\n`}
-												{`const result = await service.${method.name}(${
-													method.parameters
-														?.map((p: any) => p.name)
-														.join(", ") || ""
-												});\n`}
-												{`console.log(result);`}
+												{language?.toLowerCase() === "python"
+													? `# Ejemplo de uso para ${method.name}\n` +
+														`${method.name}(${
+															method.parameters
+																?.map((p: any) => p.name)
+																.join(", ") || ""
+														})\n`
+													: `// Ejemplo de uso para ${method.name}\n` +
+														`const result = await service.${method.name}(${
+															method.parameters
+																?.map((p: any) => p.name)
+																.join(", ") || ""
+														});\n` +
+														`console.log(result);`}
 											</code>
 										</pre>
 									</div>

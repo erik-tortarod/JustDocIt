@@ -5,6 +5,7 @@ import { guideContent } from "./GuideContent";
 import { typescriptDocs } from "./docs/typescript";
 import { javascriptDocs } from "./docs/javascript";
 import { javaDocs } from "./docs/java";
+import { pythonDocs } from "./docs/python";
 import { LanguageDocs } from "./types";
 
 const ProyectDocumentation = () => {
@@ -15,6 +16,7 @@ const ProyectDocumentation = () => {
 		typescript: typescriptDocs,
 		javascript: javascriptDocs,
 		java: javaDocs,
+		python: pythonDocs,
 	};
 
 	const allDocs = {

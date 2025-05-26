@@ -20,7 +20,7 @@ import { replaceLanguageByIcon } from "../../utils/replaceLanguageByIcon";
  * @param repo - The repository to display.
  */
 function AddedRepositorie({ repo }: { repo: IRepository }) {
-	const availableLanguages = ["TYPESCRIPT"];
+	const availableLanguages = ["TYPESCRIPT", "PYTHON"];
 
 	const [selectedLanguage, setSelectedLanguage] = useState("");
 	const [loading, setLoading] = useState(false);

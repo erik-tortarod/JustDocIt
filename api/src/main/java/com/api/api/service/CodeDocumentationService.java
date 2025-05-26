@@ -39,6 +39,9 @@ public class CodeDocumentationService {
 	@Autowired
 	private TypeScriptDocumentationParser typeScriptParser;
 
+	@Autowired
+	private PythonDocumentationParser pythonParser;
+
 	private final RestTemplate restTemplate = new RestTemplate();
 
 	/**
@@ -85,8 +88,9 @@ public class CodeDocumentationService {
 		}
 
 		// Verificar soporte para el lenguaje
-		if (language != Language.TYPESCRIPT) {
-			throw new RuntimeException("Actualmente solo se soporta análisis de documentación para TypeScript");
+		if (language != Language.TYPESCRIPT && language != Language.PYTHON) {
+			throw new RuntimeException(
+					"Actualmente solo se soporta análisis de documentación para TypeScript y Python");
 		}
 
 		// Add the language to the documentedLanguages list if not already present
@@ -173,6 +177,10 @@ public class CodeDocumentationService {
 						switch (language) {
 							case TYPESCRIPT:
 								doc = typeScriptParser.parseFile(repoId, path, fileContent, language);
+								doc.setBranch(repository.getBranch());
+								break;
+							case PYTHON:
+								doc = pythonParser.parseFile(repoId, path, fileContent, language);
 								doc.setBranch(repository.getBranch());
 								break;
 							default:

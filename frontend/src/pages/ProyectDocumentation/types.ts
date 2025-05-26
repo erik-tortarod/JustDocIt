@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 
-export type Language = "typescript" | "javascript" | "java";
+export type Language = "typescript" | "javascript" | "java" | "python";
 
 export interface Section {
 	title: string;
@@ -23,4 +23,5 @@ export const languageMap = {
 	typescript: "typescript",
 	javascript: "javascript",
 	java: "java",
+	python: "python",
 } as const;

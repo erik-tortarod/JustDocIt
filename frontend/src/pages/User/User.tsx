@@ -123,8 +123,7 @@ function User() {
 							<div className="stat-figure text-primary text-3xl">⚙️</div>
 							<div className="stat-title">Preferences</div>
 							<div className="stat-value text-lg">
-								{userData?.preferences.theme &&
-									capitalize(userData.preferences.theme)}
+								{localStorage.getItem("theme")}
 							</div>
 							<div className="stat-desc">Current theme</div>
 						</div>

@@ -5,8 +5,6 @@ import lombok.Data;
 @Data
 public class Preferences {
 
-	private Theme theme = Theme.SYSTEM;
-
 	private Language language = Language.ENGLISH;
 
 }
@@ -14,11 +12,5 @@ public class Preferences {
 enum Language {
 
 	ENGLISH, SPANISH
-
-}
-
-enum Theme {
-
-	LIGHT, DARK, SYSTEM
 
 }

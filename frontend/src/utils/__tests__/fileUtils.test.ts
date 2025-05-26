@@ -25,7 +25,7 @@ describe("getFileExtension", () => {
 		expect(getFileExtension("file.tsx")).toBe("tsx");
 		expect(getFileExtension("file.js")).toBe("js");
 		expect(getFileExtension("file.json")).toBe("json");
-	});
+	});//
 
 	it("should handle empty path", () => {
 		expect(getFileExtension("")).toBe("");

@@ -30,12 +30,16 @@ jobs:
          - name: Run tests
            id: test
            run: |
-              npm run test > test-results.txt 2>&1
+              # Run tests with NO_COLOR=1 to disable ANSI colors
+              NO_COLOR=1 npm run test > test-results.txt 2>&1
               echo "exit_code=$?" >> $GITHUB_OUTPUT
 
          - name: Read test results
            id: read-results
            run: |
+              # Clean up the output and format it for GitHub
+              sed -i 's/\x1b\[[0-9;]*m//g' test-results.txt  # Remove ANSI color codes
+              sed -i 's/^[[:space:]]*//' test-results.txt    # Remove leading whitespace
               echo "results<<EOF" >> $GITHUB_OUTPUT
               cat test-results.txt >> $GITHUB_OUTPUT
               echo "EOF" >> $GITHUB_OUTPUT
@@ -51,14 +55,24 @@ jobs:
                  const emoji = exitCode === 0 ? '✅' : '❌';
                  const status = exitCode === 0 ? 'passed' : 'failed';
 
+                 // Extract test summary
+                 const testSummary = results.match(/Test Files.*\n.*Tests.*\n.*Duration.*/s)?.[0] || '';
+
+                 // Extract individual test results
+                 const testResults = results.match(/✓.*\n/g) || [];
+
                  const comment = `
                  ${emoji} **Test Results**
 
                  Status: ${status}
 
+                 **Test Summary:**
                  \`\`\`
-                 ${results}
+                 ${testSummary}
                  \`\`\`
+
+                 **Individual Tests:**
+                 ${testResults.map(test => `- ${test.trim()}`).join('\n')}
                  `;
 
                  github.rest.issues.createComment({

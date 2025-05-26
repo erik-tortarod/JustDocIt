@@ -1,0 +1,69 @@
+name: Test PR
+
+on:
+   pull_request:
+      branches:
+         - dev
+         - main
+
+jobs:
+   test:
+      runs-on: ubuntu-latest
+      defaults:
+         run:
+            working-directory: frontend/
+
+      steps:
+         - name: Checkout repository
+           uses: actions/checkout@v4
+
+         - name: Setup Node.js
+           uses: actions/setup-node@v4
+           with:
+              node-version: "22"
+              cache: "npm"
+              cache-dependency-path: frontend/package-lock.json
+
+         - name: Install dependencies
+           run: npm install
+
+         - name: Run tests
+           id: test
+           run: |
+              npm run test > test-results.txt 2>&1
+              echo "exit_code=$?" >> $GITHUB_OUTPUT
+
+         - name: Read test results
+           id: read-results
+           run: |
+              echo "results<<EOF" >> $GITHUB_OUTPUT
+              cat test-results.txt >> $GITHUB_OUTPUT
+              echo "EOF" >> $GITHUB_OUTPUT
+
+         - name: Comment PR
+           uses: actions/github-script@v7
+           with:
+              github-token: ${{ secrets.GITHUB_TOKEN }}
+              script: |
+                 const results = `${{ steps.read-results.outputs.results }}`;
+                 const exitCode = ${{ steps.test.outputs.exit_code }};
+
+                 const emoji = exitCode === 0 ? '✅' : '❌';
+                 const status = exitCode === 0 ? 'passed' : 'failed';
+
+                 const comment = `
+                 ${emoji} **Test Results**
+
+                 Status: ${status}
+
+                 \`\`\`
+                 ${results}
+                 \`\`\`
+                 `;
+
+                 github.rest.issues.createComment({
+                   issue_number: context.issue.number,
+                   owner: context.repo.owner,
+                   repo: context.repo.repo,
+                   body: comment
+                 });

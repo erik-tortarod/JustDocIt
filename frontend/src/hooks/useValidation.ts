@@ -9,7 +9,7 @@ class useValidation {
 
 	async validateToken() {
 		if (!this.#jwtToken) {
-			return false;
+			return true;
 		}
 
 		const response = await fetch(

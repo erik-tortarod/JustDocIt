@@ -1,0 +1,70 @@
+name: Generate Documentation
+
+on:
+   push:
+      branches:
+         - dev
+         - main
+      paths:
+         - "frontend/src/**"
+         - "frontend/package.json"
+         - "frontend/package-lock.json"
+
+jobs:
+   generate-docs:
+      runs-on: ubuntu-latest
+      defaults:
+         run:
+            working-directory: frontend/
+
+      steps:
+         - name: Checkout repository
+           uses: actions/checkout@v4
+
+         - name: Setup Node.js
+           uses: actions/setup-node@v4
+           with:
+              node-version: "22"
+              cache: "npm"
+              cache-dependency-path: frontend/package-lock.json
+
+         - name: Install dependencies
+           run: npm install
+
+         - name: Generate documentation
+           run: npx typedoc --out docs src/
+
+         - name: Check for changes
+           id: changes
+           run: |
+              git diff --quiet || echo "has_changes=true" >> $GITHUB_OUTPUT
+
+         - name: Commit and push if changes
+           if: steps.changes.outputs.has_changes == 'true'
+           run: |
+              git config --local user.email "github-actions[bot]@users.noreply.github.com"
+              git config --local user.name "github-actions[bot]"
+              git add docs/
+              git commit -m "docs: update documentation"
+              git push
+
+         - name: Comment PR
+           if: github.event_name == 'pull_request'
+           uses: actions/github-script@v7
+           with:
+              github-token: ${{ secrets.GITHUB_TOKEN }}
+              script: |
+                 const comment = `
+                 📚 **Documentation Update**
+
+                 La documentación ha sido generada y actualizada automáticamente.
+
+                 Puedes ver la documentación generada en la carpeta \`docs/\` del repositorio.
+                 `;
+
+                 github.rest.issues.createComment({
+                   issue_number: context.issue.number,
+                   owner: context.repo.owner,
+                   repo: context.repo.repo,
+                   body: comment
+                 });

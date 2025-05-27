@@ -59,7 +59,6 @@ services:
          - /var/run/docker.sock:/var/run/docker.sock
       environment:
          - JENKINS_OPTS="--httpPort=8080"
-         - JAVA_OPTS="-Djenkins.install.runSetupWizard=false"
       user: jenkins
       networks:
          - app-network

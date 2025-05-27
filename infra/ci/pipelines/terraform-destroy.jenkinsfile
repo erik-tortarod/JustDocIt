@@ -1,0 +1,51 @@
+pipeline {
+    agent any
+    
+    environment {
+        TERRAFORM_DIR = 'infra/terraform'
+        TERRAFORM_STATE_DIR = '/var/jenkins_home/terraform-state'
+    }
+    
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+        
+        stage('Terraform Init') {
+            steps {
+                dir("${TERRAFORM_DIR}") {
+                    sh '''
+                        terraform init \
+                            -backend-config="path=${TERRAFORM_STATE_DIR}/terraform.tfstate"
+                    '''
+                }
+            }
+        }
+        
+        stage('Terraform Destroy') {
+            steps {
+                dir("${TERRAFORM_DIR}") {
+                    sh '''
+                        terraform destroy -auto-approve
+                    '''
+                }
+            }
+        }
+        
+        stage('Cleanup State') {
+            steps {
+                sh '''
+                    rm -rf ${TERRAFORM_STATE_DIR}/*
+                '''
+            }
+        }
+    }
+    
+    post {
+        always {
+            cleanWs()
+        }
+    }
+} 

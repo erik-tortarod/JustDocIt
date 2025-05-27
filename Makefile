@@ -3,7 +3,7 @@ DOCKER_USERNAME ?= eriktortarod
 PROJECT_NAME ?= justdocit
 SERVICES := frontend auth api jenkins
 
-.PHONY: start-all stop-all rebuild-all push-to-dockerhub logs shell help format run-all jenkins-start jenkins-stop jenkins-logs jenkins-shell
+.PHONY: start-all stop-all rebuild-all push-to-dockerhub logs shell help format run-all jenkins-start jenkins-stop jenkins-logs jenkins-shell jenkins-rebuild
 
 # Inicia todos los servicios
 start-all:
@@ -20,11 +20,11 @@ rebuild-all:
 	@echo "Reconstruyendo todos los servicios..."
 	docker-compose -f docker/docker-compose.yml down
 	@echo "Eliminando imágenes del proyecto..."
-	@for service in $(SERVICES); do \
+	@for service in frontend auth api; do \
 		echo "Eliminando $(DOCKER_USERNAME)/$(PROJECT_NAME)-$$service..."; \
 		docker rmi $(DOCKER_USERNAME)/$(PROJECT_NAME)-$$service:latest 2>/dev/null || true; \
 	done
-	docker-compose -f docker/docker-compose.yml build --no-cache
+	docker-compose -f docker/docker-compose.yml build --no-cache frontend auth api
 	docker-compose -f docker/docker-compose.yml up -d
 
 # Publica las imágenes en DockerHub
@@ -77,6 +77,13 @@ jenkins-stop:
 	@echo "Deteniendo Jenkins..."
 	docker-compose -f docker/docker-compose.yml stop jenkins
 
+jenkins-rebuild:
+	@echo "Reconstruyendo Jenkins..."
+	docker-compose -f docker/docker-compose.yml stop jenkins
+	docker rmi $(DOCKER_USERNAME)/$(PROJECT_NAME)-jenkins:latest 2>/dev/null || true
+	docker-compose -f docker/docker-compose.yml build --no-cache jenkins
+	docker-compose -f docker/docker-compose.yml up -d jenkins
+
 jenkins-logs:
 	@echo "Mostrando logs de Jenkins..."
 	docker-compose -f docker/docker-compose.yml logs -f jenkins
@@ -90,7 +97,7 @@ help:
 	@echo "Comandos disponibles:"
 	@echo "  make start-all                - Inicia todos los servicios"
 	@echo "  make stop-all                 - Detiene todos los servicios"
-	@echo "  make rebuild-all              - Reconstruye todos los servicios"
+	@echo "  make rebuild-all              - Reconstruye todos los servicios (excepto Jenkins)"
 	@echo "  make push-to-dockerhub        - Publica las imágenes en DockerHub"
 	@echo "  make logs-CONTENEDOR          - Muestra los logs del contenedor especificado"
 	@echo "  make shell-CONTENEDOR         - Abre un shell en el contenedor especificado"
@@ -98,6 +105,7 @@ help:
 	@echo "  make run-all                  - Ejecuta el proyecto en local sin contenedores"
 	@echo "  make jenkins-start            - Inicia solo Jenkins"
 	@echo "  make jenkins-stop             - Detiene solo Jenkins"
+	@echo "  make jenkins-rebuild          - Reconstruye solo Jenkins"
 	@echo "  make jenkins-logs             - Muestra los logs de Jenkins"
 	@echo "  make jenkins-shell            - Abre un shell en Jenkins"
 	@echo "  make help                     - Muestra esta ayuda"

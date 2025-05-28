@@ -62,13 +62,13 @@ class RepositoryService {
 			},
 		});
 
-		if (!response.ok) {
-			throw new Error(
-				`Error adding the repository to the dashboard ${response.status}`,
-			);
+		const data = await response.json();
+
+		if (!response.ok || data.message === "Repository with this branch already exists") {
+			throw new Error(data.message || `Error adding the repository to the dashboard ${response.status}`);
 		}
 
-		return await response.json();
+		return data;
 	}
 
 	/**

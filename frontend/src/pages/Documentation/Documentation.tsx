@@ -1,14 +1,11 @@
 import { useEffect, useState, useMemo } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import DocumentationService from "../../services/DocumentationService";
 import { ICodeDocumentation } from "../../types/interfaces";
+import RepositoryService from "../../services/RepositoryService";
+import { IRepository } from "../../types/interfaces";
 
 import logo from "../../../public/logo.png";
-
-// Mockup de datos para desarrollo
-import { mockCodeDocumentation } from "../../fixtures/mockData";
-import { EEnvironment } from "../../types/enums";
-import { ENVIRONMENT } from "../../config/api-routes";
 
 //UTILS
 import {
@@ -63,51 +60,32 @@ function Documentation() {
 		null,
 	);
 	const [activeSection, setActiveSection] = useState("classes"); // 'classes', 'files', 'interfaces', 'functions'
-
-	// Determinar el entorno
-	const environment = ENVIRONMENT;
+	const [repositoryInfo, setRepositoryInfo] = useState<IRepository | null>(
+		null,
+	);
 
 	useEffect(() => {
-		const getDocumentation = async () => {
-			setLoading(true);
+		const fetchData = async () => {
 			try {
-				let data;
-				if (environment === EEnvironment.DEV && Number(id) === 1) {
-					data = mockCodeDocumentation;
-				} else {
-					data = await DocumentationService.getRepository(id!, language!);
-				}
+				if (!id || !language) return;
+
+				const data = await DocumentationService.getRepository(id, language);
 				setCodeDocumentation(data);
+				setFilteredFiles(data);
+				setCurrentFile(data[0] || null);
 
-				// Establecer el primer archivo como actual
-				if (data.length > 0) {
-					setCurrentFile(data[0]);
-					setCurrentIndex(0);
-
-					// Buscar si hay una clase o función en este archivo para mostrarla
-					if (data[0].content?.classes?.length > 0) {
-						setCurrentClass(data[0].content.classes[0]);
-					} else if (data[0].content?.functions?.length > 0) {
-						// Para Python, también mostramos funciones globales como "clases" para mantener la consistencia
-						setCurrentClass({
-							name: data[0].content.functions[0].name,
-							description: data[0].content.functions[0].description,
-							methods: [data[0].content.functions[0]],
-							type: "function",
-						});
-					} else {
-						setCurrentClass(null);
-					}
-				}
+				// Get repository info
+				const repoInfo = await RepositoryService.getRepositoryById(Number(id));
+				setRepositoryInfo(repoInfo);
 			} catch (error) {
-				console.error("Error al cargar la documentación:", error);
+				console.error("Error fetching documentation:", error);
 			} finally {
 				setLoading(false);
 			}
 		};
 
-		getDocumentation();
-	}, [id, language, environment]);
+		fetchData();
+	}, [id, language]);
 
 	// Extraer todas las clases, funciones, interfaces y variables
 	const allClasses = useMemo(
@@ -276,24 +254,26 @@ function Documentation() {
 			<aside className="w-72 bg-base-200 border-r border-base-300 h-screen sticky top-0 overflow-y-auto">
 				<div className="p-4 border-b border-base-300">
 					<div className="flex items-center gap-3 mb-[-0.5rem] mt-[-1.5rem]">
-						<img src={logo} alt="" className="w-8" />
-						<div className="font-bold text-lg">
-							JustDocIt
-							<span className="inline-flex items-center ml-2 bg-gradient-to-r from-primary to-secondary text-white text-xs px-2 py-1 rounded-full">
-								<span className="w-2 h-2 bg-success rounded-full mr-1 animate-pulse"></span>
-								Online
-							</span>
-						</div>
+						<Link
+							to="/dashboard"
+							className="flex items-center gap-3 decoration-0 decoration-transparent"
+						>
+							<img src={logo} alt="" className="w-8" />
+							<div className="font-bold text-lg">
+								JustDocIt
+								<span className="inline-flex items-center ml-2 bg-gradient-to-r from-primary to-secondary text-white text-xs px-2 py-1 rounded-full">
+									<span className="w-2 h-2 bg-success rounded-full mr-1 animate-pulse"></span>
+									Online
+								</span>
+							</div>
+						</Link>
 					</div>
 
 					<div className="mb-4">
 						<div className="font-semibold">Repositorio</div>
 						<div className="flex items-center text-sm text-base-content/70">
 							<span className="mr-2">📦</span>
-							<span>github.com/usuario/api-cliente</span>
-						</div>
-						<div className="mt-2 inline-block px-2 py-1 bg-base-300 rounded text-xs">
-							v1.2.3
+							<span>{repositoryInfo?.name || "Repositorio"}</span>
 						</div>
 					</div>
 
@@ -614,7 +594,11 @@ function Documentation() {
 									<span>
 										Archivo:{" "}
 										<code>
-											{currentFile?.filePath || `src/${currentClass.name}.ts`}
+											{currentFile?.filePath
+												? `typescript/examples/${currentFile.filePath
+														.split("/")
+														.pop()}`
+												: `typescript/examples/${currentClass.name}.ts`}
 										</code>
 									</span>
 								</div>
@@ -626,10 +610,6 @@ function Documentation() {
 											{currentClass.type === "function" ? "Función" : "Clase"}
 										</span>
 									</span>
-								</div>
-								<div className="flex items-center gap-2 text-sm text-base-content/70">
-									<span>🔄</span>
-									<span>Actualizado: hace 3 días</span>
 								</div>
 							</div>
 
@@ -734,27 +714,6 @@ function Documentation() {
 									</code>{" "}
 									{currentClass.description}
 								</p>
-
-								{/*  <div className="alert bg-info/10 border-l-4 border-info my-6 flex items-start">
-                           <div className="mr-3 mt-1 text-info">ℹ️</div>
-                           <div>
-                              <div className="font-semibold text-info mb-1">
-                                 Compatibilidad
-                              </div>
-                              <div className="text-base-content/80 text-sm">
-                                 Esta librería es compatible con navegadores
-                                 modernos y Node.js. Internamente usa{" "}
-                                 <a
-                                    href="#"
-                                    className="text-primary hover:underline"
-                                 >
-                                    fetch
-                                 </a>{" "}
-                                 para realizar las peticiones, con un fallback a
-                                 XMLHttpRequest para navegadores antiguos.
-                              </div>
-                           </div>
-                        </div> */}
 							</section>
 
 							{/* Métodos */}

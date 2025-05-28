@@ -201,19 +201,9 @@ const ProgressBarModal = ({
 					></div>
 				</div>
 
-				{isCompleted ? (
+				{isCompleted && (
 					<div className="mt-4 p-3 bg-success/10 border border-success text-success rounded-md text-sm">
 						Documentación finalizada. ¡Puedes acceder a los resultados ahora!
-					</div>
-				) : (
-					<div className="flex justify-end mt-4">
-						<button
-							onClick={onClose}
-							className="btn btn-ghost"
-							disabled={isProcessing}
-						>
-							Cancelar
-						</button>
 					</div>
 				)}
 			</div>

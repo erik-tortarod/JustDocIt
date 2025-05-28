@@ -121,6 +121,36 @@ class RepositoryService {
 			throw new Error(`Error deleting the repository ${response.status}`);
 		}
 	}
+
+	/**
+	 * Gets a specific repository by its ID.
+	 * @param repositoryId - The ID of the repository to fetch.
+	 * @returns A promise resolving to the repository data.
+	 */
+	static async getRepositoryById(repositoryId: number): Promise<any> {
+		const token = StorageService.getToken();
+
+		if (!token) {
+			throw new Error(`No authentication token`);
+		}
+
+		const url = new URL(API_ROUTES.DOCS.LIST_REPOSITORIES);
+		url.searchParams.append("repositoryId", String(repositoryId));
+
+		const response = await fetch(url.toString(), {
+			method: "GET",
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
+
+		if (!response.ok) {
+			throw new Error(`Error fetching repository ${response.status}`);
+		}
+
+		const repositories = await response.json();
+		return repositories.find((repo: any) => repo.id === repositoryId);
+	}
 }
 
 export default RepositoryService;

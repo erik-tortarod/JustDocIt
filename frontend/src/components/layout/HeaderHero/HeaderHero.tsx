@@ -54,7 +54,9 @@ function HeaderHero() {
 				</div>
 				<a className="HeaderHero__brand btn btn-ghost text-xl">
 					<img src={logo} alt="Logo image" className="HeaderHero__logo w-10" />
-					JustDocIt
+					<span className="HeaderHero__brand-text hidden sm:inline">
+						JustDocIt
+					</span>
 				</a>
 			</div>
 			<div className="HeaderHero__center navbar-center hidden lg:flex">

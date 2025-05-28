@@ -35,7 +35,7 @@ function SelectBtn(
 	};
 
 	return (
-		<details className="SelectBtn dropdown dropdown-end" ref={detailsRef}>
+		<details className="SelectBtn dropdown dropdown-top" ref={detailsRef}>
 			<summary className="SelectBtn__summary btn btn-primary btn-sm gap-2">
 				{title}
 				<svg
@@ -53,7 +53,7 @@ function SelectBtn(
 					/>
 				</svg>
 			</summary>
-			<ul className="SelectBtn__list dropdown-content menu p-2 shadow-lg bg-base-100 rounded-box w-52 mt-2 border border-base-300">
+			<ul className="SelectBtn__list dropdown-content menu p-2 shadow-lg bg-base-100 rounded-box w-52 mb-2 border border-base-300 ml-[-5.5rem]">
 				{children.map((child, index) => (
 					<li key={index} className="SelectBtn__item">
 						<button

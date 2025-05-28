@@ -34,7 +34,7 @@ function Sidebar({ userData }: { userData: IUser }) {
 	}, []);
 
 	return (
-		<div className="Sidebar absolute md:relative z-100">
+		<div className="Sidebar fixed md:block md:relative z-100">
 			<motion.aside
 				initial={false}
 				animate={{ width: isSidebarOpen ? "16rem" : "4rem" }}

@@ -72,13 +72,19 @@ function RepositoryFilters({
 			</div>
 			<div className="min-w-[150px]">
 				<select
-					className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+					className="w-full px-4 py-2 bg-base-100 text-base-content border  rounded-lg focus:outline-info focus:ring-2 focus:ring-primary"
 					value={selectedLanguage}
 					onChange={(e) => setSelectedLanguage(e.target.value)}
 				>
-					<option value="all">Todos los lenguajes</option>
+					<option value="all" className="bg-base-100 text-base-content">
+						Todos los lenguajes
+					</option>
 					{availableLanguages.map((lang) => (
-						<option key={lang} value={lang}>
+						<option
+							key={lang}
+							value={lang}
+							className="bg-base-100 text-base-content"
+						>
 							{lang}
 						</option>
 					))}

@@ -36,7 +36,7 @@ function AddRepositoryModal({
 
 	return (
 		<div
-			className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+			className="fixed inset-0 bg-black/50 flex items-center justify-center z-500"
 			onClick={handleModalClick}
 		>
 			<div className="bg-base-100 rounded-lg shadow-xl w-[80%] max-w-6xl max-h-[80vh] overflow-hidden relative">

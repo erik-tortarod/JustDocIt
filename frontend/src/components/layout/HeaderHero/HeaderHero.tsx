@@ -23,46 +23,58 @@ function HeaderHero() {
 	}, [theme]);
 
 	return (
-		<div className="navbar shadow-sm shadow-gray-100/10 w-screen h-16">
-			<div className="navbar-start">
-				<div className="dropdown">
-					<div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
+		<div className="HeaderHero navbar shadow-sm shadow-gray-100/10 w-screen h-16">
+			<div className="HeaderHero__start navbar-start">
+				<div className="HeaderHero__dropdown dropdown">
+					<div
+						tabIndex={0}
+						role="button"
+						className="HeaderHero__menu-btn btn btn-ghost lg:hidden"
+					>
 						<MenuIcon />
 					</div>
 					<ul
 						tabIndex={0}
-						className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
+						className="HeaderHero__dropdown-content menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
 					>
 						<li>
-							<a>Características</a>
+							<a className="HeaderHero__dropdown-link">Características</a>
 						</li>
 						<li>
-							<Link to="/proyect_docs">Documentation</Link>
+							<Link to="/proyect_docs" className="HeaderHero__dropdown-link">
+								Documentation
+							</Link>
 						</li>
 						<li>
-							<Link to="/dashboard">Dashboard</Link>
+							<Link to="/dashboard" className="HeaderHero__dropdown-link">
+								Dashboard
+							</Link>
 						</li>
 					</ul>
 				</div>
-				<a className="btn btn-ghost text-xl">
-					<img src={logo} alt="Logo image" className="w-10" />
+				<a className="HeaderHero__brand btn btn-ghost text-xl">
+					<img src={logo} alt="Logo image" className="HeaderHero__logo w-10" />
 					JustDocIt
 				</a>
 			</div>
-			<div className="navbar-center hidden lg:flex">
-				<ul className="menu menu-horizontal px-1">
+			<div className="HeaderHero__center navbar-center hidden lg:flex">
+				<ul className="HeaderHero__menu menu menu-horizontal px-1">
 					<li>
-						<a>Características</a>
+						<a className="HeaderHero__menu-link">Características</a>
 					</li>
 					<li>
-						<Link to="/proyect_docs">Documentation</Link>
+						<Link to="/proyect_docs" className="HeaderHero__menu-link">
+							Documentation
+						</Link>
 					</li>
 					<li>
-						<Link to="/dashboard">Dashboard</Link>
+						<Link to="/dashboard" className="HeaderHero__menu-link">
+							Dashboard
+						</Link>
 					</li>
 				</ul>
 			</div>
-			<div className="navbar-end flex gap-3 lg:pr-6">
+			<div className="HeaderHero__end navbar-end flex gap-3 lg:pr-6">
 				<SelectBtn
 					title={<LanguageIcon className="w-10" />}
 					children={["Español", "English"]}
@@ -72,7 +84,7 @@ function HeaderHero() {
 					id="theme"
 					value={theme}
 					onChange={handleThemeChange}
-					className="select select-ghost w-25"
+					className="HeaderHero__theme-select select select-ghost w-25"
 				>
 					<option value="light">Light</option>
 					<option value="dark">Dark</option>

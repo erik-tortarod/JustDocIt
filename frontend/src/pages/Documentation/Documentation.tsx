@@ -73,10 +73,6 @@ function Documentation() {
 				setCodeDocumentation(data);
 				setFilteredFiles(data);
 				setCurrentFile(data[0] || null);
-
-				// Get repository info
-				const repoInfo = await RepositoryService.getRepositoryById(Number(id));
-				setRepositoryInfo(repoInfo);
 			} catch (error) {
 				console.error("Error fetching documentation:", error);
 			} finally {
@@ -273,7 +269,9 @@ function Documentation() {
 						<div className="font-semibold">Repositorio</div>
 						<div className="flex items-center text-sm text-base-content/70">
 							<span className="mr-2">📦</span>
-							<span>{repositoryInfo?.name || "Repositorio"}</span>
+							<span>
+								{codeDocumentation[0]?.repositoryName || "Repositorio"}
+							</span>
 						</div>
 					</div>
 

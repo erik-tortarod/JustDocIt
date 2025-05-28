@@ -53,21 +53,12 @@ class DocumentationService {
 	 * @returns A promise resolving to the documentation data.
 	 */
 	static async getRepository(id: string, language: string): Promise<any> {
-		const token = StorageService.getToken();
-
-		if (!token) {
-			throw new Error(`No authentication token`);
-		}
-
 		const url = new URL(API_ROUTES.DOCS.GET_DOCUMENTATION);
 		url.searchParams.append("repositoryId", id);
 		url.searchParams.append("language", language.toUpperCase());
 
 		const response = await fetch(url.toString(), {
 			method: "GET",
-			headers: {
-				Authorization: `Bearer ${token}`,
-			},
 		});
 
 		if (!response.ok) {

@@ -3,6 +3,7 @@ package com.api.api.repository;
 import com.api.api.controller.Language;
 import com.api.api.model.CodeDocumentation;
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -11,6 +12,7 @@ import java.util.List;
  * find and delete documentation based on various criteria such as repository ID,
  * language, branch, and user ID.
  */
+@Repository
 public interface CodeDocumentationRepository extends MongoRepository<CodeDocumentation, String> {
 
 	/**
@@ -77,5 +79,9 @@ public interface CodeDocumentationRepository extends MongoRepository<CodeDocumen
 	 * @param repositoryId The ID of the repository
 	 */
 	void deleteByRepositoryId(String repositoryId);
+
+	List<CodeDocumentation> findByLanguage(Language language);
+
+	CodeDocumentation findByLanguageAndId(Language language, String id);
 
 }

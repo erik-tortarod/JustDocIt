@@ -128,20 +128,11 @@ class RepositoryService {
 	 * @returns A promise resolving to the repository data.
 	 */
 	static async getRepositoryById(repositoryId: number): Promise<any> {
-		const token = StorageService.getToken();
-
-		if (!token) {
-			throw new Error(`No authentication token`);
-		}
-
 		const url = new URL(API_ROUTES.DOCS.LIST_REPOSITORIES);
 		url.searchParams.append("repositoryId", String(repositoryId));
 
 		const response = await fetch(url.toString(), {
 			method: "GET",
-			headers: {
-				Authorization: `Bearer ${token}`,
-			},
 		});
 
 		if (!response.ok) {

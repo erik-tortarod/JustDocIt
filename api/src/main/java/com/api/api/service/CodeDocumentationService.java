@@ -333,4 +333,23 @@ public class CodeDocumentationService {
 		}
 	}
 
+	/**
+	 * Retrieves all documentation for a specific language.
+	 * @param language The programming language to filter documentation by
+	 * @return List of documentation entries for the specified language
+	 */
+	public List<CodeDocumentation> getLanguageDocumentation(Language language) {
+		return documentationRepository.findByLanguage(language);
+	}
+
+	/**
+	 * Retrieves documentation for a specific language and ID.
+	 * @param language The programming language of the documentation
+	 * @param id The ID of the documentation
+	 * @return The documentation entry if found, null otherwise
+	 */
+	public CodeDocumentation getLanguageDocumentationById(Language language, String id) {
+		return documentationRepository.findByLanguageAndId(language, id);
+	}
+
 }

@@ -48,6 +48,7 @@ export interface IRepository {
 export interface ICodeDocumentation {
 	id: string;
 	repositoryId: string;
+	repositoryName: string;
 	filePath: string;
 	language: ELanguage;
 	content: ICodeDocumentationContent;

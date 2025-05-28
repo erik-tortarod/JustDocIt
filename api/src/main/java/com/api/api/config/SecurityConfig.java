@@ -28,6 +28,8 @@ public class SecurityConfig {
 		}))
 			.authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.GET, "/api/documentation/repository")
 				.permitAll()
+				.requestMatchers(HttpMethod.GET, "/api/documentation/language/**")
+				.permitAll()
 				.requestMatchers(HttpMethod.OPTIONS, "/**")
 				.permitAll()
 				.requestMatchers("/", "/error", "/css/**", "/js/**", "/api/**", "/auth/token", "/token/**")

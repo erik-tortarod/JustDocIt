@@ -90,8 +90,7 @@ public class CodeDocumentationController {
 	 */
 	@GetMapping("/repository")
 	public ResponseEntity<?> getRepositoryDocumentation(@RequestParam String repositoryId,
-			@RequestParam Language language) { // Make language required
-
+			@RequestParam Language language) {
 		try {
 			logger.info("Obteniendo documentación para repositoryId: {} y lenguaje: {}", repositoryId, language);
 
@@ -146,6 +145,59 @@ public class CodeDocumentationController {
 		catch (Exception e) {
 			logger.error("Error al obtener documentación del archivo: {}", e.getMessage());
 			return ResponseEntity.status(401).body("Token inválido o expirado");
+		}
+	}
+
+	/**
+	 * Retrieves documentation for a specific language.
+	 * @param language The programming language of the documentation
+	 * @return ResponseEntity containing the documentation or error message
+	 */
+	@GetMapping("/language/{language}")
+	public ResponseEntity<?> getLanguageDocumentation(@PathVariable Language language) {
+		try {
+			logger.info("Obteniendo documentación para lenguaje: {}", language);
+
+			List<CodeDocumentation> docs = documentationService.getLanguageDocumentation(language);
+
+			if (docs.isEmpty()) {
+				logger.warn("No se encontró documentación para lenguaje: {}", language);
+				return ResponseEntity.status(404).body("No se encontró documentación para el lenguaje solicitado.");
+			}
+
+			logger.info("Documentación encontrada: {} documentos", docs.size());
+			return ResponseEntity.ok(docs);
+		}
+		catch (Exception e) {
+			logger.error("Error al obtener documentación: {}", e.getMessage(), e);
+			return ResponseEntity.status(500).body("Error interno del servidor: " + e.getMessage());
+		}
+	}
+
+	/**
+	 * Retrieves documentation for a specific language and ID.
+	 * @param language The programming language of the documentation
+	 * @param id The ID of the documentation
+	 * @return ResponseEntity containing the documentation or error message
+	 */
+	@GetMapping("/language/{language}/id/{id}")
+	public ResponseEntity<?> getLanguageDocumentationById(@PathVariable Language language, @PathVariable String id) {
+		try {
+			logger.info("Obteniendo documentación para lenguaje: {} y ID: {}", language, id);
+
+			CodeDocumentation doc = documentationService.getLanguageDocumentationById(language, id);
+
+			if (doc == null) {
+				logger.warn("No se encontró documentación para lenguaje: {} y ID: {}", language, id);
+				return ResponseEntity.status(404).body("No se encontró documentación para el ID solicitado.");
+			}
+
+			logger.info("Documentación encontrada para ID: {}", id);
+			return ResponseEntity.ok(doc);
+		}
+		catch (Exception e) {
+			logger.error("Error al obtener documentación: {}", e.getMessage(), e);
+			return ResponseEntity.status(500).body("Error interno del servidor: " + e.getMessage());
 		}
 	}
 

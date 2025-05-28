@@ -9,7 +9,7 @@ function AddedRepositories({
 	refreshRepositories,
 }: {
 	addedRepositories: IRepository[];
-	refreshRepositories: () => void;
+	refreshRepositories: () => Promise<void>;
 }) {
 	const visibleReposFactor = 4;
 

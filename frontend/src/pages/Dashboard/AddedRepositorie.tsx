@@ -89,6 +89,12 @@ function AddedRepositorie({
 		setIsSettingsModalOpen(false);
 	};
 
+	const handleRefresh = async () => {
+		if (onDocumentationComplete) {
+			onDocumentationComplete();
+		}
+	};
+
 	return (
 		<>
 			<div className="project-card bg-base-800 shadow-md rounded-lg border border-base-700 transition-all hover:translate-y-[-5px] hover:shadow-xl">
@@ -220,6 +226,7 @@ function AddedRepositorie({
 				isOpen={isSettingsModalOpen}
 				onClose={handleCloseSettings}
 				repository={repo}
+				refreshRepositories={handleRefresh}
 			/>
 		</>
 	);

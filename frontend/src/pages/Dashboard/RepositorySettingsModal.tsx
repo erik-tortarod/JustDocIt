@@ -16,15 +16,22 @@ interface Props {
 	isOpen: boolean;
 	onClose: () => void;
 	repository: IRepository;
+	refreshRepositories: () => Promise<void>;
 }
 
-function RepositorySettingsModal({ isOpen, onClose, repository }: Props) {
+function RepositorySettingsModal({
+	isOpen,
+	onClose,
+	repository,
+	refreshRepositories,
+}: Props) {
 	const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
 	const handleDeleteRepository = async () => {
 		try {
 			await RepositoryService.deleteRepository(repository.id);
 			toast.success("Repositorio eliminado correctamente.");
+			await refreshRepositories();
 			onClose();
 		} catch (error) {
 			toast.error("Error al eliminar el repositorio.");

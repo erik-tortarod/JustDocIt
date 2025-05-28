@@ -64,8 +64,14 @@ class RepositoryService {
 
 		const data = await response.json();
 
-		if (!response.ok || data.message === "Repository with this branch already exists") {
-			throw new Error(data.message || `Error adding the repository to the dashboard ${response.status}`);
+		if (
+			!response.ok ||
+			data.message === "Repository with this branch already exists"
+		) {
+			throw new Error(
+				data.message ||
+					`Error adding the repository to the dashboard ${response.status}`,
+			);
 		}
 
 		return data;

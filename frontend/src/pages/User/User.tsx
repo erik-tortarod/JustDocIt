@@ -66,7 +66,7 @@ function User() {
 	};
 
 	if (!userData) {
-		return <div>Loading...</div>;
+		return <span className="loading loading-infinity w-50"></span>;
 	}
 
 	return (

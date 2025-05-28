@@ -61,7 +61,11 @@ function AdminContent() {
 					onClick={handleGetReport}
 					disabled={loading}
 				>
-					{loading ? "Cargando..." : "Descargar Informe de Usuarios"}
+					{loading ? (
+						<span className="loading loading-infinity w-50"></span>
+					) : (
+						"Descargar Informe de Usuarios"
+					)}
 				</button>
 
 				{error && <div className="text-red-500 mt-2">{error}</div>}

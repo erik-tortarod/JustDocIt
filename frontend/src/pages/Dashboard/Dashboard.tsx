@@ -148,9 +148,9 @@ function Dashboard() {
 
 	if (error) {
 		return (
-			<div>
-				<h1>Error</h1>
-				<button>Volver al login</button>
+			<div className="flex justify-center items-center h-screen w-screen flex-col">
+				<h1>Wait a moment...</h1>
+				<span className="loading loading-infinity w-50"></span>
 			</div>
 		);
 	}

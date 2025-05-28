@@ -1,4 +1,5 @@
 import { useState } from "react";
+import toast from "react-hot-toast";
 import { IRepository } from "../../types/interfaces";
 import { CloseIcon } from "../../assets/images/svg/CloseIcon";
 import { RepositoryIcon } from "../../assets/images/svg/RepositoryIcon";
@@ -23,10 +24,10 @@ function RepositorySettingsModal({ isOpen, onClose, repository }: Props) {
 	const handleDeleteRepository = async () => {
 		try {
 			await RepositoryService.deleteRepository(repository.id);
-			alert("Repositorio eliminado correctamente.");
+			toast.success("Repositorio eliminado correctamente.");
 			onClose();
 		} catch (error) {
-			alert("Error al eliminar el repositorio.");
+			toast.error("Error al eliminar el repositorio.");
 		}
 	};
 

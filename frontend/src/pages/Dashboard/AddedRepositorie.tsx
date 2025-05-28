@@ -27,7 +27,7 @@ function AddedRepositorie({
 	repo: IRepository;
 	onDocumentationComplete?: () => void;
 }) {
-	const availableLanguages = ["TYPESCRIPT", "PYTHON"];
+	const availableLanguages = ["TYPESCRIPT", "PYTHON", "PHP"];
 
 	const [selectedLanguage, setSelectedLanguage] = useState("");
 	const [loading, setLoading] = useState(false);

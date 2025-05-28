@@ -29,7 +29,11 @@ public enum Language {
 	/**
 	 * CSS stylesheet language
 	 */
-	CSS(".css");
+	CSS(".css"),
+	/**
+	 * PHP programming language
+	 */
+	PHP(".php");
 
 	private final String extension;
 

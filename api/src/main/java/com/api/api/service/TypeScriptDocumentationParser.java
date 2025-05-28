@@ -242,7 +242,7 @@ public class TypeScriptDocumentationParser {
 
 					while (paramDescMatcher.find()) {
 						if (paramDescMatcher.group(1).equals(paramName)) {
-							parameter.setDescription("This is an example parameter description.");
+							parameter.setDescription(paramDescMatcher.group(2).trim());
 							break;
 						}
 					}

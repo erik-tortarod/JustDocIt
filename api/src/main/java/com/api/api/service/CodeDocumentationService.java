@@ -42,6 +42,9 @@ public class CodeDocumentationService {
 	@Autowired
 	private PythonDocumentationParser pythonParser;
 
+	@Autowired
+	private PHPDocumentationParser phpParser;
+
 	private final RestTemplate restTemplate = new RestTemplate();
 
 	/**
@@ -88,9 +91,9 @@ public class CodeDocumentationService {
 		}
 
 		// Verificar soporte para el lenguaje
-		if (language != Language.TYPESCRIPT && language != Language.PYTHON) {
+		if (language != Language.TYPESCRIPT && language != Language.PYTHON && language != Language.PHP) {
 			throw new RuntimeException(
-					"Actualmente solo se soporta análisis de documentación para TypeScript y Python");
+					"Actualmente solo se soporta análisis de documentación para TypeScript, Python y PHP");
 		}
 
 		// Add the language to the documentedLanguages list if not already present
@@ -181,6 +184,10 @@ public class CodeDocumentationService {
 								break;
 							case PYTHON:
 								doc = pythonParser.parseFile(repoId, path, fileContent, language);
+								doc.setBranch(repository.getBranch());
+								break;
+							case PHP:
+								doc = phpParser.parseFile(repoId, path, fileContent, language);
 								doc.setBranch(repository.getBranch());
 								break;
 							default:

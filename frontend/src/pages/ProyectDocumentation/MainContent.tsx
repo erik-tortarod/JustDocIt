@@ -20,7 +20,7 @@ interface MainContentProps {
 export const MainContent = ({ activeTab, docs }: MainContentProps) => {
 	return (
 		<ScrollArea className="flex-1 bg-base-200">
-			<div className="p-8 max-w-6xl mx-auto">
+			<div className="p-8 w-full mx-auto max-w-sm sm:max-w-full">
 				<motion.div
 					initial={{ opacity: 0, y: 20 }}
 					animate={{ opacity: 1, y: 0 }}

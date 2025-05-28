@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft } from "lucide-react";
 import logo from "../../../../public/logo.png";
@@ -12,8 +12,29 @@ import { Link } from "react-router-dom";
 function Sidebar({ userData }: { userData: IUser }) {
 	const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
+	useEffect(() => {
+		// Function to check screen size and update sidebar state
+		const checkScreenSize = () => {
+			if (window.innerWidth < 1024) {
+				// lg breakpoint in Tailwind
+				setIsSidebarOpen(false);
+			} else {
+				setIsSidebarOpen(true);
+			}
+		};
+
+		// Check on initial load
+		checkScreenSize();
+
+		// Add event listener for window resize
+		window.addEventListener("resize", checkScreenSize);
+
+		// Cleanup event listener
+		return () => window.removeEventListener("resize", checkScreenSize);
+	}, []);
+
 	return (
-		<div className="Sidebar relative">
+		<div className="Sidebar absolute md:relative z-100">
 			<motion.aside
 				initial={false}
 				animate={{ width: isSidebarOpen ? "16rem" : "4rem" }}

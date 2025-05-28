@@ -18,7 +18,7 @@ export const Sidebar = ({
 	docs,
 }: SidebarProps) => {
 	return (
-		<div className="relative">
+		<div className="relative absolute">
 			<motion.div
 				initial={false}
 				animate={{ width: isSidebarOpen ? "16rem" : "4rem" }}

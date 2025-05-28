@@ -72,7 +72,7 @@ function User() {
 	return (
 		<div className="flex min-h-screen bg-base-100 w-screen">
 			<Sidebar userData={userData} />
-			<main className="flex-1 bg-base-200 p-8">
+			<main className="flex-1 bg-base-200 p-8 pl-16 md:pl-0">
 				<div className="max-w-4xl mx-auto">
 					{/* User Profile Section */}
 					<div className="bg-base-100 rounded-box shadow-lg p-8 mb-8">

@@ -158,7 +158,7 @@ function Dashboard() {
 	return (
 		<div className="flex w-screen">
 			<Sidebar userData={userData} />
-			<div className="flex-1 transition-all duration-300 ease-in-out">
+			<div className="flex-1 transition-all duration-300 ease-in-out pl-16 md:pl-0 ">
 				<div className="px-8 pt-8">
 					<section className="flex justify-between items-center">
 						<h1>Dashboard</h1>

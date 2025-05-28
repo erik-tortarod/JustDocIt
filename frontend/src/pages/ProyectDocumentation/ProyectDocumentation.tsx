@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Sidebar } from "./Sidebar";
 import { MainContent } from "./MainContent";
 import { guideContent } from "./GuideContent";
@@ -11,6 +11,27 @@ import { LanguageDocs } from "./types";
 const ProyectDocumentation = () => {
 	const [activeTab, setActiveTab] = useState("guide");
 	const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+
+	useEffect(() => {
+		// Function to check screen size and update sidebar state
+		const checkScreenSize = () => {
+			if (window.innerWidth < 1024) {
+				// lg breakpoint in Tailwind
+				setIsSidebarOpen(false);
+			} else {
+				setIsSidebarOpen(true);
+			}
+		};
+
+		// Check on initial load
+		checkScreenSize();
+
+		// Add event listener for window resize
+		window.addEventListener("resize", checkScreenSize);
+
+		// Cleanup event listener
+		return () => window.removeEventListener("resize", checkScreenSize);
+	}, []);
 
 	const languageDocs: LanguageDocs = {
 		typescript: typescriptDocs,

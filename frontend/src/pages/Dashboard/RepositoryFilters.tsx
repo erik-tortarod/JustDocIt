@@ -6,6 +6,8 @@ interface RepositoryFiltersProps {
 	onFilterChange: (filteredRepos: IRepository[]) => void;
 }
 
+type SortOption = "none" | "stars-desc" | "languages-asc" | "languages-desc";
+
 function RepositoryFilters({
 	repositories,
 	onFilterChange,
@@ -13,6 +15,7 @@ function RepositoryFilters({
 	const [searchTerm, setSearchTerm] = useState("");
 	const [selectedLanguage, setSelectedLanguage] = useState<string>("all");
 	const [availableLanguages, setAvailableLanguages] = useState<string[]>([]);
+	const [sortBy, setSortBy] = useState<SortOption>("none");
 
 	useEffect(() => {
 		// Get unique languages from repositories
@@ -38,9 +41,21 @@ function RepositoryFilters({
 
 		// Apply language filter
 		if (selectedLanguage !== "all") {
-			filteredRepos = filteredRepos.filter((repo) =>
-				repo.documentedLanguages?.includes(selectedLanguage),
-			);
+			if (selectedLanguage === "none") {
+				filteredRepos = filteredRepos.filter(
+					(repo) =>
+						!repo.documentedLanguages || repo.documentedLanguages.length === 0,
+				);
+			} else if (selectedLanguage === "with") {
+				filteredRepos = filteredRepos.filter(
+					(repo) =>
+						repo.documentedLanguages && repo.documentedLanguages.length > 0,
+				);
+			} else {
+				filteredRepos = filteredRepos.filter((repo) =>
+					repo.documentedLanguages?.includes(selectedLanguage),
+				);
+			}
 		}
 
 		// Store unique repositories in the Map using githubId+branch as key
@@ -54,10 +69,31 @@ function RepositoryFilters({
 		});
 
 		// Convert Map values back to array
-		const uniqueFilteredRepos = Array.from(uniqueReposMap.values());
+		let uniqueFilteredRepos = Array.from(uniqueReposMap.values());
+
+		// Apply sorting only if a sort option is selected
+		if (sortBy !== "none") {
+			uniqueFilteredRepos = uniqueFilteredRepos.sort((a, b) => {
+				const aStars = Number(a.stars ?? 0);
+				const bStars = Number(b.stars ?? 0);
+				const aLanguages = Number(a.documentedLanguages?.length ?? 0);
+				const bLanguages = Number(b.documentedLanguages?.length ?? 0);
+
+				switch (sortBy) {
+					case "stars-desc":
+						return bStars - aStars;
+					case "languages-asc":
+						return aLanguages - bLanguages;
+					case "languages-desc":
+						return bLanguages - aLanguages;
+					default:
+						return 0;
+				}
+			});
+		}
 
 		onFilterChange(uniqueFilteredRepos);
-	}, [searchTerm, selectedLanguage, repositories]);
+	}, [searchTerm, selectedLanguage, sortBy, repositories]);
 
 	return (
 		<div className="flex flex-wrap gap-4 mb-6">
@@ -72,12 +108,18 @@ function RepositoryFilters({
 			</div>
 			<div className="min-w-[150px]">
 				<select
-					className="w-full px-4 py-2 bg-base-100 text-base-content border  rounded-lg focus:outline-info focus:ring-2 focus:ring-primary"
+					className="w-full px-4 py-2 bg-base-100 text-base-content border rounded-lg focus:outline-info focus:ring-2 focus:ring-primary"
 					value={selectedLanguage}
 					onChange={(e) => setSelectedLanguage(e.target.value)}
 				>
 					<option value="all" className="bg-base-100 text-base-content">
 						Todos los lenguajes
+					</option>
+					<option value="none" className="bg-base-100 text-base-content">
+						Sin lenguaje
+					</option>
+					<option value="with" className="bg-base-100 text-base-content">
+						Con lenguaje
 					</option>
 					{availableLanguages.map((lang) => (
 						<option
@@ -88,6 +130,32 @@ function RepositoryFilters({
 							{lang}
 						</option>
 					))}
+				</select>
+			</div>
+			<div className="min-w-[200px]">
+				<select
+					className="w-full px-4 py-2 bg-base-100 text-base-content border rounded-lg focus:outline-info focus:ring-2 focus:ring-primary"
+					value={sortBy}
+					onChange={(e) => setSortBy(e.target.value as SortOption)}
+				>
+					<option value="none" className="bg-base-100 text-base-content">
+						Ordenar por...
+					</option>
+					<option value="stars-desc" className="bg-base-100 text-base-content">
+						Estrellas (mayor a menor)
+					</option>
+					<option
+						value="languages-desc"
+						className="bg-base-100 text-base-content"
+					>
+						Lenguajes (más a menos)
+					</option>
+					<option
+						value="languages-asc"
+						className="bg-base-100 text-base-content"
+					>
+						Lenguajes (menos a más)
+					</option>
 				</select>
 			</div>
 		</div>

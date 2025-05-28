@@ -1,5 +1,6 @@
 //DEPENDECIES
 import { useState, useEffect } from "react";
+import toast from "react-hot-toast";
 
 //SERVICES
 import ApiService from "../../services/ApiService";
@@ -76,21 +77,21 @@ function Dashboard() {
 
 	const handleAddRepository = async () => {
 		if (!selectedRepository || !branch) {
-			alert("Por favor selecciona un repositorio y especifica una rama.");
+			toast.error("Por favor selecciona un repositorio y especifica una rama.");
 			return;
 		}
 
 		setIsAddingRepo(true);
 		try {
 			await RepositoryService.addRepository(selectedRepository.id, branch);
-			alert("Repositorio agregado correctamente.");
+			toast.success("Repositorio agregado correctamente.");
 			setSelectedRepository(null);
 			setBranch("");
 			setDirectory("/");
 			setShowAddModal(false);
 			await refreshAddedRepositories();
 		} catch (error) {
-			alert("Error al agregar el repositorio.");
+			toast.error("Error al agregar el repositorio.");
 		} finally {
 			setIsAddingRepo(false);
 		}
@@ -186,10 +187,25 @@ function Dashboard() {
 							repositories={addedRepositories}
 							onFilterChange={setFilteredRepositories}
 						/>
-						<AddedRepositories
-							addedRepositories={filteredRepositories}
-							refreshRepositories={refreshAddedRepositories}
-						/>
+						{filteredRepositories.length > 0 ? (
+							<AddedRepositories
+								addedRepositories={filteredRepositories}
+								refreshRepositories={refreshAddedRepositories}
+							/>
+						) : (
+							<div className="flex flex-col justify-center items-center h-full gap-4">
+								<h2 className="text-2xl font-bold">No hay proyectos activos</h2>
+								<p className="text-gray-500">
+									Agrega un proyecto nuevo para empezar a trabajar.
+								</p>
+								<button
+									onClick={() => setShowAddModal(true)}
+									className="px-4 py-2 btn btn-info"
+								>
+									Agregar proyecto nuevo
+								</button>
+							</div>
+						)}
 					</section>
 
 					{/* Modal de selección de repositorio */}

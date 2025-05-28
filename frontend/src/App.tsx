@@ -1,5 +1,6 @@
 //DEPENDENCIES
 import { Route, Routes } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
 
 //PAGES
 import Auth from "./pages/Auth/Auth";
@@ -27,15 +28,21 @@ function App() {
 	}, []);
 
 	return (
-		<Routes>
-			<Route path="/" element={<Auth />} />
-			<Route path="/dashboard" element={<Dashboard />} />
-			<Route path="/documentation/:id/:language" element={<Documentation />} />
-			<Route path="/proyect_docs" element={<ProyectDocumentation />} />
-			<Route path="*" element={<NotFound />} />
-			<Route path="/admin" element={<Admin />} />
-			<Route path="/user" element={<User />} />
-		</Routes>
+		<>
+			<Toaster position="top-right" />
+			<Routes>
+				<Route path="/" element={<Auth />} />
+				<Route path="/dashboard" element={<Dashboard />} />
+				<Route
+					path="/documentation/:id/:language"
+					element={<Documentation />}
+				/>
+				<Route path="/proyect_docs" element={<ProyectDocumentation />} />
+				<Route path="*" element={<NotFound />} />
+				<Route path="/admin" element={<Admin />} />
+				<Route path="/user" element={<User />} />
+			</Routes>
+		</>
 	);
 }
 

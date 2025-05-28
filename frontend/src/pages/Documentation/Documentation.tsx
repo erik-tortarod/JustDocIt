@@ -670,40 +670,6 @@ function Documentation() {
 								</ul>
 							</div>
 
-							{/* Tabs */}
-							<div className="flex border-b border-base-300 mb-8">
-								<button
-									className={`px-6 py-3 ${
-										activeTab === "documentation"
-											? "border-b-2 border-primary text-primary"
-											: "text-base-content/70"
-									}`}
-									onClick={() => setActiveTab("documentation")}
-								>
-									Documentación
-								</button>
-								<button
-									className={`px-6 py-3 ${
-										activeTab === "examples"
-											? "border-b-2 border-primary text-primary"
-											: "text-base-content/70"
-									}`}
-									onClick={() => setActiveTab("examples")}
-								>
-									Ejemplos
-								</button>
-								<button
-									className={`px-6 py-3 ${
-										activeTab === "source"
-											? "border-b-2 border-primary text-primary"
-											: "text-base-content/70"
-									}`}
-									onClick={() => setActiveTab("source")}
-								>
-									Código fuente
-								</button>
-							</div>
-
 							{/* Descripción */}
 							<section id="descripcion" className="mb-8">
 								<p className="text-base-content/80 mb-4 leading-relaxed">

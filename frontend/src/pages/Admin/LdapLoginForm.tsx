@@ -8,7 +8,9 @@ interface ILdapUser {
 
 function LdapLoginForm({
 	authentication,
-}: { authentication: React.Dispatch<React.SetStateAction<boolean>> }) {
+}: {
+	authentication: React.Dispatch<React.SetStateAction<boolean>>;
+}) {
 	const [ldapUser, setLdapUser] = useState<ILdapUser>({
 		username: "",
 		password: "",

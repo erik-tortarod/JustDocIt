@@ -105,23 +105,20 @@ function User() {
 					</div>
 
 					{/* Stats Grid */}
-					<div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+					<div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mb-8">
 						<div className="stat bg-base-100 rounded-box shadow-lg">
-							<div className="stat-figure text-primary text-3xl">📊</div>
-							<div className="stat-title">Repositories</div>
+							<div className="stat-title">Repositories 📚</div>
 							<div className="stat-value">{repositoriesLength}</div>
 							<div className="stat-desc">Connected repositories</div>
 						</div>
 						<div className="stat bg-base-100 rounded-box shadow-lg">
-							<div className="stat-figure text-primary text-3xl">📅</div>
-							<div className="stat-title">Member Since</div>
+							<div className="stat-title">Member Since 📅</div>
 							<div className="stat-value text-lg">
 								{userData?.createdAt && formatDate(userData.createdAt)}
 							</div>
 						</div>
 						<div className="stat bg-base-100 rounded-box shadow-lg">
-							<div className="stat-figure text-primary text-3xl">⚙️</div>
-							<div className="stat-title">Preferences</div>
+							<div className="stat-title">Preferences 🔧</div>
 							<div className="stat-value text-lg">
 								{capitalize(localStorage.getItem("theme") || "Default")}
 							</div>

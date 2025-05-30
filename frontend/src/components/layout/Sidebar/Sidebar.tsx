@@ -8,9 +8,11 @@ import NavSection from "../../ui/NavSection";
 import NavLink from "../../ui/NavLink";
 import { IUser } from "../../../types/interfaces";
 import { Link } from "react-router-dom";
+import SettingsModal from "./SettingsModal";
 
 function Sidebar({ userData }: { userData: IUser }) {
 	const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+	const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
 	useEffect(() => {
 		// Function to check screen size and update sidebar state
@@ -92,7 +94,12 @@ function Sidebar({ userData }: { userData: IUser }) {
 					<Link to="/user" className="Sidebar__nav-link decoration-transparent">
 						<NavLink icon="👤" text="Perfil" isOpen={isSidebarOpen} />
 					</Link>
-					<NavLink icon="⚙️" text="Configuración" isOpen={isSidebarOpen} />
+					<button
+						onClick={() => setIsSettingsOpen(true)}
+						className="Sidebar__nav-link decoration-transparent w-full"
+					>
+						<NavLink icon="⚙️" text="Configuración" isOpen={isSidebarOpen} />
+					</button>
 				</NavSection>
 
 				{/* Perfil de usuario */}
@@ -133,6 +140,12 @@ function Sidebar({ userData }: { userData: IUser }) {
 					<ChevronLeft className="Sidebar__toggle-icon h-5 w-5 text-base-content" />
 				</motion.button>
 			</motion.aside>
+
+			{/* Settings Modal */}
+			<SettingsModal
+				isOpen={isSettingsOpen}
+				onClose={() => setIsSettingsOpen(false)}
+			/>
 		</div>
 	);
 }

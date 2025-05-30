@@ -2,6 +2,37 @@
 @plugin "@tailwindcss/typography";
 @plugin "daisyui";
 
+[data-theme="light"] {
+	--color-base-100: oklch(99% 0.005 0);
+	--color-base-200: oklch(96% 0.008 180);
+	--color-base-300: oklch(88% 0.015 200);
+	--color-base-content: oklch(25% 0.02 240);
+	--color-primary: oklch(45% 0.15 235);
+	--color-primary-content: oklch(98% 0.01 0);
+	--color-secondary: oklch(40% 0.12 160);
+	--color-secondary-content: oklch(95% 0.01 0);
+	--color-accent: oklch(55% 0.18 300);
+	--color-accent-content: oklch(98% 0.01 0);
+	--color-neutral: oklch(50% 0.03 20);
+	--color-neutral-content: oklch(98% 0.01 0);
+	--color-info: oklch(60% 0.15 220);
+	--color-info-content: oklch(95% 0.01 0);
+	--color-success: oklch(55% 0.12 140);
+	--color-success-content: oklch(95% 0.01 0);
+	--color-warning: oklch(75% 0.12 80);
+	--color-warning-content: oklch(30% 0.02 80);
+	--color-error: oklch(60% 0.15 15);
+	--color-error-content: oklch(95% 0.01 0);
+	--radius-selector: 1.5rem;
+	--radius-field: 0.75rem;
+	--radius-box: 1.25rem;
+	--size-selector: 0.3rem;
+	--size-field: 0.3rem;
+	--border: 1px;
+	--depth: 2;
+	--noise: 0.5;
+}
+
 [data-theme="dim"] {
 	--color-base-100: oklch(30.857% 0.023 264.149);
 	--color-base-200: oklch(28.036% 0.019 264.182);

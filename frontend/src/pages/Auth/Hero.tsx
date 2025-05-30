@@ -1,5 +1,6 @@
 import { API_ROUTES } from "../../config/api-routes";
 import { useTranslation } from "react-i18next";
+import { motion } from "framer-motion";
 
 function Hero() {
 	const { t } = useTranslation();
@@ -11,25 +12,64 @@ function Hero() {
 		<section className="py-8 px-4 w-screen">
 			<div className="flex flex-col lg:flex-row gap-12 items-center px-4">
 				{/* Hero Content - Left Side */}
-				<div className="flex-1">
-					<h1 className="text-5xl font-bold leading-tight mb-6">
+				<motion.div
+					className="flex-1"
+					initial={{ opacity: 0, x: -50 }}
+					animate={{ opacity: 1, x: 0 }}
+					transition={{ duration: 0.8, ease: "easeOut" }}
+				>
+					<motion.h1
+						className="text-5xl font-bold leading-tight mb-6"
+						initial={{ opacity: 0, y: 20 }}
+						animate={{ opacity: 1, y: 0 }}
+						transition={{ duration: 0.8, delay: 0.2 }}
+					>
 						{t("hero.title.prefix")}{" "}
-						<span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+						<motion.span
+							className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent"
+							whileHover={{ scale: 1.05 }}
+							transition={{
+								type: "spring",
+								stiffness: 400,
+								damping: 10,
+							}}
+						>
 							{t("hero.title.highlight")}
-						</span>{" "}
+						</motion.span>{" "}
 						{t("hero.title.suffix")}
-					</h1>
+					</motion.h1>
 
-					<p className="text-lg text-base-content/70 mb-8">
+					<motion.p
+						className="text-lg text-base-content/70 mb-8"
+						initial={{ opacity: 0, y: 20 }}
+						animate={{ opacity: 1, y: 0 }}
+						transition={{ duration: 0.8, delay: 0.4 }}
+					>
 						{t("hero.description")}
-					</p>
+					</motion.p>
 
-					<div className="flex gap-4 mb-16">
-						<button className="btn btn-primary" onClick={userLogin}>
+					<motion.div
+						className="flex gap-4 mb-16"
+						initial={{ opacity: 0, y: 20 }}
+						animate={{ opacity: 1, y: 0 }}
+						transition={{ duration: 0.8, delay: 0.6 }}
+					>
+						<motion.button
+							className="btn btn-primary"
+							onClick={userLogin}
+							whileHover={{ scale: 1.05 }}
+							whileTap={{ scale: 0.95 }}
+						>
 							{t("hero.cta.start")}
-						</button>
-						<button className="btn btn-outline">{t("hero.cta.demo")}</button>
-					</div>
+						</motion.button>
+						<motion.button
+							className="btn btn-outline"
+							whileHover={{ scale: 1.05 }}
+							whileTap={{ scale: 0.95 }}
+						>
+							{t("hero.cta.demo")}
+						</motion.button>
+					</motion.div>
 
 					{/* Stats Section */}
 					<div className="flex justify-between items-center gap-8">
@@ -60,7 +100,7 @@ function Hero() {
 							</div>
 						</div>
 					</div>
-				</div>
+				</motion.div>
 
 				{/* Hero Image - Right Side */}
 				<div className="flex-1">

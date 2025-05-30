@@ -147,7 +147,12 @@ function Dashboard() {
 	}, []);
 
 	if (loading) {
-		return <div>Cargando ...</div>;
+		return (
+			<div className="flex justify-center items-center h-screen w-screen flex-col">
+				<h1>Wait a moment...</h1>
+				<span className="loading loading-infinity w-50"></span>
+			</div>
+		);
 	}
 
 	if (error) {

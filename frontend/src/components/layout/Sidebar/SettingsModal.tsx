@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useTranslation } from "react-i18next";
+import ThemeButton from "../../ui/ThemeButton";
 
 interface SettingsModalProps {
 	isOpen: boolean;
@@ -14,7 +16,13 @@ const themes = [
 	{ name: "abyss", label: "Abismo" },
 ];
 
+const languages = [
+	{ code: "es", label: "Español 🇪🇸" },
+	{ code: "en", label: "English 🇺🇸" },
+];
+
 function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
+	const { i18n } = useTranslation();
 	const [activeTab, setActiveTab] = useState<"theme" | "language">("theme");
 	const [currentTheme, setCurrentTheme] = useState(() => {
 		return document.documentElement.getAttribute("data-theme") || "light";
@@ -23,6 +31,12 @@ function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
 	const handleThemeChange = (theme: string) => {
 		document.documentElement.setAttribute("data-theme", theme);
 		setCurrentTheme(theme);
+		localStorage.setItem("theme", theme);
+	};
+
+	const handleLanguageChange = (language: string) => {
+		i18n.changeLanguage(language);
+		localStorage.setItem("language", language);
 	};
 
 	if (!isOpen) return null;
@@ -64,18 +78,16 @@ function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
 							initial={{ opacity: 0, y: 10 }}
 							animate={{ opacity: 1, y: 0 }}
 							exit={{ opacity: 0, y: -10 }}
-							className="grid grid-cols-2 gap-2 max-h-[400px] overflow-y-auto"
+							className="grid grid-cols-2 gap-4 max-h-[400px] overflow-y-auto"
 						>
 							{themes.map((theme) => (
-								<button
+								<ThemeButton
 									key={theme.name}
+									theme={theme.name}
+									label={theme.label}
+									isSelected={currentTheme === theme.name}
 									onClick={() => handleThemeChange(theme.name)}
-									className={`btn btn-outline ${
-										currentTheme === theme.name ? "btn-primary" : ""
-									}`}
-								>
-									{theme.label}
-								</button>
+								/>
 							))}
 						</motion.div>
 					)}
@@ -84,11 +96,19 @@ function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
 							initial={{ opacity: 0, y: 10 }}
 							animate={{ opacity: 1, y: 0 }}
 							exit={{ opacity: 0, y: -10 }}
-							className="text-center py-8"
+							className="grid grid-cols-2 gap-2 max-h-[400px] overflow-y-auto"
 						>
-							<p className="text-base-content/60">
-								La selección de idioma estará disponible próximamente.
-							</p>
+							{languages.map((language) => (
+								<button
+									key={language.code}
+									onClick={() => handleLanguageChange(language.code)}
+									className={`btn btn-outline ${
+										i18n.language === language.code ? "btn-primary" : ""
+									}`}
+								>
+									{language.label}
+								</button>
+							))}
 						</motion.div>
 					)}
 				</AnimatePresence>

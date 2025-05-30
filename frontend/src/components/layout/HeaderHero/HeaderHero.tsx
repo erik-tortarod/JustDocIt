@@ -6,18 +6,20 @@ import SelectBtn from "../../common/SelectBtn";
 import { Link } from "react-router-dom";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import ThemeButton from "../../ui/ThemeButton";
 
 function HeaderHero() {
 	const { t, i18n } = useTranslation();
 	const [theme, setTheme] = useState(() => {
 		return localStorage.getItem("theme") || "light";
 	});
+	const [isThemeDropdownOpen, setIsThemeDropdownOpen] = useState(false);
 
-	const handleThemeChange = (e: ChangeEvent<HTMLSelectElement>) => {
-		const newTheme = e.target.value;
+	const handleThemeChange = (newTheme: string) => {
 		setTheme(newTheme);
 		localStorage.setItem("theme", newTheme);
 		document.documentElement.setAttribute("data-theme", newTheme);
+		setIsThemeDropdownOpen(false);
 	};
 
 	const handleLanguageChange = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -29,6 +31,14 @@ function HeaderHero() {
 	useEffect(() => {
 		document.documentElement.setAttribute("data-theme", theme);
 	}, [theme]);
+
+	const themes = [
+		{ name: "light", label: "Claro" },
+		{ name: "dark", label: "Oscuro" },
+		{ name: "autumn", label: "Otoño" },
+		{ name: "dim", label: "Dim" },
+		{ name: "abyss", label: "Abismo" },
+	];
 
 	return (
 		<div className="HeaderHero navbar shadow-sm shadow-gray-100/10 w-screen h-16">
@@ -97,19 +107,32 @@ function HeaderHero() {
 					<option value="es">Español 🇪🇸</option>
 					<option value="en">English 🇺🇸</option>
 				</select>
-				<select
-					name="theme"
-					id="theme"
-					value={theme}
-					onChange={handleThemeChange}
-					className="HeaderHero__theme-select select select-ghost w-25"
-				>
-					<option value="light">Light</option>
-					<option value="dark">Dark</option>
-					<option value="dim">Dim</option>
-					<option value="autumn">Autumn</option>
-					<option value="abyss">Abyss</option>
-				</select>
+				<div className="relative">
+					<button
+						onClick={() => setIsThemeDropdownOpen(!isThemeDropdownOpen)}
+						className="btn btn-ghost flex items-center gap-2"
+					>
+						<span>🎨</span>
+						<span className="hidden sm:inline">
+							{themes.find((t) => t.name === theme)?.label}
+						</span>
+					</button>
+					{isThemeDropdownOpen && (
+						<div className="absolute right-0 mt-2 w-48 bg-base-100 rounded-lg shadow-lg p-2 z-50">
+							<div className="grid grid-cols-1 gap-2">
+								{themes.map((themeOption) => (
+									<ThemeButton
+										key={themeOption.name}
+										theme={themeOption.name}
+										label={themeOption.label}
+										isSelected={theme === themeOption.name}
+										onClick={() => handleThemeChange(themeOption.name)}
+									/>
+								))}
+							</div>
+						</div>
+					)}
+				</div>
 				<UserProfile />
 			</div>
 		</div>

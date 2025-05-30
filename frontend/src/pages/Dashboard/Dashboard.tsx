@@ -1,6 +1,7 @@
 //DEPENDECIES
 import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
+import { motion, AnimatePresence } from "framer-motion";
 
 //SERVICES
 import ApiService from "../../services/ApiService";
@@ -148,37 +149,96 @@ function Dashboard() {
 
 	if (loading) {
 		return (
-			<div className="flex justify-center items-center h-screen w-screen flex-col">
-				<h1>Wait a moment...</h1>
+			<motion.div
+				className="flex justify-center items-center h-screen w-screen flex-col"
+				initial={{ opacity: 0 }}
+				animate={{ opacity: 1 }}
+				transition={{ duration: 0.5 }}
+			>
+				<motion.h1
+					initial={{ y: -20 }}
+					animate={{ y: 0 }}
+					transition={{
+						duration: 0.5,
+						repeat: Infinity,
+						repeatType: "reverse",
+					}}
+				>
+					Wait a moment...
+				</motion.h1>
 				<span className="loading loading-infinity w-50"></span>
-			</div>
+			</motion.div>
 		);
 	}
 
 	if (error) {
 		return (
-			<div className="flex justify-center items-center h-screen w-screen flex-col">
-				<h1>Wait a moment...</h1>
+			<motion.div
+				className="flex justify-center items-center h-screen w-screen flex-col"
+				initial={{ opacity: 0 }}
+				animate={{ opacity: 1 }}
+				transition={{ duration: 0.5 }}
+			>
+				<motion.h1
+					initial={{ y: -20 }}
+					animate={{ y: 0 }}
+					transition={{
+						duration: 0.5,
+						repeat: Infinity,
+						repeatType: "reverse",
+					}}
+				>
+					Wait a moment...
+				</motion.h1>
 				<span className="loading loading-infinity w-50"></span>
-			</div>
+			</motion.div>
 		);
 	}
 
 	return (
-		<div className="flex w-screen">
+		<motion.div
+			className="flex w-screen"
+			initial={{ opacity: 0 }}
+			animate={{ opacity: 1 }}
+			transition={{ duration: 0.5 }}
+		>
 			<Sidebar userData={userData} />
-			<div className="flex-1 transition-all duration-300 ease-in-out pl-16 md:pl-0 ">
+			<motion.div
+				className="flex-1 transition-all duration-300 ease-in-out pl-16 md:pl-0"
+				initial={{ opacity: 0, x: 20 }}
+				animate={{ opacity: 1, x: 0 }}
+				transition={{ duration: 0.5, delay: 0.2 }}
+			>
 				<div className="px-8 pt-8">
-					<section className="flex justify-between items-center">
-						<h1>Dashboard</h1>
-						<button
+					<motion.section
+						className="flex justify-between items-center"
+						initial={{ opacity: 0, y: 20 }}
+						animate={{ opacity: 1, y: 0 }}
+						transition={{ duration: 0.5, delay: 0.3 }}
+					>
+						<motion.h1
+							initial={{ opacity: 0, x: -20 }}
+							animate={{ opacity: 1, x: 0 }}
+							transition={{ duration: 0.5, delay: 0.4 }}
+						>
+							Dashboard
+						</motion.h1>
+						<motion.button
 							onClick={() => setShowAddModal(true)}
 							className="px-4 py-2 btn btn-info"
+							whileHover={{ scale: 1.05 }}
+							whileTap={{ scale: 0.95 }}
 						>
 							Agregar proyecto nuevo
-						</button>
-					</section>
-					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 py-8">
+						</motion.button>
+					</motion.section>
+
+					<motion.div
+						className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 py-8"
+						initial={{ opacity: 0, y: 20 }}
+						animate={{ opacity: 1, y: 0 }}
+						transition={{ duration: 0.5, delay: 0.5 }}
+					>
 						<DashboardStats
 							amount={addedRepositories.length}
 							stat={`↑ ${addedRepositories.length} repositorios desde el último mes`}
@@ -189,53 +249,87 @@ function Dashboard() {
 							stat="Pendiente de implementación"
 							title="Visitas totales"
 						/>
-					</div>
-					<section>
-						<h2>Lista de Proyectos</h2>
+					</motion.div>
+
+					<motion.section
+						initial={{ opacity: 0, y: 20 }}
+						animate={{ opacity: 1, y: 0 }}
+						transition={{ duration: 0.5, delay: 0.6 }}
+					>
+						<motion.h2
+							initial={{ opacity: 0, y: 20 }}
+							animate={{ opacity: 1, y: 0 }}
+							transition={{ duration: 0.5, delay: 0.7 }}
+						>
+							Lista de Proyectos
+						</motion.h2>
 						<RepositoryFilters
 							repositories={addedRepositories}
 							onFilterChange={setFilteredRepositories}
 						/>
-						{filteredRepositories.length > 0 ? (
-							<AddedRepositories
-								addedRepositories={filteredRepositories}
-								refreshRepositories={refreshAddedRepositories}
-							/>
-						) : (
-							<div className="flex flex-col justify-center items-center h-full gap-4">
-								<h2 className="text-2xl font-bold">No hay proyectos activos</h2>
-								<p className="text-gray-500">
-									Agrega un proyecto nuevo para empezar a trabajar.
-								</p>
-								<button
-									onClick={() => setShowAddModal(true)}
-									className="px-4 py-2 btn btn-info"
+						<AnimatePresence mode="wait">
+							{filteredRepositories.length > 0 ? (
+								<motion.div
+									key="repositories"
+									initial={{ opacity: 0, y: 20 }}
+									animate={{ opacity: 1, y: 0 }}
+									exit={{ opacity: 0, y: -20 }}
+									transition={{ duration: 0.3 }}
 								>
-									Agregar proyecto nuevo
-								</button>
-							</div>
-						)}
-					</section>
+									<AddedRepositories
+										addedRepositories={filteredRepositories}
+										refreshRepositories={refreshAddedRepositories}
+									/>
+								</motion.div>
+							) : (
+								<motion.div
+									key="empty"
+									className="flex flex-col justify-center items-center h-full gap-4"
+									initial={{ opacity: 0, scale: 0.9 }}
+									animate={{ opacity: 1, scale: 1 }}
+									exit={{ opacity: 0, scale: 0.9 }}
+									transition={{ duration: 0.3 }}
+								>
+									<h2 className="text-2xl font-bold">
+										No hay proyectos activos
+									</h2>
+									<p className="text-gray-500">
+										Agrega un proyecto nuevo para empezar a trabajar.
+									</p>
+									<motion.button
+										onClick={() => setShowAddModal(true)}
+										className="px-4 py-2 btn btn-info"
+										whileHover={{ scale: 1.05 }}
+										whileTap={{ scale: 0.95 }}
+									>
+										Agregar proyecto nuevo
+									</motion.button>
+								</motion.div>
+							)}
+						</AnimatePresence>
+					</motion.section>
 
 					{/* Modal de selección de repositorio */}
-					{showAddModal && (
-						<AddRepositoryModal
-							userRepositories={userRepositories}
-							refreshAddedRepositories={refreshAddedRepositories}
-							selectedRepository={selectedRepository}
-							onSelectRepository={setSelectedRepository}
-							branch={branch}
-							onBranchChange={setBranch}
-							directory={directory}
-							onDirectoryChange={setDirectory}
-							isAddingRepo={isAddingRepo}
-							onAddRepository={handleAddRepository}
-							onClose={handleCloseModal}
-						/>
-					)}
+					<AnimatePresence>
+						{showAddModal && (
+							<AddRepositoryModal
+								userRepositories={userRepositories}
+								refreshAddedRepositories={refreshAddedRepositories}
+								selectedRepository={selectedRepository}
+								onSelectRepository={setSelectedRepository}
+								branch={branch}
+								onBranchChange={setBranch}
+								directory={directory}
+								onDirectoryChange={setDirectory}
+								isAddingRepo={isAddingRepo}
+								onAddRepository={handleAddRepository}
+								onClose={handleCloseModal}
+							/>
+						)}
+					</AnimatePresence>
 				</div>
-			</div>
-		</div>
+			</motion.div>
+		</motion.div>
 	);
 }
 

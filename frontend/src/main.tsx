@@ -6,9 +6,9 @@ import "./i18n/config";
 import { BrowserRouter } from "react-router-dom";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-   <BrowserRouter>
-      <React.StrictMode>
-         <App />
-      </React.StrictMode>
-   </BrowserRouter>
+	<BrowserRouter>
+		<React.StrictMode>
+			<App />
+		</React.StrictMode>
+	</BrowserRouter>,
 );

@@ -1,103 +1,103 @@
 {
-   "header": {
-      "features": "Features",
-      "documentation": "Documentation",
-      "dashboard": "Dashboard"
-   },
-   "hero": {
-      "title": {
-         "prefix": "Generate",
-         "highlight": "professional documentation",
-         "suffix": "without installations"
-      },
-      "description": "JustDocIt is a 100% online platform that documents your code with a single click. Connect your GitHub repository, select your programming language, and get professional documentation ready to share.",
-      "cta": {
-         "start": "Start Now",
-         "demo": "View Demo"
-      },
-      "stats": {
-         "uptime": {
-            "title": "Uptime",
-            "subtitle": "guaranteed"
-         },
-         "repositories": {
-            "title": "Repositories",
-            "subtitle": "documented"
-         },
-         "languages": {
-            "title": "Languages",
-            "subtitle": "supported"
-         }
-      }
-   },
-   "features": {
-      "title": "Everything you need, from your browser",
-      "github": {
-         "title": "GitHub Connection",
-         "description": "Connect your GitHub account and access all your repositories without complex configurations or local cloning."
-      },
-      "online": {
-         "title": "100% Online",
-         "description": "No installations, no local setup. The entire process happens on our servers and results are delivered instantly in your browser."
-      },
-      "languages": {
-         "title": "Multiple Languages",
-         "description": "Supports Python, JavaScript, TypeScript, Java, C#, PHP, Ruby, Go, Rust, Swift, Kotlin and more, all from the same intuitive interface."
-      },
-      "quality": {
-         "title": "Quality Analysis",
-         "description": "Receive metrics about your documentation quality and suggestions to improve it directly in your browser."
-      },
-      "deploy": {
-         "title": "Instant Deployment",
-         "description": "Generate a public URL to share your documentation or keep it private just for your team. All without leaving your browser."
-      },
-      "collaboration": {
-         "title": "Real-time Collaboration",
-         "description": "Work with your team simultaneously on documentation, with collaborative editing and change control."
-      },
-      "howItWorks": {
-         "title": "How it works?",
-         "step1": {
-            "additional": " without needing to install additional applications."
-         },
-         "step2": {
-            "additional": " without needing to download it to your local machine."
-         },
-         "step3": {
-            "additional": " without complex configuration files."
-         },
-         "step4": {
-            "additional": " with internet connection, without additional installations."
-         }
-      },
-      "steps": {
-         "step1": {
-            "title": "Connect your GitHub account",
-            "description": "Sign in with your GitHub account and authorize JustDocIt to access your repositories.",
-            "highlight": "Everything is done through secure OAuth"
-         },
-         "step2": {
-            "title": "Select your repository",
-            "description": "Choose the repository you want to document. Our servers analyze the code",
-            "highlight": "directly from GitHub"
-         },
-         "step3": {
-            "title": "Configure your preferences",
-            "description": "Select the programming language, documentation style, and display options.",
-            "highlight": "All from an intuitive web interface"
-         },
-         "step4": {
-            "title": "Generate and share",
-            "description": "With a single click, our servers generate the documentation and provide you with a public URL to share.",
-            "highlight": "Accessible from any device"
-         }
-      },
-      "cta": {
-         "title": "Document your code today",
-         "description": "Join thousands of developers who trust JustDocIt to create professional documentation without leaving the browser. No installations, no complications.",
-         "startFree": "Start for free",
-         "viewPremium": "View Premium plans"
-      }
-   }
+	"header": {
+		"features": "Features",
+		"documentation": "Documentation",
+		"dashboard": "Dashboard"
+	},
+	"hero": {
+		"title": {
+			"prefix": "Generate",
+			"highlight": "professional documentation",
+			"suffix": "without installations"
+		},
+		"description": "JustDocIt is a 100% online platform that documents your code with a single click. Connect your GitHub repository, select your programming language, and get professional documentation ready to share.",
+		"cta": {
+			"start": "Start Now",
+			"demo": "View Demo"
+		},
+		"stats": {
+			"uptime": {
+				"title": "Uptime",
+				"subtitle": "guaranteed"
+			},
+			"repositories": {
+				"title": "Repositories",
+				"subtitle": "documented"
+			},
+			"languages": {
+				"title": "Languages",
+				"subtitle": "supported"
+			}
+		}
+	},
+	"features": {
+		"title": "Everything you need, from your browser",
+		"github": {
+			"title": "GitHub Connection",
+			"description": "Connect your GitHub account and access all your repositories without complex configurations or local cloning."
+		},
+		"online": {
+			"title": "100% Online",
+			"description": "No installations, no local setup. The entire process happens on our servers and results are delivered instantly in your browser."
+		},
+		"languages": {
+			"title": "Multiple Languages",
+			"description": "Supports Python, JavaScript, TypeScript, Java, C#, PHP, Ruby, Go, Rust, Swift, Kotlin and more, all from the same intuitive interface."
+		},
+		"quality": {
+			"title": "Quality Analysis",
+			"description": "Receive metrics about your documentation quality and suggestions to improve it directly in your browser."
+		},
+		"deploy": {
+			"title": "Instant Deployment",
+			"description": "Generate a public URL to share your documentation or keep it private just for your team. All without leaving your browser."
+		},
+		"collaboration": {
+			"title": "Real-time Collaboration",
+			"description": "Work with your team simultaneously on documentation, with collaborative editing and change control."
+		},
+		"howItWorks": {
+			"title": "How it works?",
+			"step1": {
+				"additional": " without needing to install additional applications."
+			},
+			"step2": {
+				"additional": " without needing to download it to your local machine."
+			},
+			"step3": {
+				"additional": " without complex configuration files."
+			},
+			"step4": {
+				"additional": " with internet connection, without additional installations."
+			}
+		},
+		"steps": {
+			"step1": {
+				"title": "Connect your GitHub account",
+				"description": "Sign in with your GitHub account and authorize JustDocIt to access your repositories.",
+				"highlight": "Everything is done through secure OAuth"
+			},
+			"step2": {
+				"title": "Select your repository",
+				"description": "Choose the repository you want to document. Our servers analyze the code",
+				"highlight": "directly from GitHub"
+			},
+			"step3": {
+				"title": "Configure your preferences",
+				"description": "Select the programming language, documentation style, and display options.",
+				"highlight": "All from an intuitive web interface"
+			},
+			"step4": {
+				"title": "Generate and share",
+				"description": "With a single click, our servers generate the documentation and provide you with a public URL to share.",
+				"highlight": "Accessible from any device"
+			}
+		},
+		"cta": {
+			"title": "Document your code today",
+			"description": "Join thousands of developers who trust JustDocIt to create professional documentation without leaving the browser. No installations, no complications.",
+			"startFree": "Start for free",
+			"viewPremium": "View Premium plans"
+		}
+	}
 }

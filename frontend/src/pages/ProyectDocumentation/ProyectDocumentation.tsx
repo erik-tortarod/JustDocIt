@@ -58,5 +58,4 @@ const ProyectDocumentation = () => {
 		</div>
 	);
 };
-
 export default ProyectDocumentation;

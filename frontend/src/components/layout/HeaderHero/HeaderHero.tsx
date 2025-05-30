@@ -14,6 +14,7 @@ function HeaderHero() {
 		return localStorage.getItem("theme") || "light";
 	});
 	const [isThemeDropdownOpen, setIsThemeDropdownOpen] = useState(false);
+	const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState(false);
 
 	const handleThemeChange = (newTheme: string) => {
 		setTheme(newTheme);
@@ -97,16 +98,49 @@ function HeaderHero() {
 				</ul>
 			</div>
 			<div className="HeaderHero__end navbar-end flex gap-3 lg:pr-6">
-				<select
-					name="language"
-					id="language"
-					value={i18n.language}
-					onChange={handleLanguageChange}
-					className="HeaderHero__theme-select select select-ghost w-35"
-				>
-					<option value="es">Español 🇪🇸</option>
-					<option value="en">English 🇺🇸</option>
-				</select>
+				<div className="relative">
+					<button
+						onClick={() => setIsLanguageDropdownOpen(!isLanguageDropdownOpen)}
+						className="btn btn-ghost flex items-center gap-2"
+					>
+						<LanguageIcon className="w-5 h-5" />
+						<span className="hidden sm:inline">
+							{i18n.language === "es" ? "Español 🇪🇸" : "English 🇺🇸"}
+						</span>
+					</button>
+					{isLanguageDropdownOpen && (
+						<div className="absolute right-0 mt-2 w-48 bg-base-100 rounded-lg shadow-lg p-2 z-50">
+							<div className="grid grid-cols-1 gap-2">
+								<button
+									onClick={() => {
+										handleLanguageChange({
+											target: { value: "es" },
+										} as ChangeEvent<HTMLSelectElement>);
+										setIsLanguageDropdownOpen(false);
+									}}
+									className={`btn btn-ghost justify-start ${
+										i18n.language === "es" ? "bg-primary/10" : ""
+									}`}
+								>
+									Español 🇪🇸
+								</button>
+								<button
+									onClick={() => {
+										handleLanguageChange({
+											target: { value: "en" },
+										} as ChangeEvent<HTMLSelectElement>);
+										setIsLanguageDropdownOpen(false);
+									}}
+									className={`btn btn-ghost justify-start ${
+										i18n.language === "en" ? "bg-primary/10" : ""
+									}`}
+								>
+									English 🇺🇸
+								</button>
+							</div>
+						</div>
+					)}
+				</div>
 				<div className="relative">
 					<button
 						onClick={() => setIsThemeDropdownOpen(!isThemeDropdownOpen)}

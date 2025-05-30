@@ -48,10 +48,10 @@ function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
 				initial={{ opacity: 0, scale: 0.95 }}
 				animate={{ opacity: 1, scale: 1 }}
 				exit={{ opacity: 0, scale: 0.95 }}
-				className="relative bg-base-100 rounded-lg shadow-xl w-full max-w-md p-6"
+				className="relative bg-base-100 rounded-lg shadow-xl w-[90%] max-w-md p-4 sm:p-6 mx-4"
 			>
-				<div className="flex justify-between items-center mb-6">
-					<h2 className="text-xl font-bold">Configuración</h2>
+				<div className="flex justify-between items-center mb-4 sm:mb-6">
+					<h2 className="text-lg sm:text-xl font-bold">Configuración</h2>
 					<button onClick={onClose} className="btn btn-ghost btn-sm btn-circle">
 						✕
 					</button>
@@ -78,7 +78,7 @@ function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
 							initial={{ opacity: 0, y: 10 }}
 							animate={{ opacity: 1, y: 0 }}
 							exit={{ opacity: 0, y: -10 }}
-							className="grid grid-cols-2 gap-4 max-h-[400px] overflow-y-auto"
+							className="grid grid-cols-1 sm:grid-cols-2 gap-3"
 						>
 							{themes.map((theme) => (
 								<ThemeButton
@@ -96,17 +96,26 @@ function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
 							initial={{ opacity: 0, y: 10 }}
 							animate={{ opacity: 1, y: 0 }}
 							exit={{ opacity: 0, y: -10 }}
-							className="grid grid-cols-2 gap-2 max-h-[400px] overflow-y-auto"
+							className="grid grid-cols-1 gap-3"
 						>
 							{languages.map((language) => (
 								<button
 									key={language.code}
 									onClick={() => handleLanguageChange(language.code)}
-									className={`btn btn-outline ${
-										i18n.language === language.code ? "btn-primary" : ""
+									className={`btn btn-lg w-full transition-all duration-200 ${
+										i18n.language === language.code
+											? "btn-primary shadow-lg scale-[1.02]"
+											: "btn-ghost hover:bg-base-200"
 									}`}
 								>
-									{language.label}
+									<div className="flex items-center justify-center gap-3">
+										<span className="text-2xl">
+											{language.label.split(" ")[1]}
+										</span>
+										<span className="text-lg font-medium">
+											{language.label.split(" ")[0]}
+										</span>
+									</div>
 								</button>
 							))}
 						</motion.div>

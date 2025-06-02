@@ -2,7 +2,6 @@ import { LanguageIcon } from "../../../assets/images/svg/LanguageIcon";
 import { MenuIcon } from "../../../assets/images/svg/MenuIcon";
 import logo from "../../../../public/logo.png";
 import UserProfile from "../../ui/UserProfile";
-import SelectBtn from "../../common/SelectBtn";
 import { Link } from "react-router-dom";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";

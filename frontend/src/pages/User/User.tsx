@@ -47,7 +47,7 @@ function User() {
 				const response = await ActivityService.getActivities();
 				// Sort activities by timestamp in descending order (newest first)
 				const sortedActivities = response.sort(
-					(a, b) =>
+					(a: any, b: any) =>
 						new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
 				);
 				setActivities(sortedActivities);
@@ -156,6 +156,11 @@ function User() {
 		});
 	};
 
+	const handleLogout = () => {
+		localStorage.clear();
+		window.location.href = "/";
+	};
+
 	if (!userData) {
 		return (
 			<motion.div
@@ -228,6 +233,28 @@ function User() {
 										<path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
 									</svg>
 									{userData?.email}
+									<motion.button
+										onClick={handleLogout}
+										className="btn btn-outline btn-error btn-sm ml-4 gap-2"
+										whileHover={{ scale: 1.05 }}
+										whileTap={{ scale: 0.95 }}
+									>
+										<svg
+											xmlns="http://www.w3.org/2000/svg"
+											className="h-5 w-5"
+											fill="none"
+											viewBox="0 0 24 24"
+											stroke="currentColor"
+										>
+											<path
+												strokeLinecap="round"
+												strokeLinejoin="round"
+												strokeWidth={2}
+												d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+											/>
+										</svg>
+										Logout
+									</motion.button>
 								</motion.p>
 							</div>
 						</div>
@@ -261,7 +288,7 @@ function User() {
 							transition={{ type: "spring", stiffness: 300 }}
 						>
 							<div className="stat-title">Member Since 📅</div>
-							<div className="stat-value text-lg">
+							<div className="stat-value text-lg whitespace-normal">
 								{userData?.createdAt && formatDate(userData.createdAt)}
 							</div>
 						</motion.div>

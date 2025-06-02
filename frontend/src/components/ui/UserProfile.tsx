@@ -1,10 +1,21 @@
+import { Link } from "react-router-dom";
+
 function UserProfile() {
+	const userData = localStorage.getItem("userData");
+	const parsedUserData = userData ? JSON.parse(userData) : null;
+
 	return (
-		<img
-			className="w-10 rounded-full"
-			src="https://avatars.githubusercontent.com/u/128736440?v=4"
-			alt="User Avatar"
-		/>
+		<Link to="/user">
+			<img
+				className="w-10 rounded-full"
+				src={
+					parsedUserData?.avatarUrl
+						? parsedUserData.avatarUrl
+						: "https://img.daisyui.com/images/profile/demo/yellingcat@192.webp"
+				}
+				alt="User Avatar"
+			/>
+		</Link>
 	);
 }
 

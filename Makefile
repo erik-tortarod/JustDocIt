@@ -29,6 +29,14 @@ rebuild-all:
 
 # Publica las imágenes en DockerHub
 push-to-dockerhub:
+	@echo "Verificando imágenes..."
+	@for service in $(SERVICES); do \
+		if ! docker images | grep -q "$(DOCKER_USERNAME)/$(PROJECT_NAME)-$$service"; then \
+			echo "Imagen $(DOCKER_USERNAME)/$(PROJECT_NAME)-$$service no encontrada. Construyendo..."; \
+			docker-compose -f docker/docker-compose.yml build $$service; \
+			docker tag $$(docker-compose -f docker/docker-compose.yml images -q $$service) $(DOCKER_USERNAME)/$(PROJECT_NAME)-$$service:latest; \
+		fi \
+	done
 	@echo "Publicando imágenes en DockerHub..."
 	@for service in $(SERVICES); do \
 		echo "Publicando $(DOCKER_USERNAME)/$(PROJECT_NAME)-$$service..."; \

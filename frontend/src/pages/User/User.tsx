@@ -4,6 +4,15 @@ import Sidebar from "../../components/layout/Sidebar/Sidebar";
 import useValidation from "@/hooks/useValidation";
 import { API_ROUTES } from "@/config/api-routes";
 import { motion } from "framer-motion";
+import ActivityService from "@/services/ActivitiesService";
+
+interface Activity {
+	id: string;
+	description: string;
+	category: string;
+	timestamp: string;
+	userId: string;
+}
 
 function User() {
 	useEffect(() => {
@@ -20,6 +29,9 @@ function User() {
 	}, []);
 
 	const [userData, setUserData] = useState<IUser>();
+	const [activities, setActivities] = useState<Activity[]>([]);
+	const [loading, setLoading] = useState(true);
+
 	useEffect(() => {
 		const userDataStr = localStorage.getItem("userData");
 		if (userDataStr) {
@@ -27,6 +39,21 @@ function User() {
 			console.log(userData);
 			setUserData(userData);
 		}
+	}, []);
+
+	useEffect(() => {
+		const fetchActivities = async () => {
+			try {
+				const response = await ActivityService.getActivities();
+				setActivities(response);
+			} catch (error) {
+				console.error("Error fetching activities:", error);
+			} finally {
+				setLoading(false);
+			}
+		};
+
+		fetchActivities();
 	}, []);
 
 	const capitalize = (str: string): string => {
@@ -61,9 +88,67 @@ function User() {
 			"Diciembre",
 		];
 
+		const hours = date.getHours().toString().padStart(2, "0");
+		const minutes = date.getMinutes().toString().padStart(2, "0");
+
 		return `${days[date.getDay()]}, ${date.getDate()} de ${
 			months[date.getMonth()]
-		} ${date.getFullYear()}`;
+		} ${date.getFullYear()} a las ${hours}:${minutes}`;
+	};
+
+	const getActivityIcon = (category: string) => {
+		switch (category.toLowerCase()) {
+			case "documentation":
+				return "📄";
+			case "integration":
+				return "🔗";
+			case "settings":
+				return "⚙️";
+			default:
+				return "📌";
+		}
+	};
+
+	const getCategoryColor = (category: string) => {
+		switch (category.toLowerCase()) {
+			case "documentation":
+				return "text-info";
+			case "integration":
+				return "text-success";
+			case "settings":
+				return "text-warning";
+			default:
+				return "text-primary";
+		}
+	};
+
+	const getCategoryBadge = (category: string) => {
+		switch (category.toLowerCase()) {
+			case "documentation":
+				return "badge-info";
+			case "integration":
+				return "badge-success";
+			case "settings":
+				return "badge-warning";
+			default:
+				return "badge-primary";
+		}
+	};
+
+	const formatDescription = (description: string, category: string) => {
+		return description.split(/(\*\*.*?\*\*)/).map((part, index) => {
+			if (part.startsWith("**") && part.endsWith("**")) {
+				return (
+					<span
+						key={index}
+						className={`${getCategoryColor(category)} font-bold`}
+					>
+						{part.slice(2, -2)}
+					</span>
+				);
+			}
+			return part;
+		});
 	};
 
 	if (!userData) {
@@ -221,55 +306,88 @@ function User() {
 							Recent Activities
 						</motion.h2>
 						<motion.div
-							className="space-y-4"
+							className="space-y-4 max-h-[400px] overflow-y-auto pr-2"
 							initial={{ opacity: 0 }}
 							animate={{ opacity: 1 }}
 							transition={{ duration: 0.5, delay: 0.9 }}
 						>
-							<motion.div
-								className="flex items-center gap-4 p-4 bg-base-200 rounded-lg transition-all hover:bg-base-300"
-								whileHover={{ scale: 1.02, x: 10 }}
-								transition={{ type: "spring", stiffness: 300 }}
-							>
-								<div className="text-primary text-3xl">📄</div>
-								<div className="flex-1">
-									<p className="font-semibold">
-										Updated documentation for{" "}
-										<span className="text-primary">"my-project"</span>
-									</p>
-									<p className="text-sm text-base-content/70">March 10, 2023</p>
+							{loading ? (
+								<div className="flex justify-center items-center p-8">
+									<span className="loading loading-spinner loading-lg"></span>
 								</div>
-								<div className="badge badge-primary">Documentation</div>
-							</motion.div>
-							<motion.div
-								className="flex items-center gap-4 p-4 bg-base-200 rounded-lg transition-all hover:bg-base-300"
-								whileHover={{ scale: 1.02, x: 10 }}
-								transition={{ type: "spring", stiffness: 300 }}
-							>
-								<div className="text-primary text-3xl">🔗</div>
-								<div className="flex-1">
-									<p className="font-semibold">
-										Connected new repository{" "}
-										<span className="text-primary">"awesome-repo"</span>
-									</p>
-									<p className="text-sm text-base-content/70">March 8, 2023</p>
+							) : activities.length > 0 ? (
+								<>
+									{activities.slice(0, 3).map((activity) => (
+										<motion.div
+											key={activity.id}
+											className="flex items-center gap-4 p-4 bg-base-200 rounded-lg transition-all hover:bg-base-300"
+											whileHover={{ scale: 1.02, x: 10 }}
+											transition={{ type: "spring", stiffness: 300 }}
+										>
+											<div className="text-primary text-3xl">
+												{getActivityIcon(activity.category)}
+											</div>
+											<div className="flex-1">
+												<p className="font-semibold">
+													{formatDescription(
+														activity.description,
+														activity.category,
+													)}
+												</p>
+												<p className="text-sm text-base-content/70">
+													{formatDate(activity.timestamp)}
+												</p>
+											</div>
+											<div
+												className={`badge ${getCategoryBadge(
+													activity.category,
+												)}`}
+											>
+												{capitalize(activity.category)}
+											</div>
+										</motion.div>
+									))}
+									{activities.length > 3 && (
+										<div className="divider text-base-content/50">
+											More activities
+										</div>
+									)}
+									{activities.slice(3).map((activity) => (
+										<motion.div
+											key={activity.id}
+											className="flex items-center gap-4 p-4 bg-base-200 rounded-lg transition-all hover:bg-base-300"
+											whileHover={{ scale: 1.02, x: 10 }}
+											transition={{ type: "spring", stiffness: 300 }}
+										>
+											<div className="text-primary text-3xl">
+												{getActivityIcon(activity.category)}
+											</div>
+											<div className="flex-1">
+												<p className="font-semibold">
+													{formatDescription(
+														activity.description,
+														activity.category,
+													)}
+												</p>
+												<p className="text-sm text-base-content/70">
+													{formatDate(activity.timestamp)}
+												</p>
+											</div>
+											<div
+												className={`badge ${getCategoryBadge(
+													activity.category,
+												)}`}
+											>
+												{capitalize(activity.category)}
+											</div>
+										</motion.div>
+									))}
+								</>
+							) : (
+								<div className="text-center p-8 text-base-content/70">
+									No activities found
 								</div>
-								<div className="badge badge-secondary">Integration</div>
-							</motion.div>
-							<motion.div
-								className="flex items-center gap-4 p-4 bg-base-200 rounded-lg transition-all hover:bg-base-300"
-								whileHover={{ scale: 1.02, x: 10 }}
-								transition={{ type: "spring", stiffness: 300 }}
-							>
-								<div className="text-primary text-3xl">🎨</div>
-								<div className="flex-1">
-									<p className="font-semibold">
-										Changed theme to <span className="text-primary">Dark</span>
-									</p>
-									<p className="text-sm text-base-content/70">March 5, 2023</p>
-								</div>
-								<div className="badge badge-accent">Settings</div>
-							</motion.div>
+							)}
 						</motion.div>
 					</motion.div>
 				</div>

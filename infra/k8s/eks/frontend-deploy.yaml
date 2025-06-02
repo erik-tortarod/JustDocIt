@@ -49,7 +49,7 @@ metadata:
       # Protocolo backend
       service.beta.kubernetes.io/aws-load-balancer-backend-protocol: "http"
       # ARN correcto del certificado en ACM
-      service.beta.kubernetes.io/aws-load-balancer-ssl-cert: "arn:aws:acm:us-east-1:619710401650:certificate/e6b96e28-9ff8-4018-9d5b-0cda5e954924"
+      service.beta.kubernetes.io/aws-load-balancer-ssl-cert: "arn:aws:acm:us-east-1:619710401650:certificate/0725aabd-804c-4d4f-853d-efb5f0fb629b"
       # Puertos que usarán SSL
       service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "443"
       # Política de seguridad TLS

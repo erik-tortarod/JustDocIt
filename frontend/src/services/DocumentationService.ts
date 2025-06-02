@@ -1,4 +1,5 @@
 import { API_ROUTES } from "../config/api-routes";
+import ActivityService from "./ActivitiesService";
 import StorageService from "./StorageService";
 
 /**
@@ -42,6 +43,11 @@ class DocumentationService {
 				`Error scanning the repository by language ${response.status}`,
 			);
 		}
+
+		await ActivityService.postActivity({
+			description: `Repository **${repositoryId}** scanned by language ${language}`,
+			category: "Documentation",
+		});
 
 		return await response.json();
 	}

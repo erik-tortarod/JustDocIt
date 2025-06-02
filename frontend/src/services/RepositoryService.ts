@@ -1,4 +1,5 @@
 import { API_ROUTES } from "../config/api-routes";
+import ActivityService from "./ActivitiesService";
 import StorageService from "./StorageService";
 
 /**
@@ -74,6 +75,11 @@ class RepositoryService {
 			);
 		}
 
+		await ActivityService.postActivity({
+			description: `Repository **${githubRepoId}** added to the dashboard`,
+			category: "Integration",
+		});
+
 		return data;
 	}
 
@@ -126,6 +132,11 @@ class RepositoryService {
 		if (!response.ok) {
 			throw new Error(`Error deleting the repository ${response.status}`);
 		}
+
+		await ActivityService.postActivity({
+			description: `Repository **${repositoryId}** removed`,
+			category: "Integration",
+		});
 	}
 
 	/**

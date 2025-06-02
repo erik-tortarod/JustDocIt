@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import ThemeButton from "../../ui/ThemeButton";
+import ActivityService from "@/services/ActivitiesService";
 
 interface SettingsModalProps {
 	isOpen: boolean;
@@ -28,15 +29,25 @@ function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
 		return document.documentElement.getAttribute("data-theme") || "light";
 	});
 
-	const handleThemeChange = (theme: string) => {
+	const handleThemeChange = async (theme: string) => {
 		document.documentElement.setAttribute("data-theme", theme);
 		setCurrentTheme(theme);
 		localStorage.setItem("theme", theme);
+
+		await ActivityService.postActivity({
+			description: `Theme changed to **${theme}**`,
+			category: "Settings",
+		});
 	};
 
-	const handleLanguageChange = (language: string) => {
+	const handleLanguageChange = async (language: string) => {
 		i18n.changeLanguage(language);
 		localStorage.setItem("language", language);
+
+		await ActivityService.postActivity({
+			description: `Language changed to **${language}**`,
+			category: "Settings",
+		});
 	};
 
 	if (!isOpen) return null;

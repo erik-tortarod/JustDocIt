@@ -24,6 +24,7 @@ export const API_ROUTES = Object.freeze({
 		GET_DOCUMENTATION: `${DOCS_BASE_URL}/api/documentation/repository`,
 		GET_FILE_DOCUMENTATION: `${DOCS_BASE_URL}/api/documentation/file`,
 		DELETE_REPOSITORY: `${DOCS_BASE_URL}/api/delete-repository`,
+		DELETE_REPOSITORY_DOCUMENTATION: `${DOCS_BASE_URL}/api/delete-repository-documentation`,
 		ACTIVITIES: `${DOCS_BASE_URL}/api/activities`,
 	},
 });

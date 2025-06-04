@@ -26,15 +26,27 @@ function RepositorySettingsModal({
 	refreshRepositories,
 }: Props) {
 	const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+	const [showDeleteDocsConfirm, setShowDeleteDocsConfirm] = useState(false);
 
 	const handleDeleteRepository = async () => {
 		try {
 			await RepositoryService.deleteRepository(repository.id);
-			toast.success("Repositorio eliminado correctamente.");
+			toast.success("Repositorio eliminado correctamente");
 			await refreshRepositories();
 			onClose();
 		} catch (error) {
-			toast.error("Error al eliminar el repositorio.");
+			toast.error("Error al eliminar el repositorio");
+		}
+	};
+
+	const handleDeleteDocumentation = async () => {
+		try {
+			await RepositoryService.deleteRepositoryDocumentation(repository.id);
+			toast.success("Documentación eliminada correctamente");
+			await refreshRepositories();
+			setShowDeleteDocsConfirm(false);
+		} catch (error) {
+			toast.error("Error al eliminar la documentación");
 		}
 	};
 
@@ -94,23 +106,58 @@ function RepositorySettingsModal({
 				{/* Acciones */}
 				<div className="space-y-2">
 					{/* Sincronizar */}
-					<button className="w-full flex items-center gap-3 p-3 rounded-lg border border-base-300 bg-base-200 hover:bg-base-300 transition-all group">
-						<div className="w-8 h-8 bg-base-300 group-hover:bg-primary rounded-lg flex items-center justify-center">
-							<SyncIcon className="text-base-content/70 group-hover:text-primary-content" />
-						</div>
-						<div className="text-left flex-1">
-							<div className="font-medium text-base-content">
-								Sincronizar con GitHub
+					{!showDeleteDocsConfirm ? (
+						<button
+							onClick={() => setShowDeleteDocsConfirm(true)}
+							className="w-full flex items-center gap-3 p-3 rounded-lg border border-base-300 bg-base-200 hover:bg-base-300 transition-all group"
+						>
+							<div className="w-8 h-8 bg-base-300 group-hover:bg-primary rounded-lg flex items-center justify-center">
+								<TrashIcon className="text-base-content/70 group-hover:text-primary-content" />
 							</div>
-							<div className="text-sm text-base-content/70">
-								Actualiza la información del repositorio
+							<div className="text-left flex-1">
+								<div className="font-medium text-base-content">
+									Eliminar Documentación
+								</div>
+								<div className="text-sm text-base-content/70">
+									Elimina toda la documentación del repositorio
+								</div>
+							</div>
+							<ChevronRightIcon className="text-base-content/70" />
+						</button>
+					) : (
+						<div className="bg-warning/10 border border-warning rounded-lg p-4">
+							<div className="mb-3">
+								<div className="font-medium text-warning">
+									¿Eliminar toda la documentación?
+								</div>
+								<div className="text-sm text-warning/70 mt-1">
+									Esta acción eliminará toda la documentación del repositorio
+								</div>
+							</div>
+							<div className="flex gap-3">
+								<button
+									onClick={handleDeleteDocumentation}
+									className="flex-1 btn btn-warning"
+								>
+									Eliminar documentación
+								</button>
+								<button
+									onClick={() => setShowDeleteDocsConfirm(false)}
+									className="flex-1 btn btn-ghost"
+								>
+									Cancelar
+								</button>
 							</div>
 						</div>
-						<ChevronRightIcon className="text-base-content/70" />
-					</button>
+					)}
 
 					{/* Abrir en GitHub */}
-					<button className="w-full flex items-center gap-3 p-3 rounded-lg border border-base-300 bg-base-200 hover:bg-base-300 transition-all group">
+					<a
+						href={repository.htmlUrl}
+						target="_blank"
+						rel="noopener noreferrer"
+						className="w-full flex items-center gap-3 p-3 rounded-lg border border-base-300 bg-base-200 hover:bg-base-300 transition-all group no-underline hover:underline"
+					>
 						<div className="w-8 h-8 bg-base-300 group-hover:bg-primary rounded-lg flex items-center justify-center">
 							<ExternalLinkIcon className="text-base-content/70 group-hover:text-primary-content" />
 						</div>
@@ -127,7 +174,7 @@ function RepositorySettingsModal({
 							height="12"
 							className="text-base-content/70"
 						/>
-					</button>
+					</a>
 
 					{/* Separador */}
 					<div className="my-4 border-t border-base-300"></div>

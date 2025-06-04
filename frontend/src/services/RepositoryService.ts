@@ -159,6 +159,41 @@ class RepositoryService {
 		const repositories = await response.json();
 		return repositories.find((repo: any) => repo.id === repositoryId);
 	}
+
+	/**
+	 * Deletes all documentation for a repository.
+	 * @param repositoryId - The ID of the repository.
+	 */
+	static async deleteRepositoryDocumentation(
+		repositoryId: number,
+	): Promise<void> {
+		const token = StorageService.getToken();
+
+		if (!token) {
+			throw new Error(`No authentication token`);
+		}
+
+		const url = new URL(API_ROUTES.DOCS.DELETE_REPOSITORY_DOCUMENTATION);
+		url.searchParams.append("repositoryId", String(repositoryId));
+
+		const response = await fetch(url.toString(), {
+			method: "DELETE",
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
+
+		if (!response.ok) {
+			throw new Error(
+				`Error deleting repository documentation ${response.status}`,
+			);
+		}
+
+		await ActivityService.postActivity({
+			description: `Documentation for repository **${repositoryId}** deleted`,
+			category: "Documentation",
+		});
+	}
 }
 
 export default RepositoryService;

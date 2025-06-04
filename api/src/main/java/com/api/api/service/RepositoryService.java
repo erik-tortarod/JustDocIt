@@ -36,7 +36,7 @@ public class RepositoryService {
 			if (existingRepo.getBranch() != null && existingRepo.getBranch().equals(repository.getBranch())) {
 				existingRepo.setSize(repository.getSize()); // Update size
 				return existingRepo; // Return the existing repository if already added
-										// with same branch
+				// with same branch
 			}
 		}
 		return repositoryRepository.save(repository);
@@ -79,6 +79,21 @@ public class RepositoryService {
 	 */
 	public List<Repository> findByGithubIdAndUserId(String githubId, String userId) {
 		return repositoryRepository.findByGithubIdAndUserId(githubId, userId);
+	}
+
+	/**
+	 * Deletes all documentation for a repository.
+	 * @param repositoryId The ID of the repository
+	 */
+	public void deleteRepositoryDocumentation(String repositoryId) {
+		// Delete associated documentation
+		codeDocumentationRepository.deleteByRepositoryId(repositoryId);
+
+		// Clear documented languages from repository
+		Repository repository = repositoryRepository.findById(repositoryId)
+			.orElseThrow(() -> new RuntimeException("Repository not found with ID: " + repositoryId));
+		repository.setDocumentedLanguages(null);
+		repositoryRepository.save(repository);
 	}
 
 }

@@ -274,4 +274,38 @@ public class RepositoriesController {
 		}
 	}
 
+	/**
+	 * Deletes all documentation for a repository.
+	 * @param authHeader The Authorization header containing the JWT token
+	 * @param repositoryId The ID of the repository
+	 * @return ResponseEntity containing success message or error message
+	 */
+	@DeleteMapping("/delete-repository-documentation")
+	public ResponseEntity<?> deleteRepositoryDocumentation(@RequestHeader("Authorization") String authHeader,
+			@RequestParam String repositoryId) {
+		if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+			return ResponseEntity.badRequest().body("Invalid Authorization header format. Expected 'Bearer <token>'");
+		}
+
+		String token = authHeader.substring(7); // Remove "Bearer " prefix
+		SecretKey secretKey = jwtUtil.getSecretKey1(); // Use the first secret key for
+														// validation
+
+		try {
+			// Validate token
+			Map<String, Object> claims = JwtUtil.validateToken(token, secretKey);
+			logger.info("Token validated successfully. Claims: {}", claims); // Debug log
+
+			// Delete repository documentation
+			repositoryService.deleteRepositoryDocumentation(repositoryId);
+
+			return ResponseEntity.ok(Map.of("message", "Repository documentation deleted successfully"));
+		}
+		catch (Exception e) {
+			logger.error("Error deleting repository documentation: {}", e.getMessage()); // Debug
+																							// log
+			return ResponseEntity.status(500).body("Error deleting repository documentation: " + e.getMessage());
+		}
+	}
+
 }

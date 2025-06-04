@@ -1,6 +1,7 @@
 import { useFeatures, useSteps } from "../../data/featuresData";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
+import { API_ROUTES } from "@/config/api-routes";
 
 /**
  * Component for displaying application features and how it works.
@@ -162,20 +163,15 @@ function Features() {
 				<p className="text-lg text-base-content/70 mb-10 max-w-2xl mx-auto">
 					{t("features.cta.description")}
 				</p>
-				<div className="flex gap-6 justify-center">
+				<div className="flex gap-6 justify-center" onClick={()=>{
+					window.location.href = API_ROUTES.AUTH.LOGIN
+				}}>
 					<motion.button
 						className="btn btn-primary btn-lg"
 						whileHover={{ scale: 1.05 }}
 						whileTap={{ scale: 0.95 }}
 					>
 						{t("features.cta.startFree")}
-					</motion.button>
-					<motion.button
-						className="btn btn-outline btn-lg"
-						whileHover={{ scale: 1.05 }}
-						whileTap={{ scale: 0.95 }}
-					>
-						{t("features.cta.viewPremium")}
 					</motion.button>
 				</div>
 			</motion.div>

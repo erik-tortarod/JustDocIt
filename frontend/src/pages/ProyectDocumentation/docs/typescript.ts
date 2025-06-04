@@ -2,7 +2,7 @@ import { DocContent } from "../types";
 
 export const typescriptDocs: DocContent = {
 	emoji: "📘",
-	title: "TypeScript Documentation",
+	title: "TypeScript",
 	description: "Learn how to document your TypeScript code effectively",
 	sections: [
 		{

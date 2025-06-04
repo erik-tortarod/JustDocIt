@@ -1,13 +1,13 @@
 import { DocContent } from "../types";
 
 export const javaDocs: DocContent = {
-	emoji: "☕",
-	title: "Java Documentation",
-	description: "Learn how to document your Java code effectively",
-	sections: [
-		{
-			title: "Class Documentation",
-			content: `/**
+    emoji: "☕",
+    title: "Java",
+    description: "Learn how to document your Java code effectively",
+    sections: [
+        {
+            title: "Class Documentation",
+            content: `/**
  * Represents a user in the system.
  * This class handles user-related operations and data.
  *
@@ -68,12 +68,12 @@ public class User {
         // Method implementation
     }
 }`,
-			explanation:
-				"Java classes should be documented using Javadoc comments. Include author and version information, field descriptions, and detailed method documentation with parameters, return values, and exceptions. Use standard Javadoc tags and provide examples when helpful.",
-		},
-		{
-			title: "Interface Documentation",
-			content: `/**
+            explanation:
+                "Java classes should be documented using Javadoc comments. Include author and version information, field descriptions, and detailed method documentation with parameters, return values, and exceptions. Use standard Javadoc tags and provide examples when helpful.",
+        },
+        {
+            title: "Interface Documentation",
+            content: `/**
  * Defines the contract for user-related operations.
  * This interface provides methods for managing users in the system.
  *
@@ -113,12 +113,12 @@ public interface UserService {
      */
     User updateUser(Long id, User user) throws UserNotFoundException, IllegalArgumentException;
 }`,
-			explanation:
-				"Java interfaces should be documented with a clear description of their purpose and contract. Document each method with its parameters, return values, and exceptions. Include author and version information for better code management. Use standard Javadoc tags and provide examples when helpful.",
-		},
-		{
-			title: "Package Documentation",
-			content: `/**
+            explanation:
+                "Java interfaces should be documented with a clear description of their purpose and contract. Document each method with its parameters, return values, and exceptions. Include author and version information for better code management. Use standard Javadoc tags and provide examples when helpful.",
+        },
+        {
+            title: "Package Documentation",
+            content: `/**
  * Provides user management functionality for the application.
  * This package contains classes and interfaces for handling user-related
  * operations such as creation, retrieval, and updates.
@@ -144,12 +144,12 @@ public class UserManager {
 public class UserDTO {
     // Class implementation
 }`,
-			explanation:
-				"Java packages should be documented with a package-info.java file. Include a description of the package's purpose, author information, and version. Document the relationships between classes in the package and provide examples of common usage patterns.",
-		},
-		{
-			title: "Enum Documentation",
-			content: `/**
+            explanation:
+                "Java packages should be documented with a package-info.java file. Include a description of the package's purpose, author information, and version. Document the relationships between classes in the package and provide examples of common usage patterns.",
+        },
+        {
+            title: "Enum Documentation",
+            content: `/**
  * Represents the possible states of a user account.
  * This enum is used to track the current state of user accounts
  * in the system.
@@ -200,8 +200,8 @@ public enum UserStatus {
         return name().charAt(0) + name().substring(1).toLowerCase();
     }
 }`,
-			explanation:
-				"Java enums should be documented with a clear description of their purpose and each constant. Include methods and their documentation. Use standard Javadoc tags and provide examples of common usage patterns. Document any special behavior or constraints.",
-		},
-	],
+            explanation:
+                "Java enums should be documented with a clear description of their purpose and each constant. Include methods and their documentation. Use standard Javadoc tags and provide examples of common usage patterns. Document any special behavior or constraints.",
+        },
+    ],
 };

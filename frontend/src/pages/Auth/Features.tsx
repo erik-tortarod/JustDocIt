@@ -163,9 +163,12 @@ function Features() {
 				<p className="text-lg text-base-content/70 mb-10 max-w-2xl mx-auto">
 					{t("features.cta.description")}
 				</p>
-				<div className="flex gap-6 justify-center" onClick={()=>{
-					window.location.href = API_ROUTES.AUTH.LOGIN
-				}}>
+				<div
+					className="flex gap-6 justify-center"
+					onClick={() => {
+						window.location.href = API_ROUTES.AUTH.LOGIN;
+					}}
+				>
 					<motion.button
 						className="btn btn-primary btn-lg"
 						whileHover={{ scale: 1.05 }}

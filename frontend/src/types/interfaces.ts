@@ -40,6 +40,7 @@ export interface IRepository {
 	forksCount?: number;
 	stargazersCount?: string;
 	branch?: string;
+	language?: string;
 }
 
 /**

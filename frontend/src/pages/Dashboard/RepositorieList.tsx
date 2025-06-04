@@ -77,17 +77,13 @@ function RepositorieList({
 
 										<div className="flex mt-2 ml-7 text-xs text-gray-500">
 											<div className="mr-4 flex items-center">
-												<span className="mr-1">⭐</span>
-												<span>{repo.stargazersCount || 0}</span>
-											</div>
-											<div className="mr-4 flex items-center">
-												<span className="mr-1">🔄</span>
-												<span>{repo.forksCount || 0}</span>
+												<span className="mr-1">💻</span>
+												<span>{repo.language || "Sin lenguaje"}</span>
 											</div>
 											<div className="flex items-center">
-												<span className="mr-1">📅</span>
+												<span className="mr-1">📊</span>
 												<span>
-													Actualizado hace {repo.updatedAt || "poco tiempo"}
+													{repo.size ? `${repo.size} KB` : "Tamaño desconocido"}
 												</span>
 											</div>
 										</div>

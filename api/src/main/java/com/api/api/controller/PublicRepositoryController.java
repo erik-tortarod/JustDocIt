@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/public/repositories")
 public class PublicRepositoryController {
@@ -32,6 +34,16 @@ public class PublicRepositoryController {
 			return ResponseEntity.notFound().build();
 		}
 		return ResponseEntity.ok(repository.getVisits());
+	}
+
+	@GetMapping("/user/{userId}/total-visits")
+	public ResponseEntity<Integer> getUserTotalVisits(@PathVariable String userId) {
+		List<Repository> userRepositories = repositoryService.findByUserId(userId);
+		if (userRepositories == null || userRepositories.isEmpty()) {
+			return ResponseEntity.ok(0);
+		}
+		int totalVisits = userRepositories.stream().mapToInt(Repository::getVisits).sum();
+		return ResponseEntity.ok(totalVisits);
 	}
 
 }

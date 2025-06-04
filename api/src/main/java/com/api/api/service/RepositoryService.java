@@ -39,7 +39,7 @@ public class RepositoryService {
 				return repositoryRepository.save(existingRepo); // Return the existing
 																// repository if already
 																// added
-				// with same branch
+																// with same branch
 			}
 		}
 		return repositoryRepository.save(repository);
@@ -82,6 +82,15 @@ public class RepositoryService {
 	 */
 	public List<Repository> findByGithubIdAndUserId(String githubId, String userId) {
 		return repositoryRepository.findByGithubIdAndUserId(githubId, userId);
+	}
+
+	/**
+	 * Finds all repositories for a specific user.
+	 * @param userId The ID of the user
+	 * @return A list of repositories owned by the user
+	 */
+	public List<Repository> findByUserId(String userId) {
+		return repositoryRepository.findByUserId(userId);
 	}
 
 	/**

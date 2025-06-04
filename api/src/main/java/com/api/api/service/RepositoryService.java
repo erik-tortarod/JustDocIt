@@ -35,7 +35,10 @@ public class RepositoryService {
 		for (Repository existingRepo : existingRepositories) {
 			if (existingRepo.getBranch() != null && existingRepo.getBranch().equals(repository.getBranch())) {
 				existingRepo.setSize(repository.getSize()); // Update size
-				return existingRepo; // Return the existing repository if already added
+				existingRepo.setVisits(repository.getVisits()); // Update visits
+				return repositoryRepository.save(existingRepo); // Return the existing
+																// repository if already
+																// added
 				// with same branch
 			}
 		}
@@ -79,6 +82,15 @@ public class RepositoryService {
 	 */
 	public List<Repository> findByGithubIdAndUserId(String githubId, String userId) {
 		return repositoryRepository.findByGithubIdAndUserId(githubId, userId);
+	}
+
+	/**
+	 * Finds a repository by its ID.
+	 * @param id The ID of the repository to find
+	 * @return The found repository, or null if not found
+	 */
+	public Repository findById(String id) {
+		return repositoryRepository.findById(id).orElse(null);
 	}
 
 	/**

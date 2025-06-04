@@ -80,6 +80,11 @@ public class Repository {
 	 */
 	private int forksCount;
 
+	/**
+	 * Number of visits to the repository.
+	 */
+	private int visits = 0;
+
 	// Getters and setters
 	public void setGithubId(String githubId) {
 		this.githubId = githubId;
@@ -147,6 +152,14 @@ public class Repository {
 
 	public void setForksCount(int forksCount) {
 		this.forksCount = forksCount;
+	}
+
+	public int getVisits() {
+		return visits;
+	}
+
+	public void setVisits(int visits) {
+		this.visits = visits;
 	}
 
 	public String getId() {

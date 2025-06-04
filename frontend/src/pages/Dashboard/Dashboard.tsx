@@ -109,6 +109,8 @@ function Dashboard() {
 		setDirectory("/");
 	};
 
+	const [userVisits, setUserVisits] = useState<number>(0);
+
 	useEffect(() => {
 		const initializeDashboard = async () => {
 			try {
@@ -129,6 +131,15 @@ function Dashboard() {
 				const userData = await ApiService.getUserData();
 				setUserData(userData);
 				localStorage.setItem("userData", JSON.stringify(userData));
+
+				// Obtener las visitas después de tener los datos del usuario
+				const url = API_ROUTES.DOCS.USER_VISITS.replace(
+					"**user_id**",
+					userData.id,
+				);
+				const response = await fetch(url);
+				const visitsData = await response.json();
+				setUserVisits(visitsData);
 			} catch (error) {
 				console.error(`Error: ${error}`);
 				setError(`Error : ${error}`);
@@ -241,13 +252,13 @@ function Dashboard() {
 					>
 						<DashboardStats
 							amount={addedRepositories.length}
-							stat={`↑ ${addedRepositories.length} repositorios desde el último mes`}
-							title="Proyectos Activos"
+							stat="Proyectos en documentación"
+							title="Repositorios"
 						/>
 						<DashboardStats
-							amount={0}
-							stat="Pendiente de implementación"
-							title="Visitas totales"
+							amount={userVisits}
+							stat="Total de visualizaciones"
+							title="Visitas"
 						/>
 					</motion.div>
 

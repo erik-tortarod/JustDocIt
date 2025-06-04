@@ -125,7 +125,7 @@ function Hero() {
 						</div>
 
 						{/* Code Window */}
-						<div className="p-6 font-mono text-sm">
+						<div className="p-6 font-mono text-sm code-window">
 							<div className="text-base-content/50">/**</div>
 							<div className="text-base-content/50"> * @class Proyecto</div>
 							<div className="text-base-content/50">

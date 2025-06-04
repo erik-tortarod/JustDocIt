@@ -13,6 +13,7 @@ import {
 	getFileIcon,
 	getFileName,
 } from "../../utils/fileUtils";
+import { API_ROUTES } from "@/config/api-routes";
 
 // Componentes
 const NavBadge = ({ type }: { type: string }) => {
@@ -79,8 +80,18 @@ function Documentation() {
 				setLoading(false);
 			}
 		};
+		const addVisit = async () => {
+			if (id) {
+				const url = API_ROUTES.DOCS.ADD_VISIT.replace("**repository_id**", id);
+
+				await fetch(url, {
+					method: "POST",
+				});
+			}
+		};
 
 		fetchData();
+		addVisit();
 	}, [id, language]);
 
 	// Extraer todas las clases, funciones, interfaces y variables

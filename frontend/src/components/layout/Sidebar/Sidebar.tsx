@@ -92,7 +92,7 @@ function Sidebar({ userData }: { userData: IUser }) {
 							to="/admin"
 							className="Sidebar__nav-link decoration-transparent"
 						>
-							<NavLink icon="🔄" text="Integraciones" isOpen={isSidebarOpen} />
+							<NavLink icon="🔑" text="Admin" isOpen={isSidebarOpen} />
 						</Link>
 					)}
 				</NavSection>

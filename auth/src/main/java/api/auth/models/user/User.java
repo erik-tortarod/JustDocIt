@@ -29,4 +29,12 @@ public class User {
 
 	private Preferences preferences;
 
+	private String role = "USER"; // Default role is USER
+
+	public enum Role {
+
+		USER, ADMIN
+
+	}
+
 }

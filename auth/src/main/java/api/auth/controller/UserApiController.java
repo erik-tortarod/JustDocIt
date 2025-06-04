@@ -59,6 +59,7 @@ public class UserApiController {
 			userDetails.put("preferences", user.getPreferences());
 			userDetails.put("lastLoginAt", user.getLastLoginAt());
 			userDetails.put("createdAt", user.getCreatedAt());
+			userDetails.put("role", user.getRole());
 
 			return ResponseEntity.ok().header("Cache-Control", "max-age=60").body(userDetails);
 		}

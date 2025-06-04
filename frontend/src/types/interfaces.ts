@@ -10,6 +10,7 @@ export interface IUser {
 	avatarUrl: string;
 	createdAt: string;
 	preferences: IPreferences;
+	role: "USER" | "ADMIN";
 }
 
 /**

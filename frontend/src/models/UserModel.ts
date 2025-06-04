@@ -16,6 +16,7 @@ class UserModel implements IUser {
 		language: ELanguage;
 		theme: ETheme;
 	};
+	role: "USER" | "ADMIN";
 
 	constructor(data: {
 		jwtToken: string;
@@ -27,12 +28,14 @@ class UserModel implements IUser {
 			language: string;
 			theme: string;
 		};
+		role: "USER" | "ADMIN";
 	}) {
 		this.jwtToken = data.jwtToken;
 		this.username = data.username;
 		this.email = data.email;
 		this.avatarUrl = data.avatarUrl;
 		this.createdAt = data.createdAt;
+		this.role = data.role || "USER";
 		this.preferences = {
 			language: (data.preferences.language as ELanguage) || ELanguage.ENGLISH,
 			theme: (data.preferences.theme as ETheme) || ETheme.SYSTEM,
@@ -62,6 +65,7 @@ class UserModel implements IUser {
 				language: data.preferences.language || ELanguage.ENGLISH,
 				theme: data.preferences.theme || ETheme.SYSTEM,
 			},
+			role: data.role || "USER",
 		});
 	}
 }

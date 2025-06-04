@@ -29,7 +29,10 @@ public class JwtUtil {
 		final int expirationTime = 1000 * 60 * 60; // 1 hour
 
 		return Jwts.builder()
-			.setClaims(Map.of("id", id, "accessToken", accessToken))
+			.setClaims(Map.of("id", id, "accessToken", accessToken, "role", "USER")) // Default
+																						// role
+																						// is
+																						// USER
 			.setIssuedAt(new Date())
 			.setExpiration(new Date(System.currentTimeMillis() + expirationTime))
 			.signWith(secretKey1, SignatureAlgorithm.HS256)

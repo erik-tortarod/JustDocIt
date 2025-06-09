@@ -1,5 +1,5 @@
 # Just Doc It 
-[AI Documentation](https://justdocit.com](https://deepwiki.com/erik-tortarod/JustDocIt))
+[AI Documentation](https://deepwiki.com/erik-tortarod/JustDocIt/1-overview)
 
 ![Just Doc It Logo](logo.png)
 

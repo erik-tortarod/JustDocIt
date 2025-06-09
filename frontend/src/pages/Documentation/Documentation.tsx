@@ -1,9 +1,10 @@
 import { useEffect, useState, useMemo } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import DocumentationService from "../../services/DocumentationService";
 import { ICodeDocumentation } from "../../types/interfaces";
 import RepositoryService from "../../services/RepositoryService";
 import { IRepository } from "../../types/interfaces";
+import { Toaster } from "react-hot-toast";
 
 import logo from "../../../public/logo.png";
 
@@ -14,6 +15,7 @@ import {
 	getFileName,
 } from "../../utils/fileUtils";
 import { API_ROUTES } from "@/config/api-routes";
+import toast from "react-hot-toast";
 
 // Componentes
 const NavBadge = ({ type }: { type: string }) => {
@@ -46,7 +48,7 @@ const NavBadge = ({ type }: { type: string }) => {
 // Componente principal
 function Documentation() {
 	const { id, language } = useParams();
-	/* const navigate = useNavigate(); */
+	const navigate = useNavigate();
 	const [loading, setLoading] = useState(true);
 	const [codeDocumentation, setCodeDocumentation] = useState<
 		ICodeDocumentation[]
@@ -64,6 +66,7 @@ function Documentation() {
 	const [repositoryInfo, setRepositoryInfo] = useState<IRepository | null>(
 		null,
 	);
+	const [noDocumentation, setNoDocumentation] = useState(false);
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -71,11 +74,22 @@ function Documentation() {
 				if (!id || !language) return;
 
 				const data = await DocumentationService.getRepository(id, language);
+
+				if (!data || data.length === 0) {
+					setCodeDocumentation([]);
+					setFilteredFiles([]);
+					setCurrentFile(null);
+					setNoDocumentation(true);
+					return;
+				}
+
 				setCodeDocumentation(data);
 				setFilteredFiles(data);
 				setCurrentFile(data[0] || null);
+				setNoDocumentation(false);
 			} catch (error) {
 				console.error("Error fetching documentation:", error);
+				setNoDocumentation(true);
 			} finally {
 				setLoading(false);
 			}
@@ -116,6 +130,11 @@ function Documentation() {
 			}),
 		[codeDocumentation, language],
 	);
+
+	const copyUrlToClipboard = () => {
+		navigator.clipboard.writeText(window.location.href);
+		toast.success("URL copiada al portapapeles");
+	};
 
 	const allFunctions = useMemo(
 		() => codeDocumentation.flatMap((doc) => doc.content?.functions || []),
@@ -246,6 +265,13 @@ function Documentation() {
 		return "";
 	};
 
+	const handleLanguageChange = (newLanguage: string) => {
+		if (id) {
+			navigate(`/documentation/${id}/${newLanguage.toLowerCase()}`);
+			window.location.reload();
+		}
+	};
+
 	// Renderizar el componente de carga
 	if (loading) {
 		return (
@@ -257,6 +283,16 @@ function Documentation() {
 
 	return (
 		<div className="flex min-h-screen bg-base-100 text-base-content w-screen">
+			<Toaster
+				position="top-center"
+				toastOptions={{
+					duration: 3000,
+					style: {
+						background: "#333",
+						color: "#fff",
+					},
+				}}
+			/>
 			{/* Sidebar */}
 			<aside className="w-72 bg-base-200 border-r border-base-300 h-screen sticky top-0 overflow-y-auto">
 				<div className="p-4 border-b border-base-300">
@@ -570,30 +606,62 @@ function Documentation() {
 									className="dropdown-content z-10 menu p-2 shadow bg-base-200 rounded-box w-52"
 								>
 									<li>
-										<a>JavaScript</a>
+										<a onClick={() => handleLanguageChange("javascript")}>
+											JavaScript
+										</a>
 									</li>
 									<li>
-										<a>TypeScript</a>
+										<a onClick={() => handleLanguageChange("typescript")}>
+											TypeScript
+										</a>
 									</li>
 									<li>
-										<a>Python</a>
+										<a onClick={() => handleLanguageChange("python")}>Python</a>
 									</li>
 									<li>
-										<a>PHP</a>
+										<a onClick={() => handleLanguageChange("php")}>PHP</a>
 									</li>
 								</ul>
 							</div>
-
-							<button className="btn btn-sm btn-outline">Ver en GitHub</button>
-
-							<button className="btn btn-sm btn-outline btn-square">🔗</button>
+							<button
+								className="btn btn-sm btn-outline btn-square"
+								onClick={copyUrlToClipboard}
+							>
+								🔗
+							</button>
 						</div>
 					</div>
 				</header>
 
 				{/* Main container */}
 				<main className="flex-1 p-8 max-w-4xl mx-auto w-full">
-					{currentClass ? (
+					{noDocumentation ? (
+						<div className="text-center py-8">
+							<div className="card bg-base-200 p-6 mb-8 max-w-2xl mx-auto">
+								<div className="alert alert-warning">
+									<div>
+										<svg
+											xmlns="http://www.w3.org/2000/svg"
+											className="stroke-current flex-shrink-0 h-6 w-6"
+											fill="none"
+											viewBox="0 0 24 24"
+										>
+											<path
+												strokeLinecap="round"
+												strokeLinejoin="round"
+												strokeWidth="2"
+												d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+											/>
+										</svg>
+										<span>
+											No hay documentación disponible para {language} en este
+											repositorio
+										</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					) : currentClass ? (
 						<>
 							<h1 className="text-4xl font-bold mb-2">{currentClass.name}</h1>
 							<h2 className="text-xl text-base-content/70 mb-6">

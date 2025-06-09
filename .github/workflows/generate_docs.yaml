@@ -45,16 +45,7 @@ jobs:
 
          - name: Generate documentation
            run: |
-              npx typedoc \
-                --out docs \
-                --entryPointStrategy expand \
-                --excludePrivate \
-                --excludeProtected \
-                --excludeExternals \
-                --theme default \
-                --name "JustDocIt Frontend" \
-                --readme none \
-                src/
+              npx typedoc --entryPointStrategy Expand src --skipErrorChecking
 
          - name: Check for changes
            id: changes

@@ -40,7 +40,7 @@ push-to-dockerhub:
 	@echo "Publicando imágenes en DockerHub..."
 	@for service in $(SERVICES); do \
 		echo "Publicando $(DOCKER_USERNAME)/$(PROJECT_NAME)-$$service..."; \
-		docker push $(DOCKER_USERNAME)/$(PROJECT_NAME)-$$service:latest; \
+		docker push $(DOCKER_USERNAME)/$(PROJECT_NAME)-$$service:latest || { echo "Error al publicar $$service"; exit 1; }; \
 	done
 
 # Muestra los logs de un contenedor específico

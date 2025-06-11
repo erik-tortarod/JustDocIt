@@ -41,9 +41,7 @@ jobs:
 
          - name: Initialize Terraform
            working-directory: ./infra/terraform
-           run: |
-              terraform init
-              terraform workspace select ${{ github.event.inputs.environment }} || terraform workspace new ${{ github.event.inputs.environment }}
+           run: terraform init
 
          - name: Terraform Plan
            working-directory: ./infra/terraform
@@ -53,31 +51,9 @@ jobs:
            working-directory: ./infra/terraform
            run: terraform apply -auto-approve
 
-         - name: List Terraform State Files
+         - name: Upload tfState to S3
            working-directory: ./infra/terraform
-           run: |
-              echo "Current directory contents:"
-              ls -la
-              echo "Terraform workspace list:"
-              terraform workspace list
-              echo "Terraform state file location:"
-              terraform state list
-
-         - name: Upload Terraform State
-           working-directory: ./infra/terraform
-           run: |
-              # Create a directory for the state file
-              mkdir -p state
-              # Copy the state file to the state directory
-              cp terraform.tfstate state/ || cp .terraform/terraform.tfstate state/ || true
-           continue-on-error: true
-
-         - name: Upload State Artifact
-           uses: actions/upload-artifact@v4.4.3
-           with:
-              name: terraform-tfstate-${{ github.event.inputs.environment }}
-              path: infra/terraform/state
-              if-no-files-found: warn
+           run: aws s3 cp terraform.tfstate s3://justdocit-terraform-state/terraform.tfstate
 
    destroy:
       if: github.event.inputs.action == 'destroy'
@@ -87,12 +63,8 @@ jobs:
          - name: Checkout
            uses: actions/checkout@v4.2.1
 
-         - name: Download Terraform State
-           uses: actions/download-artifact@v4.1.8
-           with:
-              name: terraform-tfstate-${{ github.event.inputs.environment }}
-              path: infra/terraform/state
-              if-no-files-found: warn
+         - name: Download tfState from S3
+           run: aws s3 cp s3://justdocit-terraform-state/terraform.tfstate infra/terraform/terraform.tfstate
 
          - name: Configure AWS credentials
            uses: aws-actions/configure-aws-credentials@v4
@@ -107,9 +79,7 @@ jobs:
 
          - name: Initialize Terraform
            working-directory: ./infra/terraform
-           run: |
-              terraform init
-              terraform workspace select ${{ github.event.inputs.environment }}
+           run: terraform init
 
          - name: Terraform Destroy
            working-directory: ./infra/terraform

@@ -53,11 +53,31 @@ jobs:
            working-directory: ./infra/terraform
            run: terraform apply -auto-approve
 
+         - name: List Terraform State Files
+           working-directory: ./infra/terraform
+           run: |
+              echo "Current directory contents:"
+              ls -la
+              echo "Terraform workspace list:"
+              terraform workspace list
+              echo "Terraform state file location:"
+              terraform state list
+
          - name: Upload Terraform State
+           working-directory: ./infra/terraform
+           run: |
+              # Create a directory for the state file
+              mkdir -p state
+              # Copy the state file to the state directory
+              cp terraform.tfstate state/ || cp .terraform/terraform.tfstate state/ || true
+           continue-on-error: true
+
+         - name: Upload State Artifact
            uses: actions/upload-artifact@v4.4.3
            with:
               name: terraform-tfstate-${{ github.event.inputs.environment }}
-              path: infra/terraform/terraform.tfstate
+              path: infra/terraform/state
+              if-no-files-found: warn
 
    destroy:
       if: github.event.inputs.action == 'destroy'
@@ -71,7 +91,8 @@ jobs:
            uses: actions/download-artifact@v4.1.8
            with:
               name: terraform-tfstate-${{ github.event.inputs.environment }}
-              path: infra/terraform
+              path: infra/terraform/state
+              if-no-files-found: warn
 
          - name: Configure AWS credentials
            uses: aws-actions/configure-aws-credentials@v4

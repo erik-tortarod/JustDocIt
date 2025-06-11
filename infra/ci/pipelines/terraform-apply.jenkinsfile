@@ -4,9 +4,22 @@ pipeline {
     environment {
         TERRAFORM_DIR = 'infra/terraform'
         TERRAFORM_STATE_DIR = '/var/jenkins_home/terraform-state'
+        AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY')
+        AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
+        AWS_SESSION_TOKEN = credentials('AWS_SESSION_TOKEN')
     }
     
     stages {
+        stage('Install Terraform') {
+            steps {
+                sh '''
+                    wget -O- https://apt.releases.hashicorp.com/gpg | gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+                    echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/hashicorp.list
+                    apt-get update && apt-get install -y terraform
+                '''
+            }
+        }
+
         stage('Checkout') {
             steps {
                 checkout scm

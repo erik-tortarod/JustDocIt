@@ -1,0 +1,95 @@
+name: deploy-destroy
+
+on:
+   workflow_dispatch:
+      inputs:
+         environment:
+            description: "Environment to deploy/destroy"
+            required: true
+            default: "dev"
+            type: choice
+            options:
+               - dev
+               - prod
+         action:
+            description: "Action to perform"
+            required: true
+            type: choice
+            options:
+               - deploy
+               - destroy
+
+jobs:
+   deploy:
+      if: github.event.inputs.action == 'deploy'
+      runs-on: ubuntu-latest
+      environment: ${{ github.event.inputs.environment }}
+      steps:
+         - name: Checkout
+           uses: actions/checkout@v4.2.1
+
+         - name: Configure AWS credentials
+           uses: aws-actions/configure-aws-credentials@v4
+           with:
+              aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+              aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+              aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+              aws-region: "us-east-1"
+
+         - name: Setup Terraform
+           uses: hashicorp/setup-terraform@v3
+
+         - name: Initialize Terraform
+           working-directory: ./infra/terraform
+           run: |
+              terraform init
+              terraform workspace select ${{ github.event.inputs.environment }} || terraform workspace new ${{ github.event.inputs.environment }}
+
+         - name: Terraform Plan
+           working-directory: ./infra/terraform
+           run: terraform plan -no-color
+
+         - name: Terraform Apply
+           working-directory: ./infra/terraform
+           run: terraform apply -auto-approve
+
+         - name: Upload Terraform State
+           uses: actions/upload-artifact@v4.4.3
+           with:
+              name: terraform-tfstate-${{ github.event.inputs.environment }}
+              path: infra/terraform/terraform.tfstate
+
+   destroy:
+      if: github.event.inputs.action == 'destroy'
+      runs-on: ubuntu-latest
+      environment: ${{ github.event.inputs.environment }}
+      steps:
+         - name: Checkout
+           uses: actions/checkout@v4.2.1
+
+         - name: Download Terraform State
+           uses: actions/download-artifact@v4.1.8
+           with:
+              name: terraform-tfstate-${{ github.event.inputs.environment }}
+              path: infra/terraform
+
+         - name: Configure AWS credentials
+           uses: aws-actions/configure-aws-credentials@v4
+           with:
+              aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+              aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+              aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+              aws-region: "us-east-1"
+
+         - name: Setup Terraform
+           uses: hashicorp/setup-terraform@v3
+
+         - name: Initialize Terraform
+           working-directory: ./infra/terraform
+           run: |
+              terraform init
+              terraform workspace select ${{ github.event.inputs.environment }}
+
+         - name: Terraform Destroy
+           working-directory: ./infra/terraform
+           run: terraform destroy -auto-approve

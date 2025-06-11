@@ -63,9 +63,6 @@ jobs:
          - name: Checkout
            uses: actions/checkout@v4.2.1
 
-         - name: Download tfState from S3
-           run: aws s3 cp s3://justdocit-images/terraform.tfstate infra/terraform/terraform.tfstate
-
          - name: Configure AWS credentials
            uses: aws-actions/configure-aws-credentials@v4
            with:
@@ -73,6 +70,9 @@ jobs:
               aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
               aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
               aws-region: "us-east-1"
+
+         - name: Download tfState from S3
+           run: aws s3 cp s3://justdocit-images/terraform.tfstate infra/terraform/terraform.tfstate
 
          - name: Setup Terraform
            uses: hashicorp/setup-terraform@v3

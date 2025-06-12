@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import SelectBtn from "../../components/common/SelectBtn";
 import ProgressBarModal from "../../components/ui/ProgressBarModal";
 import RepositorySettingsModal from "./RepositorySettingsModal";
+import HighlighSubString from "../../components/common/HighlighSubString";
 
 // INTERFACES
 import { IRepository } from "../../types/interfaces";
@@ -19,13 +20,16 @@ import { replaceLanguageByIcon } from "../../utils/replaceLanguageByIcon";
  * Component for displaying an added repository.
  * @param repo - The repository to display.
  * @param onDocumentationComplete - Callback function to be called when documentation is complete.
+ * @param searchTerm - The search term to highlight in the repository name.
  */
 function AddedRepositorie({
 	repo,
 	onDocumentationComplete,
+	searchTerm = "",
 }: {
 	repo: IRepository;
 	onDocumentationComplete?: () => void;
+	searchTerm?: string;
 }) {
 	const availableLanguages = ["TYPESCRIPT", "PYTHON", "PHP"];
 
@@ -106,7 +110,10 @@ function AddedRepositorie({
 				<div className="project-header p-6 flex justify-between items-start">
 					<div>
 						<div className="project-name text-lg font-semibold mb-2 flex items-center gap-2 text-base-content">
-							{repo.name?.slice(0, 20) + "..."}
+							<HighlighSubString
+								text={repo.name?.slice(0, 20) + "..."}
+								search={searchTerm}
+							/>
 							{repo.branch && (
 								<span className="px-2 py-1 text-xs rounded-md badge badge-accent">
 									<span className="mr-1">🌿</span>
@@ -175,7 +182,10 @@ function AddedRepositorie({
 
 					<div className="project-description mb-4">
 						<p className="text-base-content/70 text-sm">
-							{repo.description || "No description provided"}
+							<HighlighSubString
+								text={repo.description || "No description provided"}
+								search={searchTerm}
+							/>
 						</p>
 					</div>
 				</div>

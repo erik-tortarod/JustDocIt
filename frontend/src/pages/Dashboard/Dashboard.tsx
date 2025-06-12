@@ -54,6 +54,7 @@ function Dashboard() {
 	const [filteredRepositories, setFilteredRepositories] = useState<
 		IRepository[]
 	>([]);
+	const [searchTerm, setSearchTerm] = useState("");
 	const [selectedRepository, setSelectedRepository] =
 		useState<IRepository | null>(null);
 	const [branch, setBranch] = useState<string>("");
@@ -280,6 +281,7 @@ function Dashboard() {
 						<RepositoryFilters
 							repositories={addedRepositories}
 							onFilterChange={setFilteredRepositories}
+							onSearchChange={setSearchTerm}
 						/>
 						<AnimatePresence mode="wait">
 							{filteredRepositories.length > 0 ? (
@@ -293,6 +295,7 @@ function Dashboard() {
 									<AddedRepositories
 										addedRepositories={filteredRepositories}
 										refreshRepositories={refreshAddedRepositories}
+										searchTerm={searchTerm}
 									/>
 								</motion.div>
 							) : (

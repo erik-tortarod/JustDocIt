@@ -4,6 +4,7 @@ import { IRepository } from "../../types/interfaces";
 interface RepositoryFiltersProps {
 	repositories: IRepository[];
 	onFilterChange: (filteredRepos: IRepository[]) => void;
+	onSearchChange: (searchTerm: string) => void;
 }
 
 type SortOption = "none" | "stars-desc" | "languages-asc" | "languages-desc";
@@ -11,6 +12,7 @@ type SortOption = "none" | "stars-desc" | "languages-asc" | "languages-desc";
 function RepositoryFilters({
 	repositories,
 	onFilterChange,
+	onSearchChange,
 }: RepositoryFiltersProps) {
 	const [searchTerm, setSearchTerm] = useState("");
 	const [selectedLanguage, setSelectedLanguage] = useState<string>("all");
@@ -34,8 +36,12 @@ function RepositoryFilters({
 
 		// Apply search filter
 		if (searchTerm) {
-			filteredRepos = filteredRepos.filter((repo) =>
-				(repo.name || "").toLowerCase().includes(searchTerm.toLowerCase()),
+			filteredRepos = filteredRepos.filter(
+				(repo) =>
+					(repo.name || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+					(repo.description || "")
+						.toLowerCase()
+						.includes(searchTerm.toLowerCase()),
 			);
 		}
 
@@ -103,7 +109,10 @@ function RepositoryFilters({
 					placeholder="Buscar repositorios..."
 					className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
 					value={searchTerm}
-					onChange={(e) => setSearchTerm(e.target.value)}
+					onChange={(e) => {
+						setSearchTerm(e.target.value);
+						onSearchChange(e.target.value);
+					}}
 				/>
 			</div>
 			<div className="min-w-[150px]">

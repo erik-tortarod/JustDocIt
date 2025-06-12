@@ -7,9 +7,11 @@ import AddedRepositorie from "./AddedRepositorie";
 function AddedRepositories({
 	addedRepositories,
 	refreshRepositories,
+	searchTerm = "",
 }: {
 	addedRepositories: IRepository[];
 	refreshRepositories: () => Promise<void>;
+	searchTerm?: string;
 }) {
 	const visibleReposFactor = 4;
 
@@ -42,6 +44,7 @@ function AddedRepositories({
 						key={`${repo.githubId}-${repo.branch}`}
 						repo={repo}
 						onDocumentationComplete={refreshRepositories}
+						searchTerm={searchTerm}
 					/>
 				))}
 			</section>

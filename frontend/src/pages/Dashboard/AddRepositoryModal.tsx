@@ -9,8 +9,6 @@ interface AddRepositoryModalProps {
 	onSelectRepository: (repo: IRepository | null) => void;
 	branch: string;
 	onBranchChange: (branch: string) => void;
-	directory: string;
-	onDirectoryChange: (directory: string) => void;
 	isAddingRepo: boolean;
 	onAddRepository: () => void;
 	onClose: () => void;
@@ -23,8 +21,6 @@ function AddRepositoryModal({
 	onSelectRepository,
 	branch,
 	onBranchChange,
-	directory,
-	onDirectoryChange,
 	isAddingRepo,
 	onAddRepository,
 	onClose,
@@ -126,7 +122,16 @@ function AddRepositoryModal({
 										<p className="text-xs sm:text-sm text-gray-400 mt-1">
 											{selectedRepository.description}
 										</p>
+										<div className="mt-3 flex flex-wrap gap-2">
+											<span className="px-2 py-1 text-xs rounded-full bg-primary/10 text-primary">
+												{selectedRepository.private ? "Privado" : "Público"}
+											</span>
+											<span className="px-2 py-1 text-xs rounded-full bg-secondary/10 text-secondary">
+												{selectedRepository.language || "Sin lenguaje"}
+											</span>
+										</div>
 									</div>
+
 									<div>
 										<label className="block text-xs sm:text-sm font-medium mb-1 sm:mb-2">
 											Rama
@@ -138,18 +143,12 @@ function AddRepositoryModal({
 											onChange={(e) => onBranchChange(e.target.value)}
 											required
 										/>
+										<p className="mt-1 text-xs text-gray-400">
+											La rama seleccionada será la fuente de documentación para
+											este repositorio.
+										</p>
 									</div>
-									<div>
-										<label className="block text-xs sm:text-sm font-medium mb-1 sm:mb-2">
-											Directorio (opcional)
-										</label>
-										<input
-											className="w-full p-2 text-sm sm:text-base border border-gray-700 rounded bg-gray-800"
-											placeholder="/"
-											value={directory}
-											onChange={(e) => onDirectoryChange(e.target.value)}
-										/>
-									</div>
+
 									<button
 										className={`w-full py-2 text-sm sm:text-base bg-purple-700 text-white rounded hover:bg-purple-600 ${
 											isAddingRepo ? "opacity-70 cursor-not-allowed" : ""

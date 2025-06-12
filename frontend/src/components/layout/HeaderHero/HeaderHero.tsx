@@ -15,6 +15,7 @@ function HeaderHero() {
 	});
 	const [isThemeDropdownOpen, setIsThemeDropdownOpen] = useState(false);
 	const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState(false);
+	const [showMobileMenu, setShowMobileMenu] = useState(false);
 
 	const handleThemeChange = (newTheme: string) => {
 		setTheme(newTheme);
@@ -69,47 +70,47 @@ function HeaderHero() {
 			transition={{ type: "spring", stiffness: 100, damping: 20 }}
 		>
 			<div className="HeaderHero__start navbar-start">
-				<div className="HeaderHero__dropdown dropdown">
-					<motion.div
-						tabIndex={0}
-						role="button"
-						className="HeaderHero__menu-btn btn btn-ghost lg:hidden"
+				<div className="relative">
+					<motion.button
+						onClick={() => setShowMobileMenu(!showMobileMenu)}
+						className="btn btn-ghost lg:hidden"
 						whileHover={{ scale: 1.1 }}
 						whileTap={{ scale: 0.9 }}
 					>
 						<MenuIcon />
-					</motion.div>
-					<AnimatePresence>
-						{isLanguageDropdownOpen && (
-							<motion.ul
-								tabIndex={0}
-								className="HeaderHero__dropdown-content menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
-								variants={dropdownVariants}
-								initial="hidden"
-								animate="visible"
-								exit="exit"
-							>
-								<li>
-									<a className="HeaderHero__dropdown-link">
-										{t("header.features")}
-									</a>
-								</li>
-								<li>
+					</motion.button>
+					{showMobileMenu && (
+						<motion.div
+							initial={{ opacity: 0, y: -10 }}
+							animate={{ opacity: 1, y: 0 }}
+							exit={{ opacity: 0, y: -10 }}
+							transition={{ duration: 0.2 }}
+							className="absolute left-0 top-full mt-2 w-56 rounded-xl bg-base-100 p-3 shadow-xl ring-1 ring-base-300"
+						>
+							<ul className="menu menu-sm gap-1">
+								<motion.li whileHover={{ scale: 1.02 }}>
 									<Link
 										to="/proyect_docs"
-										className="HeaderHero__dropdown-link"
+										className="HeaderHero__dropdown-link rounded-lg px-3 py-1.5 text-base font-medium hover:bg-base-200 flex items-center gap-2"
+										onClick={() => setShowMobileMenu(false)}
 									>
+										<span className="w-2 h-2 rounded-full bg-primary"></span>
 										{t("header.documentation")}
 									</Link>
-								</li>
-								<li>
-									<Link to="/dashboard" className="HeaderHero__dropdown-link">
+								</motion.li>
+								<motion.li whileHover={{ scale: 1.02 }}>
+									<Link
+										to="/dashboard"
+										className="HeaderHero__dropdown-link rounded-lg px-3 py-1.5 text-base font-medium hover:bg-base-200 flex items-center gap-2"
+										onClick={() => setShowMobileMenu(false)}
+									>
+										<span className="w-2 h-2 rounded-full bg-secondary"></span>
 										{t("header.dashboard")}
 									</Link>
-								</li>
-							</motion.ul>
-						)}
-					</AnimatePresence>
+								</motion.li>
+							</ul>
+						</motion.div>
+					)}
 				</div>
 				<motion.a
 					className="HeaderHero__brand btn btn-ghost text-xl"
@@ -130,9 +131,6 @@ function HeaderHero() {
 			</div>
 			<div className="HeaderHero__center navbar-center hidden lg:flex">
 				<ul className="HeaderHero__menu menu menu-horizontal px-1">
-					<motion.li whileHover={{ scale: 1.1 }}>
-						<a className="HeaderHero__menu-link">{t("header.features")}</a>
-					</motion.li>
 					<motion.li whileHover={{ scale: 1.1 }}>
 						<Link to="/proyect_docs" className="HeaderHero__menu-link">
 							{t("header.documentation")}

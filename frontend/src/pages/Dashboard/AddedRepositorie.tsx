@@ -29,6 +29,11 @@ function AddedRepositorie({
 }) {
 	const availableLanguages = ["TYPESCRIPT", "PYTHON", "PHP"];
 
+	// Filter out already documented languages
+	const filteredLanguages = availableLanguages.filter(
+		(lang) => !repo.documentedLanguages?.includes(lang),
+	);
+
 	const [selectedLanguage, setSelectedLanguage] = useState("");
 	const [loading, setLoading] = useState(false);
 	const [isProgressModalOpen, setIsProgressModalOpen] = useState(false);
@@ -202,12 +207,21 @@ function AddedRepositorie({
 
 					<div className="flex items-center gap-3">
 						<div className="">
-							<SelectBtn
-								ref={selectBtnRef}
-								children={availableLanguages}
-								title="Documentar"
-								setState={handleSetLanguage}
-							/>
+							{filteredLanguages.length > 0 ? (
+								<SelectBtn
+									ref={selectBtnRef}
+									children={filteredLanguages}
+									title="Documentar"
+									setState={handleSetLanguage}
+								/>
+							) : (
+								<div className="flex items-center gap-2 px-4 py-2 bg-base-200 rounded-md">
+									<span className="text-lg">✅</span>
+									<span className="text-sm text-base-content/70">
+										Todos los lenguajes documentados
+									</span>
+								</div>
+							)}
 						</div>
 					</div>
 				</div>

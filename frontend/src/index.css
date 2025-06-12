@@ -2,6 +2,10 @@
 @plugin "@tailwindcss/typography";
 @plugin "daisyui";
 
+* {
+	text-decoration: none;
+}
+
 [data-theme="light"] {
 	--color-base-100: oklch(99% 0.005 0);
 	--color-base-200: oklch(96% 0.008 180);

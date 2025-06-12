@@ -94,7 +94,7 @@ function HeaderHero() {
 										className="HeaderHero__dropdown-link rounded-lg px-3 py-1.5 text-base font-medium hover:bg-base-200 flex items-center gap-2"
 										onClick={() => setShowMobileMenu(false)}
 									>
-										<span className="w-2 h-2 rounded-full bg-primary"></span>
+										<span className="w-2 h-2 rounded-full bg-primary text-xl"></span>
 										{t("header.documentation")}
 									</Link>
 								</motion.li>
@@ -104,7 +104,7 @@ function HeaderHero() {
 										className="HeaderHero__dropdown-link rounded-lg px-3 py-1.5 text-base font-medium hover:bg-base-200 flex items-center gap-2"
 										onClick={() => setShowMobileMenu(false)}
 									>
-										<span className="w-2 h-2 rounded-full bg-secondary"></span>
+										<span className="w-2 h-2 rounded-full bg-secondary text-xl"></span>
 										{t("header.dashboard")}
 									</Link>
 								</motion.li>
@@ -132,12 +132,12 @@ function HeaderHero() {
 			<div className="HeaderHero__center navbar-center hidden lg:flex">
 				<ul className="HeaderHero__menu menu menu-horizontal px-1">
 					<motion.li whileHover={{ scale: 1.1 }}>
-						<Link to="/proyect_docs" className="HeaderHero__menu-link">
+						<Link to="/proyect_docs" className="HeaderHero__menu-link text-lg">
 							{t("header.documentation")}
 						</Link>
 					</motion.li>
 					<motion.li whileHover={{ scale: 1.1 }}>
-						<Link to="/dashboard" className="HeaderHero__menu-link">
+						<Link to="/dashboard" className="HeaderHero__menu-link text-lg">
 							{t("header.dashboard")}
 						</Link>
 					</motion.li>

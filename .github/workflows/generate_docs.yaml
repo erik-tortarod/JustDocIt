@@ -59,7 +59,8 @@ jobs:
               git config --local user.name "github-actions[bot]"
               git add docs/
               git commit -m "docs: update documentation"
-              git push
+              git pull --rebase origin ${{ github.ref_name }}
+              git push origin ${{ github.ref_name }}
 
          - name: Comment PR
            if: github.event_name == 'pull_request'

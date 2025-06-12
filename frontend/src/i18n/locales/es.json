@@ -99,5 +99,23 @@
 			"startFree": "Comenzar gratis",
 			"viewPremium": "Ver planes Premium"
 		}
+	},
+	"dashboard": {
+		"title": "Dashboard",
+		"addNewProject": "Agregar proyecto nuevo",
+		"projectsInDocumentation": "Proyectos en documentación",
+		"totalViews": "Total de visualizaciones",
+		"projectList": "Lista de Proyectos",
+		"noActiveProjects": "No hay proyectos activos",
+		"addProjectMessage": "Agrega un proyecto nuevo para empezar a trabajar.",
+		"searchPlaceholder": "Buscar en la documentación...",
+		"repository": "Repositorio"
+	},
+	"sidebar": {
+		"general": "General",
+		"personal": "Personal",
+		"profile": "Perfil",
+		"settings": "Configuración",
+		"online": "Online"
 	}
 }

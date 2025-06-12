@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import { motion, AnimatePresence } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
 //SERVICES
 import ApiService from "../../services/ApiService";
@@ -30,6 +31,8 @@ import { EEnvironment } from "../../types/enums";
 import useValidation from "../../hooks/useValidation";
 
 function Dashboard() {
+	const { t } = useTranslation();
+
 	useEffect(() => {
 		const checkValidation = async () => {
 			const validation = new useValidation();
@@ -232,7 +235,7 @@ function Dashboard() {
 							animate={{ opacity: 1, x: 0 }}
 							transition={{ duration: 0.5, delay: 0.4 }}
 						>
-							Dashboard
+							{t("dashboard.title")}
 						</motion.h1>
 						<motion.button
 							onClick={() => setShowAddModal(true)}
@@ -240,7 +243,7 @@ function Dashboard() {
 							whileHover={{ scale: 1.05 }}
 							whileTap={{ scale: 0.95 }}
 						>
-							Agregar proyecto nuevo
+							{t("dashboard.addNewProject")}
 						</motion.button>
 					</motion.section>
 
@@ -252,13 +255,13 @@ function Dashboard() {
 					>
 						<DashboardStats
 							amount={addedRepositories.length}
-							stat="Proyectos en documentación"
-							title="Repositorios"
+							stat={t("dashboard.projectsInDocumentation")}
+							title={t("dashboard.projectList")}
 						/>
 						<DashboardStats
 							amount={userVisits}
-							stat="Total de visualizaciones"
-							title="Visitas"
+							stat={t("dashboard.totalViews")}
+							title={t("dashboard.projectList")}
 						/>
 					</motion.div>
 
@@ -272,7 +275,7 @@ function Dashboard() {
 							animate={{ opacity: 1, y: 0 }}
 							transition={{ duration: 0.5, delay: 0.7 }}
 						>
-							Lista de Proyectos
+							{t("dashboard.projectList")}
 						</motion.h2>
 						<RepositoryFilters
 							repositories={addedRepositories}
@@ -302,10 +305,10 @@ function Dashboard() {
 									transition={{ duration: 0.3 }}
 								>
 									<h2 className="text-2xl font-bold">
-										No hay proyectos activos
+										{t("dashboard.noActiveProjects")}
 									</h2>
 									<p className="text-gray-500">
-										Agrega un proyecto nuevo para empezar a trabajar.
+										{t("dashboard.addProjectMessage")}
 									</p>
 									<motion.button
 										onClick={() => setShowAddModal(true)}
@@ -313,7 +316,7 @@ function Dashboard() {
 										whileHover={{ scale: 1.05 }}
 										whileTap={{ scale: 0.95 }}
 									>
-										Agregar proyecto nuevo
+										{t("dashboard.addNewProject")}
 									</motion.button>
 								</motion.div>
 							)}

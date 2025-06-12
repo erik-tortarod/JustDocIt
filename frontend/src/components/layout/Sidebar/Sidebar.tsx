@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft } from "lucide-react";
 import logo from "../../../../public/logo.png";
+import { useTranslation } from "react-i18next";
 
 //COMPONENTS
 import NavSection from "../../ui/NavSection";
@@ -11,6 +12,7 @@ import { Link } from "react-router-dom";
 import SettingsModal from "./SettingsModal";
 
 function Sidebar({ userData }: { userData: IUser }) {
+	const { t } = useTranslation();
 	const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 	const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
@@ -65,7 +67,7 @@ function Sidebar({ userData }: { userData: IUser }) {
 									JustDocIt
 									<span className="Sidebar__online inline-flex items-center bg-gradient-to-r from-secondary to-primary text-white px-2 py-0.5 rounded-full text-[10px] font-semibold ml-2 uppercase tracking-wider">
 										<span className="Sidebar__online-dot w-1.5 h-1.5 bg-success rounded-full mr-1 animate-pulse"></span>
-										Online
+										{t("sidebar.online")}
 									</span>
 								</motion.div>
 							)}
@@ -74,18 +76,26 @@ function Sidebar({ userData }: { userData: IUser }) {
 				</Link>
 
 				{/* Navegación */}
-				<NavSection title="General" isOpen={isSidebarOpen}>
+				<NavSection title={t("sidebar.general")} isOpen={isSidebarOpen}>
 					<Link
 						to="/dashboard"
 						className="Sidebar__nav-link decoration-transparent"
 					>
-						<NavLink icon="📊" text="Dashboard" isOpen={isSidebarOpen} />
+						<NavLink
+							icon="📊"
+							text={t("header.dashboard")}
+							isOpen={isSidebarOpen}
+						/>
 					</Link>
 					<Link
 						to="/proyect_docs"
 						className="Sidebar__nav-link decoration-transparent"
 					>
-						<NavLink icon="📑" text="Documentation" isOpen={isSidebarOpen} />
+						<NavLink
+							icon="📑"
+							text={t("header.documentation")}
+							isOpen={isSidebarOpen}
+						/>
 					</Link>
 					{userData.role === "ADMIN" && (
 						<Link
@@ -97,15 +107,23 @@ function Sidebar({ userData }: { userData: IUser }) {
 					)}
 				</NavSection>
 
-				<NavSection title="Personal" isOpen={isSidebarOpen}>
+				<NavSection title={t("sidebar.personal")} isOpen={isSidebarOpen}>
 					<Link to="/user" className="Sidebar__nav-link decoration-transparent">
-						<NavLink icon="👤" text="Perfil" isOpen={isSidebarOpen} />
+						<NavLink
+							icon="👤"
+							text={t("sidebar.profile")}
+							isOpen={isSidebarOpen}
+						/>
 					</Link>
 					<button
 						onClick={() => setIsSettingsOpen(true)}
 						className="Sidebar__nav-link decoration-transparent w-full"
 					>
-						<NavLink icon="⚙️" text="Configuración" isOpen={isSidebarOpen} />
+						<NavLink
+							icon="⚙️"
+							text={t("sidebar.settings")}
+							isOpen={isSidebarOpen}
+						/>
 					</button>
 				</NavSection>
 

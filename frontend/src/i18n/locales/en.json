@@ -99,5 +99,23 @@
 			"startFree": "Start for free",
 			"viewPremium": "View Premium plans"
 		}
+	},
+	"dashboard": {
+		"title": "Dashboard",
+		"addNewProject": "Add new project",
+		"projectsInDocumentation": "Projects in documentation",
+		"totalViews": "Total views",
+		"projectList": "Project List",
+		"noActiveProjects": "No active projects",
+		"addProjectMessage": "Add a new project to start working.",
+		"searchPlaceholder": "Search in documentation...",
+		"repository": "Repository"
+	},
+	"sidebar": {
+		"general": "General",
+		"personal": "Personal",
+		"profile": "Profile",
+		"settings": "Settings",
+		"online": "Online"
 	}
 }

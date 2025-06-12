@@ -33,19 +33,6 @@ import useValidation from "../../hooks/useValidation";
 function Dashboard() {
 	const { t } = useTranslation();
 
-	useEffect(() => {
-		const checkValidation = async () => {
-			const validation = new useValidation();
-			const isExpired = await validation.validateToken();
-
-			if (isExpired) {
-				window.location.href = `${API_ROUTES.AUTH.LOGIN}`;
-			}
-		};
-
-		checkValidation();
-	}, []);
-
 	const [loading, setLoading] = useState<boolean>(true);
 	const [error, setError] = useState<string | undefined>(undefined);
 	const [userData, setUserData] = useState<any>(null);
@@ -61,6 +48,7 @@ function Dashboard() {
 	const [directory, setDirectory] = useState<string>("/");
 	const [isAddingRepo, setIsAddingRepo] = useState<boolean>(false);
 	const [showAddModal, setShowAddModal] = useState<boolean>(false);
+	const [userVisits, setUserVisits] = useState<number>(0);
 
 	const environment = ENVIRONMENT;
 
@@ -113,17 +101,10 @@ function Dashboard() {
 		setDirectory("/");
 	};
 
-	const [userVisits, setUserVisits] = useState<number>(0);
-
 	useEffect(() => {
 		const initializeDashboard = async () => {
 			try {
-				if (!StorageService.getToken() && !window.location.search) {
-					setError("You have not logged in yet");
-					setLoading(false);
-					return;
-				}
-
+				// Primero procesar los parámetros de URL para obtener el token si existe
 				const authResult = await AuthService.processUrlParams();
 
 				if (!authResult.sucess) {
@@ -132,6 +113,23 @@ function Dashboard() {
 					return;
 				}
 
+				// Verificar si hay un token después de procesar los parámetros
+				if (!StorageService.getToken()) {
+					setError("You have not logged in yet");
+					setLoading(false);
+					return;
+				}
+
+				// Validar el token con el backend
+				const validation = new useValidation();
+				const isExpired = await validation.validateToken();
+
+				if (isExpired) {
+					window.location.href = `${API_ROUTES.AUTH.LOGIN}`;
+					return;
+				}
+
+				// Obtener datos del usuario
 				const userData = await ApiService.getUserData();
 				setUserData(userData);
 				localStorage.setItem("userData", JSON.stringify(userData));
@@ -144,6 +142,11 @@ function Dashboard() {
 				const response = await fetch(url);
 				const visitsData = await response.json();
 				setUserVisits(visitsData);
+
+				// Obtener repositorios
+				const repositories = await RepositoryService.getUserRepositories();
+				setUserRepositores(repositories);
+				await refreshAddedRepositories();
 			} catch (error) {
 				console.error(`Error: ${error}`);
 				setError(`Error : ${error}`);
@@ -152,14 +155,7 @@ function Dashboard() {
 			}
 		};
 
-		const getUserRepositories = async () => {
-			const repositories = await RepositoryService.getUserRepositories();
-			setUserRepositores(repositories);
-		};
-
-		initializeDashboard()
-			.then(() => getUserRepositories())
-			.then(() => refreshAddedRepositories());
+		initializeDashboard();
 	}, []);
 
 	if (loading) {

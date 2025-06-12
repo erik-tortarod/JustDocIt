@@ -5,6 +5,8 @@ import useValidation from "@/hooks/useValidation";
 import { API_ROUTES } from "@/config/api-routes";
 import { motion } from "framer-motion";
 import ActivityService from "@/services/ActivitiesService";
+import AuthService from "@/services/AuthService";
+import StorageService from "@/services/StorageService";
 
 interface Activity {
 	id: string;
@@ -15,50 +17,62 @@ interface Activity {
 }
 
 function User() {
-	useEffect(() => {
-		const checkValidation = async () => {
-			const validation = new useValidation();
-			const isExpired = await validation.validateToken();
-
-			if (isExpired) {
-				window.location.href = `${API_ROUTES.AUTH.LOGIN}`;
-			}
-		};
-
-		checkValidation();
-	}, []);
-
 	const [userData, setUserData] = useState<IUser>();
 	const [activities, setActivities] = useState<Activity[]>([]);
 	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState<string | undefined>(undefined);
 
 	useEffect(() => {
-		const userDataStr = localStorage.getItem("userData");
-		if (userDataStr) {
-			const userData = JSON.parse(userDataStr) as IUser;
-			console.log(userData);
-			setUserData(userData);
-		}
-	}, []);
-
-	useEffect(() => {
-		const fetchActivities = async () => {
+		const initializeUser = async () => {
 			try {
+				// Primero procesar los parámetros de URL para obtener el token si existe
+				const authResult = await AuthService.processUrlParams();
+
+				if (!authResult.sucess) {
+					setError(authResult.error);
+					setLoading(false);
+					return;
+				}
+
+				// Verificar si hay un token después de procesar los parámetros
+				if (!StorageService.getToken()) {
+					setError("You have not logged in yet");
+					setLoading(false);
+					return;
+				}
+
+				// Validar el token con el backend
+				const validation = new useValidation();
+				const isExpired = await validation.validateToken();
+
+				if (isExpired) {
+					window.location.href = `${API_ROUTES.AUTH.LOGIN}`;
+					return;
+				}
+
+				// Obtener datos del usuario
+				const userDataStr = localStorage.getItem("userData");
+				if (userDataStr) {
+					const userData = JSON.parse(userDataStr) as IUser;
+					setUserData(userData);
+				}
+
+				// Obtener actividades
 				const response = await ActivityService.getActivities();
-				// Sort activities by timestamp in descending order (newest first)
 				const sortedActivities = response.sort(
 					(a: any, b: any) =>
 						new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
 				);
 				setActivities(sortedActivities);
 			} catch (error) {
-				console.error("Error fetching activities:", error);
+				console.error(`Error: ${error}`);
+				setError(`Error : ${error}`);
 			} finally {
 				setLoading(false);
 			}
 		};
 
-		fetchActivities();
+		initializeUser();
 	}, []);
 
 	const capitalize = (str: string): string => {

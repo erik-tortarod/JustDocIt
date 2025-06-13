@@ -1,6 +1,7 @@
 //DEPENDENCIES
 import { Route, Routes } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 //PAGES
 import Auth from "./pages/Auth/Auth";
@@ -11,6 +12,8 @@ import Admin from "./pages/Admin/Admin";
 import User from "./pages/User/User";
 import ProyectDocumentation from "./pages/ProyectDocumentation/ProyectDocumentation";
 import { useEffect } from "react";
+
+const queryClient = new QueryClient();
 
 function App() {
 	useEffect(() => {
@@ -28,7 +31,7 @@ function App() {
 	}, []);
 
 	return (
-		<>
+		<QueryClientProvider client={queryClient}>
 			<Toaster position="top-right" />
 			<Routes>
 				<Route path="/" element={<Auth />} />
@@ -42,7 +45,7 @@ function App() {
 				<Route path="/admin" element={<Admin />} />
 				<Route path="/user" element={<User />} />
 			</Routes>
-		</>
+		</QueryClientProvider>
 	);
 }
 

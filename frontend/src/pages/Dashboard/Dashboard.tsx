@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
+import { useQuery } from "@tanstack/react-query";
 
 //SERVICES
 import ApiService from "../../services/ApiService";
@@ -36,11 +37,6 @@ function Dashboard() {
 	const [loading, setLoading] = useState<boolean>(true);
 	const [error, setError] = useState<string | undefined>(undefined);
 	const [userData, setUserData] = useState<any>(null);
-	const [userRepositories, setUserRepositores] = useState<IRepository[]>([]);
-	const [addedRepositories, setAddedRepositories] = useState<IRepository[]>([]);
-	const [filteredRepositories, setFilteredRepositories] = useState<
-		IRepository[]
-	>([]);
 	const [searchTerm, setSearchTerm] = useState("");
 	const [selectedRepository, setSelectedRepository] =
 		useState<IRepository | null>(null);
@@ -49,24 +45,37 @@ function Dashboard() {
 	const [isAddingRepo, setIsAddingRepo] = useState<boolean>(false);
 	const [showAddModal, setShowAddModal] = useState<boolean>(false);
 	const [userVisits, setUserVisits] = useState<number>(0);
+	const [filteredRepositories, setFilteredRepositories] = useState<
+		IRepository[]
+	>([]);
 
 	const environment = ENVIRONMENT;
 
-	const refreshAddedRepositories = async () => {
-		try {
-			const repositories = await RepositoryService.getAddedRepositories();
-			const repos = repositories;
+	// Query para los repositorios añadidos
+	const { data: addedRepositories = [], refetch: refreshAddedRepositories } =
+		useQuery({
+			queryKey: ["addedRepositories"],
+			queryFn: async () => {
+				const repositories = await RepositoryService.getAddedRepositories();
+				if (environment === EEnvironment.DEV) {
+					return [...repositories, ...mockRepositories];
+				}
+				return repositories;
+			},
+			staleTime: 1000 * 60 * 5, // 5 minutos
+		});
 
-			if (environment === EEnvironment.DEV) {
-				repos.push(...mockRepositories);
-			}
+	// Query para los repositorios del usuario
+	const { data: userRepositories = [] } = useQuery({
+		queryKey: ["userRepositories"],
+		queryFn: () => RepositoryService.getUserRepositories(),
+		staleTime: 1000 * 60 * 5, // 5 minutos
+	});
 
-			setAddedRepositories(repos);
-			setFilteredRepositories(repos);
-		} catch (error) {
-			console.error("Error refreshing added repositories:", error);
-		}
-	};
+	// Actualizar filteredRepositories cuando cambien addedRepositories
+	useEffect(() => {
+		setFilteredRepositories(addedRepositories);
+	}, [addedRepositories]);
 
 	const handleAddRepository = async () => {
 		if (!selectedRepository || !branch) {
@@ -104,7 +113,6 @@ function Dashboard() {
 	useEffect(() => {
 		const initializeDashboard = async () => {
 			try {
-				// Primero procesar los parámetros de URL para obtener el token si existe
 				const authResult = await AuthService.processUrlParams();
 
 				if (!authResult.sucess) {
@@ -113,14 +121,12 @@ function Dashboard() {
 					return;
 				}
 
-				// Verificar si hay un token después de procesar los parámetros
 				if (!StorageService.getToken()) {
 					setError("You have not logged in yet");
 					setLoading(false);
 					return;
 				}
 
-				// Validar el token con el backend
 				const validation = new useValidation();
 				const isExpired = await validation.validateToken();
 
@@ -129,12 +135,10 @@ function Dashboard() {
 					return;
 				}
 
-				// Obtener datos del usuario
 				const userData = await ApiService.getUserData();
 				setUserData(userData);
 				localStorage.setItem("userData", JSON.stringify(userData));
 
-				// Obtener las visitas después de tener los datos del usuario
 				const url = API_ROUTES.DOCS.USER_VISITS.replace(
 					"**user_id**",
 					userData.id,
@@ -142,11 +146,6 @@ function Dashboard() {
 				const response = await fetch(url);
 				const visitsData = await response.json();
 				setUserVisits(visitsData);
-
-				// Obtener repositorios
-				const repositories = await RepositoryService.getUserRepositories();
-				setUserRepositores(repositories);
-				await refreshAddedRepositories();
 			} catch (error) {
 				console.error(`Error: ${error}`);
 				setError(`Error : ${error}`);
@@ -199,9 +198,8 @@ function Dashboard() {
 						repeatType: "reverse",
 					}}
 				>
-					Wait a moment...
+					{error}
 				</motion.h1>
-				<span className="loading loading-infinity w-50"></span>
 			</motion.div>
 		);
 	}
@@ -322,7 +320,6 @@ function Dashboard() {
 						</AnimatePresence>
 					</motion.section>
 
-					{/* Modal de selección de repositorio */}
 					<AnimatePresence>
 						{showAddModal && (
 							<AddRepositoryModal

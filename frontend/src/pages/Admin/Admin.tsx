@@ -39,8 +39,26 @@ function Admin() {
 					return;
 				}
 
-				// Si todo está bien, mostrar el contenido
-				setAuthenticated(true);
+				// Verificar autenticación LDAP
+				const ldapResponse = await fetch(API_ROUTES.AUTH.LDAP, {
+					method: "GET",
+					headers: {
+						Authorization: `Bearer ${StorageService.getToken()}`,
+					},
+				});
+
+				if (!ldapResponse.ok) {
+					setAuthenticated(false);
+					setLoading(false);
+					return;
+				}
+
+				const ldapData = await ldapResponse.json();
+				if (ldapData.authenticated) {
+					setAuthenticated(true);
+				} else {
+					setAuthenticated(false);
+				}
 			} catch (error) {
 				console.error(`Error: ${error}`);
 				setError(`Error : ${error}`);

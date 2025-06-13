@@ -72,24 +72,74 @@ function Admin() {
 
 	if (loading) {
 		return (
-			<div className="flex justify-center items-center h-screen w-screen">
-				<span className="loading loading-infinity w-50"></span>
+			<div className="min-h-screen bg-gradient-to-br from-base-200 to-base-300 flex justify-center items-center">
+				<div className="text-center">
+					<span className="loading loading-infinity loading-lg text-primary"></span>
+					<p className="mt-4 text-lg text-base-content">
+						Loading admin panel...
+					</p>
+				</div>
 			</div>
 		);
 	}
 
 	if (error) {
 		return (
-			<div className="flex justify-center items-center h-screen w-screen">
-				<div className="text-error">{error}</div>
+			<div className="min-h-screen bg-gradient-to-br from-base-200 to-base-300 flex justify-center items-center">
+				<div className="bg-base-100 p-8 rounded-lg shadow-xl max-w-md w-full mx-4">
+					<div className="text-error text-center">
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							className="h-12 w-12 mx-auto mb-4"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke="currentColor"
+						>
+							<path
+								strokeLinecap="round"
+								strokeLinejoin="round"
+								strokeWidth={2}
+								d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+							/>
+						</svg>
+						<p className="text-xl font-semibold">{error}</p>
+					</div>
+				</div>
 			</div>
 		);
 	}
 
 	return (
-		<div className="w-screen p-4">
-			{!authenticated && <LdapLoginForm authentication={setAuthenticated} />}
-			{authenticated && <AdminContent />}
+		<div className="min-h-screen bg-gradient-to-br from-base-200 to-base-300 w-screen">
+			<div className="container mx-auto px-4 py-8">
+				<div className="max-w-4xl mx-auto">
+					{!authenticated ? (
+						<div className="bg-base-100 rounded-xl shadow-2xl p-8">
+							<div className="text-center mb-8">
+								<h1 className="text-3xl font-bold text-primary mb-2">
+									Admin Panel
+								</h1>
+								<p className="text-base-content/70">
+									Please authenticate to access the admin panel
+								</p>
+							</div>
+							<LdapLoginForm authentication={setAuthenticated} />
+						</div>
+					) : (
+						<div className="bg-base-100 rounded-xl shadow-2xl p-8">
+							<div className="text-center mb-8">
+								<h1 className="text-3xl font-bold text-primary mb-2">
+									Admin Panel
+								</h1>
+								<p className="text-base-content/70">
+									Welcome to the admin dashboard
+								</p>
+							</div>
+							<AdminContent />
+						</div>
+					)}
+				</div>
+			</div>
 		</div>
 	);
 }

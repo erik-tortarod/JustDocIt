@@ -13,6 +13,13 @@ resource "aws_security_group" "webserver_security_group" {
     cidr_blocks = [var.ingress_http_cidr]
   }
 
+  ingress {
+    description = "https access"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = [var.ingress_http_cidr]
+  }
 
   ingress {
     description = "ssh access"

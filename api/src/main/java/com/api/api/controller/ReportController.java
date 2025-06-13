@@ -1,6 +1,8 @@
 package com.api.api.controller;
 
 import com.api.api.service.UserService;
+import com.api.api.service.RepositoryService;
+import com.api.api.service.CodeDocumentationService;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfWriter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,12 @@ public class ReportController {
 
 	@Autowired
 	private UserService userService;
+
+	@Autowired
+	private RepositoryService repositoryService;
+
+	@Autowired
+	private CodeDocumentationService codeDocumentationService;
 
 	/**
 	 * Generates a PDF report with user statistics.
@@ -64,6 +72,18 @@ public class ReportController {
 			Paragraph users = new Paragraph("Total Users: " + totalUsers, contentFont);
 			users.setSpacingAfter(10);
 			document.add(users);
+
+			// Add total repositories
+			long totalRepositories = repositoryService.getAllRepositories().size();
+			Paragraph repos = new Paragraph("Total Repositories: " + totalRepositories, contentFont);
+			repos.setSpacingAfter(10);
+			document.add(repos);
+
+			// Add total documented files
+			long totalDocumentedFiles = codeDocumentationService.getAllDocumentations().size();
+			Paragraph docs = new Paragraph("Total Documented Files: " + totalDocumentedFiles, contentFont);
+			docs.setSpacingAfter(10);
+			document.add(docs);
 
 			// Close the document
 			document.close();

@@ -359,4 +359,12 @@ public class CodeDocumentationService {
 		return documentationRepository.findByLanguageAndId(language, id);
 	}
 
+	/**
+	 * Gets all documentations in the system.
+	 * @return List of all code documentations
+	 */
+	public List<CodeDocumentation> getAllDocumentations() {
+		return documentationRepository.findAll();
+	}
+
 }

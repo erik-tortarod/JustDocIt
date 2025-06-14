@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { IUser } from "../../types/interfaces";
 import Sidebar from "../../components/layout/Sidebar/Sidebar";
-import useValidation from "@/hooks/useValidation";
 import { API_ROUTES } from "@/config/api-routes";
 import { motion } from "framer-motion";
 import ActivityService from "@/services/ActivitiesService";
@@ -25,31 +24,6 @@ function User() {
 	useEffect(() => {
 		const initializeUser = async () => {
 			try {
-				// Primero procesar los parámetros de URL para obtener el token si existe
-				const authResult = await AuthService.processUrlParams();
-
-				if (!authResult.sucess) {
-					setError(authResult.error);
-					setLoading(false);
-					return;
-				}
-
-				// Verificar si hay un token después de procesar los parámetros
-				if (!StorageService.getToken()) {
-					setError("You have not logged in yet");
-					setLoading(false);
-					return;
-				}
-
-				// Validar el token con el backend
-				const validation = new useValidation();
-				const isExpired = await validation.validateToken();
-
-				if (isExpired) {
-					window.location.href = `${API_ROUTES.AUTH.LOGIN}`;
-					return;
-				}
-
 				// Obtener datos del usuario
 				const userDataStr = localStorage.getItem("userData");
 				if (userDataStr) {

@@ -43,9 +43,9 @@ function App() {
 				/>
 				<Route path="/proyect_docs" element={<ProyectDocumentation />} />
 				<Route path="/live_docs" element={<LiveDocumentation />} />
-				<Route path="*" element={<NotFound />} />
 				<Route path="/admin" element={<Admin />} />
 				<Route path="/user" element={<User />} />
+				<Route path="*" element={<NotFound />} />
 			</Routes>
 		</QueryClientProvider>
 	);

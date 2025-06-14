@@ -3,7 +3,6 @@ import AdminContent from "./AdminContent";
 import { useState, useEffect } from "react";
 import AuthService from "@/services/AuthService";
 import StorageService from "@/services/StorageService";
-import useValidation from "@/hooks/useValidation";
 import { API_ROUTES } from "@/config/api-routes";
 
 function Admin() {
@@ -14,31 +13,6 @@ function Admin() {
 	useEffect(() => {
 		const initializeAdmin = async () => {
 			try {
-				// Primero procesar los parámetros de URL para obtener el token si existe
-				const authResult = await AuthService.processUrlParams();
-
-				if (!authResult.sucess) {
-					setError(authResult.error);
-					setLoading(false);
-					return;
-				}
-
-				// Verificar si hay un token después de procesar los parámetros
-				if (!StorageService.getToken()) {
-					setError("You have not logged in yet");
-					setLoading(false);
-					return;
-				}
-
-				// Validar el token con el backend
-				const validation = new useValidation();
-				const isExpired = await validation.validateToken();
-
-				if (isExpired) {
-					window.location.href = `${API_ROUTES.AUTH.LOGIN}`;
-					return;
-				}
-
 				// Verificar autenticación LDAP
 				const ldapResponse = await fetch(API_ROUTES.AUTH.LDAP, {
 					method: "GET",

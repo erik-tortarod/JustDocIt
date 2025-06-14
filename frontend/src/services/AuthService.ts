@@ -1,5 +1,6 @@
 //SERVICES
 import StorageService from "./StorageService";
+import { API_ROUTES } from "../config/api-routes";
 
 /**
  * Servicio para gestionar la autenticación de usuarios.
@@ -24,10 +25,12 @@ class AuthService {
 
 			if (jwtToken) {
 				StorageService.setToken(jwtToken);
-
-				// Remove query params from the URL
-				window.history.replaceState({}, document.title, "/dashboard");
-
+				// Remove query params from the URL without forcing a redirect
+				window.history.replaceState(
+					{},
+					document.title,
+					window.location.pathname,
+				);
 				return { sucess: true };
 			}
 
@@ -65,6 +68,13 @@ class AuthService {
 	static logout(): void {
 		StorageService.removeToken();
 		window.location.href = "/";
+	}
+
+	/**
+	 * Inicia el proceso de autenticación redirigiendo al usuario a la página de login.
+	 */
+	static login(): void {
+		window.location.href = API_ROUTES.AUTH.LOGIN;
 	}
 }
 

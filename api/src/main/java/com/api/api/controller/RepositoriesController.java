@@ -223,15 +223,21 @@ public class RepositoriesController {
 
 		String token = authHeader.substring(7); // Remove "Bearer " prefix
 		SecretKey secretKey = jwtUtil.getSecretKey1(); // Use the first secret key for
-		// validation
+														// validation
 
 		try {
 			// Validate token
 			Map<String, Object> claims = JwtUtil.validateToken(token, secretKey);
 			logger.info("Token validated successfully. Claims: {}", claims); // Debug log
 
-			// Fetch repositories from the database
-			List<Repository> repositories = repositoryService.getAllRepositories();
+			// Extract userId from token
+			String userId = (String) claims.get("id");
+			if (userId == null) {
+				return ResponseEntity.badRequest().body("No user ID found in token claims");
+			}
+
+			// Fetch repositories from the database filtered by userId
+			List<Repository> repositories = repositoryService.findByUserId(userId);
 
 			return ResponseEntity.ok(repositories);
 		}
@@ -289,7 +295,7 @@ public class RepositoriesController {
 
 		String token = authHeader.substring(7); // Remove "Bearer " prefix
 		SecretKey secretKey = jwtUtil.getSecretKey1(); // Use the first secret key for
-														// validation
+		// validation
 
 		try {
 			// Validate token
@@ -303,7 +309,7 @@ public class RepositoriesController {
 		}
 		catch (Exception e) {
 			logger.error("Error deleting repository documentation: {}", e.getMessage()); // Debug
-																							// log
+			// log
 			return ResponseEntity.status(500).body("Error deleting repository documentation: " + e.getMessage());
 		}
 	}

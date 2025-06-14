@@ -2,6 +2,7 @@
 DOCKER_USERNAME ?= eriktortarod
 PROJECT_NAME ?= justdocit
 SERVICES := frontend auth api
+OPENAI_API_KEY ?= "clave_de_openai"
 
 .PHONY: start-all stop-all rebuild-all push-to-dockerhub logs shell help format run-all
 
@@ -18,6 +19,8 @@ stop-all:
 # Reconstruye todos los servicios
 rebuild-all:
 	@echo "Reconstruyendo todos los servicios..."
+	@echo "Actualizando API key de OpenAI..."
+	@sed -i "s|TOKEN:.*|TOKEN: \"$(OPENAI_API_KEY)\",|" frontend/src/config/api-config.ts
 	docker-compose -f docker/docker-compose.yml down --remove-orphans
 	@echo "Forzando eliminación de contenedores y redes..."
 	docker-compose -f docker/docker-compose.yml down --volumes --remove-orphans

@@ -18,7 +18,9 @@ stop-all:
 # Reconstruye todos los servicios
 rebuild-all:
 	@echo "Reconstruyendo todos los servicios..."
-	docker-compose -f docker/docker-compose.yml down
+	docker-compose -f docker/docker-compose.yml down --remove-orphans
+	@echo "Forzando eliminación de contenedores y redes..."
+	docker-compose -f docker/docker-compose.yml down --volumes --remove-orphans
 	@echo "Eliminando imágenes del proyecto..."
 	@for service in frontend auth api; do \
 		echo "Eliminando $(DOCKER_USERNAME)/$(PROJECT_NAME)-$$service..."; \
@@ -29,17 +31,10 @@ rebuild-all:
 
 # Publica las imágenes en DockerHub
 push-to-dockerhub:
-	@echo "Verificando imágenes..."
+	@echo "Construyendo y publicando imágenes en DockerHub..."
 	@for service in $(SERVICES); do \
-		if ! docker images | grep -q "$(DOCKER_USERNAME)/$(PROJECT_NAME)-$$service"; then \
-			echo "Imagen $(DOCKER_USERNAME)/$(PROJECT_NAME)-$$service no encontrada. Construyendo..."; \
-			docker-compose -f docker/docker-compose.yml build $$service; \
-			docker tag $$(docker-compose -f docker/docker-compose.yml images -q $$service) $(DOCKER_USERNAME)/$(PROJECT_NAME)-$$service:latest; \
-		fi \
-	done
-	@echo "Publicando imágenes en DockerHub..."
-	@for service in $(SERVICES); do \
-		echo "Publicando $(DOCKER_USERNAME)/$(PROJECT_NAME)-$$service..."; \
+		echo "Construyendo y publicando $(DOCKER_USERNAME)/$(PROJECT_NAME)-$$service..."; \
+		docker build -t $(DOCKER_USERNAME)/$(PROJECT_NAME)-$$service:latest ./$$service && \
 		docker push $(DOCKER_USERNAME)/$(PROJECT_NAME)-$$service:latest || { echo "Error al publicar $$service"; exit 1; }; \
 	done
 

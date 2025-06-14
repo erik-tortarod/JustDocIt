@@ -4,8 +4,8 @@
 
 ## Extras
 
-+ Para cualquier duda de la estructura, aquí se proporciona una documentación creada por IA a la cual se le puede preguntar cualquier cuestión del proyecto: [Link AI](https://deepwiki.com/erik-tortarod/JustDocIt/1-overview)
-+ Diseño de Figma: [Link Figma](https://www.figma.com/design/DDN1a1kKOHmwWRiycK7Jdt/Clase-Dise%C3%B1o-Web?node-id=0-1&t=akoh8G6NbL1P3Z6U-1)
+-  Para cualquier duda de la estructura, aquí se proporciona una documentación creada por IA a la cual se le puede preguntar cualquier cuestión del proyecto: [Link AI](https://deepwiki.com/erik-tortarod/JustDocIt/1-overview)
+-  Diseño de Figma: [Link Figma](https://www.figma.com/design/DDN1a1kKOHmwWRiycK7Jdt/Clase-Dise%C3%B1o-Web?node-id=0-1&t=akoh8G6NbL1P3Z6U-1)
 
 ## Índice de Contenidos
 
@@ -65,51 +65,61 @@ A continuación, se detallan las tecnologías empleadas en el proyecto, organiza
 
 ### **Frontend**
 
--  **React**: Librería de JavaScript para construir interfaces de usuario.
--  **TypeScript**: Superconjunto de JavaScript que añade tipado estático.
--  **Vite**: Herramienta de construcción rápida para proyectos web modernos.
--  **BiomeJS**: Formateador y linter de código para JavaScript/TypeScript.
--  **Framer**: Librería para animaciones y prototipos interactivos.
--  **i18n**: Librería para internacionalización (manejo de múltiples idiomas).
--  **Lucide**: Conjunto de iconos de código abierto personalizables.
--  **Mermaid**: Herramienta basada en Markdown para generar diagramas y gráficos a partir de texto.
--  **PrismJS**: Un resaltador de sintaxis ligero, robusto y extensible.
+| Tecnología | Descripción                                                                        |
+| ---------- | ---------------------------------------------------------------------------------- |
+| React      | Librería de JavaScript para construir interfaces de usuario                        |
+| TypeScript | Superconjunto de JavaScript que añade tipado estático                              |
+| Vite       | Herramienta de construcción rápida para proyectos web modernos                     |
+| BiomeJS    | Formateador y linter de código para JavaScript/TypeScript                          |
+| Framer     | Librería para animaciones y prototipos interactivos                                |
+| i18n       | Librería para internacionalización (manejo de múltiples idiomas)                   |
+| Lucide     | Conjunto de iconos de código abierto personalizables                               |
+| Mermaid    | Herramienta basada en Markdown para generar diagramas y gráficos a partir de texto |
+| PrismJS    | Un resaltador de sintaxis ligero, robusto y extensible                             |
 
 ### **Diseño**
 
--  **Tailwind CSS**: Framework CSS de utilidad para construir diseños personalizados rápidamente.
--  **DaisyUI**: Librería de componentes para Tailwind CSS.
--  **Figma**: Herramienta de diseño de interfaz y prototipado colaborativo.
--  **Google Search Console**: Herramienta de Google para monitorear el rendimiento del sitio en la búsqueda.
--  **Metodología BEM**: (Block, Element, Modifier) Metodología para nombrar clases CSS.
+| Tecnología            | Descripción                                                                   |
+| --------------------- | ----------------------------------------------------------------------------- |
+| Tailwind CSS          | Framework CSS de utilidad para construir diseños personalizados rápidamente   |
+| DaisyUI               | Librería de componentes para Tailwind CSS                                     |
+| Figma                 | Herramienta de diseño de interfaz y prototipado colaborativo                  |
+| Google Search Console | Herramienta de Google para monitorear el rendimiento del sitio en la búsqueda |
+| Metodología BEM       | (Block, Element, Modifier) Metodología para nombrar clases CSS                |
 
 ### **Servidor**
 
--  **JWT (JSON Web Tokens)**: Estándar abierto para la creación de tokens de acceso.
--  **OAuth2**: Framework de autorización que permite a las aplicaciones obtener acceso limitado a cuentas de usuario.
--  **MongoDB**: Base de datos NoSQL basada en documentos.
--  **LDAP Security**: Protocolo para acceder y mantener servicios de información de directorio distribuido.
--  **Lombok**: Librería de Java que ayuda a reducir el código repetitivo (boilerplate).
--  **iTextPDF**: Librería para crear y manipular documentos PDF.
--  **Java Format**: Formatear y Lintear el código de Java
+| Tecnología            | Descripción                                                                                           |
+| --------------------- | ----------------------------------------------------------------------------------------------------- |
+| JWT (JSON Web Tokens) | Estándar abierto para la creación de tokens de acceso                                                 |
+| OAuth2                | Framework de autorización que permite a las aplicaciones obtener acceso limitado a cuentas de usuario |
+| MongoDB               | Base de datos NoSQL basada en documentos                                                              |
+| LDAP Security         | Protocolo para acceder y mantener servicios de información de directorio distribuido                  |
+| Lombok                | Librería de Java que ayuda a reducir el código repetitivo (boilerplate)                               |
+| iTextPDF              | Librería para crear y manipular documentos PDF                                                        |
+| Java Format           | Formatear y Lintear el código de Java                                                                 |
 
 ### **Despliegue**
 
--  **AWS (Amazon Web Services)**: Plataforma de servicios en la nube.
-   -  **EFS (Elastic File System)**: Servicio de almacenamiento de archivos escalable.
-   -  **ACM (Certificate Manager)**: Servicio para gestionar certificados SSL/TLS.
-   -  **S3 (Simple Storage Service)**: Almacenamiento de objetos escalable.
--  **Vitest**: Framework de pruebas unitarias compatible con Vite.
--  **Playwright**: Framework de automatización de pruebas de extremo a extremo.
--  **GitHub Actions**: Plataforma de CI/CD para automatizar flujos de trabajo.
--  **MongoDB Atlas**: Servicio de base de datos MongoDB en la nube.
--  **Terraform** para CI/CD
+| Tecnología                  | Descripción                                                 |
+| --------------------------- | ----------------------------------------------------------- |
+| AWS (Amazon Web Services)   | Plataforma de servicios en la nube                          |
+| EFS (Elastic File System)   | Servicio de almacenamiento de archivos escalable            |
+| ACM (Certificate Manager)   | Servicio para gestionar certificados SSL/TLS                |
+| S3 (Simple Storage Service) | Almacenamiento de objetos escalable                         |
+| Vitest                      | Framework de pruebas unitarias compatible con Vite          |
+| Playwright                  | Framework de automatización de pruebas de extremo a extremo |
+| GitHub Actions              | Plataforma de CI/CD para automatizar flujos de trabajo      |
+| MongoDB Atlas               | Servicio de base de datos MongoDB en la nube                |
+| Terraform                   | Herramienta para CI/CD                                      |
 
 ### **Otras**
 
--  **Devin AI**: (Asumiendo que se refiere a una herramienta o asistente de IA para desarrollo)
--  **GitBook**: Plataforma para documentar y publicar contenido.
--  **Scribe**: Herramienta para crear guías paso a paso automáticamente.
+| Tecnología | Descripción                                              |
+| ---------- | -------------------------------------------------------- |
+| Devin AI   | Asistente de IA para desarrollo                          |
+| GitBook    | Plataforma para documentar y publicar contenido          |
+| Scribe     | Herramienta para crear guías paso a paso automáticamente |
 
 ## Diagrama infraestructura
 

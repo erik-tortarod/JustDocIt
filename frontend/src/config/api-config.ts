@@ -2,6 +2,6 @@ export const API_CONFIG = {
 	OPENAI: {
 		BASE_URL: "https://api.openai.com/v1",
 		TOKEN:
-			"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",
+			"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",
 	},
 } as const;

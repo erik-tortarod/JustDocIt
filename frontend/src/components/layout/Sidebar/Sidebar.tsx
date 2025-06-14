@@ -97,6 +97,16 @@ function Sidebar({ userData }: { userData: IUser }) {
 							isOpen={isSidebarOpen}
 						/>
 					</Link>
+					<Link
+						to="/live_docs"
+						className="Sidebar__nav-link decoration-transparent"
+					>
+						<NavLink
+							icon="📝"
+							text="Live Documentation"
+							isOpen={isSidebarOpen}
+						/>
+					</Link>
 					{userData.role === "ADMIN" && (
 						<Link
 							to="/admin"

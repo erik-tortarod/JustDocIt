@@ -116,21 +116,19 @@ function Dashboard() {
 				const authResult = await AuthService.processUrlParams();
 
 				if (!authResult.sucess) {
-					setError(authResult.error);
-					setLoading(false);
+					window.location.href = `${API_ROUTES.AUTH.LOGIN}`;
 					return;
 				}
 
 				if (!StorageService.getToken()) {
-					setError("You have not logged in yet");
-					setLoading(false);
+					window.location.href = `${API_ROUTES.AUTH.LOGIN}`;
 					return;
 				}
 
 				const validation = new useValidation();
-				const isExpired = await validation.validateToken();
+				const isValid = await validation.validateToken();
 
-				if (isExpired) {
+				if (!isValid) {
 					window.location.href = `${API_ROUTES.AUTH.LOGIN}`;
 					return;
 				}
@@ -148,7 +146,7 @@ function Dashboard() {
 				setUserVisits(visitsData);
 			} catch (error) {
 				console.error(`Error: ${error}`);
-				setError(`Error : ${error}`);
+				window.location.href = `${API_ROUTES.AUTH.LOGIN}`;
 			} finally {
 				setLoading(false);
 			}

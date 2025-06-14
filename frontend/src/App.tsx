@@ -11,6 +11,7 @@ import Documentation from "./pages/Documentation/Documentation";
 import Admin from "./pages/Admin/Admin";
 import User from "./pages/User/User";
 import ProyectDocumentation from "./pages/ProyectDocumentation/ProyectDocumentation";
+import LiveDocumentation from "./pages/LiveDocumentation/LiveDocumentation";
 import { useEffect } from "react";
 
 const queryClient = new QueryClient();
@@ -41,6 +42,7 @@ function App() {
 					element={<Documentation />}
 				/>
 				<Route path="/proyect_docs" element={<ProyectDocumentation />} />
+				<Route path="/live_docs" element={<LiveDocumentation />} />
 				<Route path="*" element={<NotFound />} />
 				<Route path="/admin" element={<Admin />} />
 				<Route path="/user" element={<User />} />

@@ -9,23 +9,27 @@ class useValidation {
 
 	async validateToken() {
 		if (!this.#jwtToken) {
-			return true;
-		}
-
-		const response = await fetch(
-			`${API_ROUTES.AUTH.VALIDATE}?token=${this.#jwtToken}`,
-			{
-				method: "GET",
-			},
-		);
-
-		if (!response.ok) {
 			return false;
 		}
 
-		const result = await response.json();
+		try {
+			const response = await fetch(
+				`${API_ROUTES.AUTH.VALIDATE}?token=${this.#jwtToken}`,
+				{
+					method: "GET",
+				},
+			);
 
-		return result.isExpired;
+			if (!response.ok) {
+				return false;
+			}
+
+			const result = await response.json();
+			return !result.isExpired; // Return true if token is valid, false if expired
+		} catch (error) {
+			console.error("Error validating token:", error);
+			return false;
+		}
 	}
 }
 

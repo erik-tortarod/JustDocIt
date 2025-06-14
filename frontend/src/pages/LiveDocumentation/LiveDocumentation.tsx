@@ -11,6 +11,7 @@ import rehypeRaw from "rehype-raw";
 import { Components } from "react-markdown";
 import { prompts } from "../../prompts";
 import { PromptType } from "../../prompts/types";
+import { API_CONFIG } from "../../config/api-config";
 
 function LiveDocumentation() {
    const { t } = useTranslation();
@@ -87,18 +88,20 @@ function LiveDocumentation() {
 
          const selectedPromptGenerator = prompts[selectedPrompt];
 
-         const response = await fetch("https://api.openai.com/v1/responses", {
-            method: "POST",
-            headers: {
-               "Content-Type": "application/json",
-               Authorization:
-                  "Bearer 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",
-            },
-            body: JSON.stringify({
-               model: "gpt-4.1",
-               input: selectedPromptGenerator.generatePrompt(fileContents),
-            }),
-         });
+         const response = await fetch(
+            `${API_CONFIG.OPENAI.BASE_URL}/responses`,
+            {
+               method: "POST",
+               headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${API_CONFIG.OPENAI.TOKEN}`,
+               },
+               body: JSON.stringify({
+                  model: "gpt-4.1",
+                  input: selectedPromptGenerator.generatePrompt(fileContents),
+               }),
+            }
+         );
 
          if (!response.ok) {
             throw new Error("Failed to generate documentation");

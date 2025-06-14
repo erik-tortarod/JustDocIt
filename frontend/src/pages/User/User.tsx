@@ -22,6 +22,30 @@ function User() {
 	const [error, setError] = useState<string | undefined>(undefined);
 
 	useEffect(() => {
+		const checkJwt = async () => {
+			const jwt = localStorage.getItem("jwtToken");
+
+			if (!jwt) {
+				window.location.href = "/";
+				return;
+			}
+
+			const url = `${API_ROUTES.AUTH.VALIDATE}?token=${jwt}`;
+
+			const response = await fetch(url, {
+				method: "GET",
+			});
+
+			if (response.status !== 200) {
+				window.location.href = API_ROUTES.AUTH.LOGIN;
+				return;
+			}
+		};
+
+		checkJwt();
+	}, []);
+
+	useEffect(() => {
 		const initializeUser = async () => {
 			try {
 				// Obtener datos del usuario

@@ -4,15 +4,24 @@ import { useState, useEffect } from "react";
 import AuthService from "@/services/AuthService";
 import StorageService from "@/services/StorageService";
 import { API_ROUTES } from "@/config/api-routes";
+import Sidebar from "@/components/layout/Sidebar/Sidebar";
+import { motion } from "framer-motion";
 
 function Admin() {
 	const [authenticated, setAuthenticated] = useState<boolean>(false);
 	const [loading, setLoading] = useState<boolean>(true);
 	const [error, setError] = useState<string | undefined>(undefined);
+	const [userData, setUserData] = useState<any>(null);
 
 	useEffect(() => {
 		const initializeAdmin = async () => {
 			try {
+				// Get user data from localStorage
+				const storedUserData = localStorage.getItem("userData");
+				if (storedUserData) {
+					setUserData(JSON.parse(storedUserData));
+				}
+
 				// Verificar autenticación LDAP
 				const ldapResponse = await fetch(API_ROUTES.AUTH.LDAP, {
 					method: "GET",
@@ -84,37 +93,50 @@ function Admin() {
 	}
 
 	return (
-		<div className="min-h-screen bg-gradient-to-br from-base-200 to-base-300 w-screen">
-			<div className="container mx-auto px-4 py-8">
-				<div className="max-w-4xl mx-auto">
-					{!authenticated ? (
-						<div className="bg-base-100 rounded-xl shadow-2xl p-8">
-							<div className="text-center mb-8">
-								<h1 className="text-3xl font-bold text-primary mb-2">
-									Admin Panel
-								</h1>
-								<p className="text-base-content/70">
-									Please authenticate to access the admin panel
-								</p>
+		<motion.div
+			className="flex w-screen"
+			initial={{ opacity: 0 }}
+			animate={{ opacity: 1 }}
+			transition={{ duration: 0.5 }}
+		>
+			<Sidebar userData={userData} />
+			<motion.div
+				className="flex-1 transition-all duration-300 ease-in-out pl-16 md:pl-0"
+				initial={{ opacity: 0, x: 20 }}
+				animate={{ opacity: 1, x: 0 }}
+				transition={{ duration: 0.5, delay: 0.2 }}
+			>
+				<div className="container mx-auto px-4 py-8">
+					<div className="max-w-4xl mx-auto">
+						{!authenticated ? (
+							<div className="bg-base-100 rounded-xl shadow-2xl p-8">
+								<div className="text-center mb-8">
+									<h1 className="text-3xl font-bold text-primary mb-2">
+										Admin Panel
+									</h1>
+									<p className="text-base-content/70">
+										Please authenticate to access the admin panel
+									</p>
+								</div>
+								<LdapLoginForm authentication={setAuthenticated} />
 							</div>
-							<LdapLoginForm authentication={setAuthenticated} />
-						</div>
-					) : (
-						<div className="bg-base-100 rounded-xl shadow-2xl p-8">
-							<div className="text-center mb-8">
-								<h1 className="text-3xl font-bold text-primary mb-2">
-									Admin Panel
-								</h1>
-								<p className="text-base-content/70">
-									Welcome to the admin dashboard
-								</p>
+						) : (
+							<div className="bg-base-100 rounded-xl shadow-2xl p-8">
+								<div className="text-center mb-8">
+									<h1 className="text-3xl font-bold text-primary mb-2">
+										Admin Panel
+									</h1>
+									<p className="text-base-content/70">
+										Welcome to the admin dashboard
+									</p>
+								</div>
+								<AdminContent />
 							</div>
-							<AdminContent />
-						</div>
-					)}
+						)}
+					</div>
 				</div>
-			</div>
-		</div>
+			</motion.div>
+		</motion.div>
 	);
 }
 

@@ -113,7 +113,7 @@ A continuación, se detallan las tecnologías empleadas en el proyecto, organiza
 | Devin AI   | Asistente de IA para desarrollo                                        |
 | GitBook    | Plataforma para documentar y publicar contenido                        |
 | Scribe     | Herramienta para crear guías paso a paso automáticamente               |
-| OpenAI     | API de inteligencia artificial para documentación y análisis de código |
+| OpenAI/Ollama     | API de inteligencia artificial para documentación y análisis de código |
 
 ## 4. Diagrama infraestructura
 

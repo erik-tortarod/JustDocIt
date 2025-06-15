@@ -28,5 +28,6 @@ export const API_ROUTES = Object.freeze({
 		ACTIVITIES: `${DOCS_BASE_URL}/api/activities`,
 		USER_VISITS: `${DOCS_BASE_URL}/api/public/repositories/user/**user_id**/total-visits`,
 		ADD_VISIT: `${DOCS_BASE_URL}/api/public/repositories/**repository_id**/visit`,
+		GET_REPORT: `${DOCS_BASE_URL}/api/reports/users`,
 	},
 });

@@ -1,3 +1,4 @@
+import { API_ROUTES } from "@/config/api-routes";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -10,7 +11,7 @@ function AdminContent() {
 		try {
 			setLoading(true);
 			setError(null);
-			const url = "http://localhost:8082/api/reports/users";
+			const url = API_ROUTES.DOCS.GET_REPORT;
 
 			const response = await fetch(url, {
 				method: "GET",

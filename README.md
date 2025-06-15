@@ -11,8 +11,8 @@
 
 1. [Finalidad de la web](#1-descripción-de-la-finalidad-de-la-web)
 2. [Guía de Instalación y Uso](#2-cómo-instalar-y-ejecutar-el-proyecto)
-3. [Tecnologías empleadas](#tecnologías-empleadas)
-4. [Diagrama de la infraestructura](#diagrama-infraestructura)
+3. [Tecnologías empleadas](#3-tecnologías-empleadas)
+4. [Diagrama de la infraestructura](#4-diagrama-infraestructura)
 
 ## 1. Descripción de la Finalidad de la Web
 
@@ -34,20 +34,13 @@ Primero, clona el repositorio de Just Doc It, trabajaremos en la rama _dev_:
 git clone https://github.com/erik-tortarod/JustDocIt.git
 ```
 
-### Configurar Credenciales de Github (opcional)
-
-Si quieres implementar tu propio token de OAuth2 de Github, accede a [Github Developer Settings](https://github.com/settings/developers), crea una credencial nuevo, y coloca estos credenciales en los archivos:
-
--  `/api/src/main/resources/properties.xml`
--  `/auth/src/main/resources/properties.xml`
-
 ### Configurar Credenciales OpenAI
 
-Si quieres implementar tu propia Key de OpenAI porque la que esta ahora se ha quedado sin tokens/dinero (únicamente puse 5€), haz lo siguiente:
+La **API_KEY** de de OpenAI actual es esta, se encuentra en el archivo : `manual_proyecto.pdf`
 
--  Ve a [OpenAI Platform](https://platform.openai.com/account/api-keys)
--  Consigue tu Key
--  Pega la key en: `/frontend/src/config/api-config.ts`
+Copiala y pegala en el **Makefile**, justo donde pone _OPENAI_API_KEY_.
+
+Esta clave solo tiene 5€ por lo que si no funciona probablemente se deba a que se ha quedado sin presupuesto.
 
 ### Construye el proyecto con Docker
 
@@ -59,7 +52,7 @@ Para evitar tener que instalarte JDK, npm o cualquier cosa, se han implementado 
 
 ### Dirígete a http://localhost
 
-## Tecnologías empleadas
+## 3. Tecnologías empleadas
 
 A continuación, se detallan las tecnologías empleadas en el proyecto, organizadas por categorías:
 
@@ -122,7 +115,7 @@ A continuación, se detallan las tecnologías empleadas en el proyecto, organiza
 | Scribe     | Herramienta para crear guías paso a paso automáticamente               |
 | OpenAI     | API de inteligencia artificial para documentación y análisis de código |
 
-## Diagrama infraestructura
+## 4. Diagrama infraestructura
 
 ```mermaid
 graph TB
